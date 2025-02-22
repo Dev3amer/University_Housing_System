@@ -16,7 +16,7 @@ namespace UniversityHousingSystem.Data.Entities
 
         // Navigation Property
         public City City { get; set; }
-        public ICollection<Dormitory> Dormitories { get; set; }
+        public ICollection<Building> Buildings { get; set; }
         public ICollection<Student> Students { get; set; }
 
 

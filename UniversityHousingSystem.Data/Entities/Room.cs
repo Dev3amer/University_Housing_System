@@ -15,7 +15,7 @@ namespace UniversityHousingSystem.Data.Entities
         public decimal Price { get; set; }
 
         // Navigation Property
-        public Dormitory Dormitory { get; set; }
+        public Building Building { get; set; }
         public ICollection<Student> Students { get; set; }
     }
 }

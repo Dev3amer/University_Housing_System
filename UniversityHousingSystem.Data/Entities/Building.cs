@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace UniversityHousingSystem.Data.Entities
 {
-    public class Dormitory
+    public class Building
     {
         public int DormitoryID { get; set; }
         public string Name { get; set; }
