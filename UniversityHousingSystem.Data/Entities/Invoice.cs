@@ -9,6 +9,7 @@ namespace UniversityHousingSystem.Data.Entities
         public decimal RequiredAmount { get; set; }
         public DateTime DueDate { get; set; }
         public EnPaymentStatus Status { get; set; } = EnPaymentStatus.Pending;
+        public EnInvoiceType InvoiceType { get; set; }
 
         //Foreign Keys
         public int StudentId { get; set; }

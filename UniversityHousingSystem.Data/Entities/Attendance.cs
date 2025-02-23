@@ -5,7 +5,7 @@ namespace UniversityHousingSystem.Data.Entities
     public class Attendance
     {
         public int AttendanceId { get; set; }
-        public DateTime DataAndTime { get; set; }
+        public DateTime DateAndTime { get; set; }
         public EnAttendanceType EntryType { get; set; }
 
         // Foreign Keys

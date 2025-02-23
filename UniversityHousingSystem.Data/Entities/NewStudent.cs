@@ -7,10 +7,10 @@
         public bool IsOutsideSchool { get; set; }
 
         //Foreign Keys
-        public int? HighSchoolId { get; set; }
+        public int HighSchoolId { get; set; }
 
         // Navigation Property
         public Student Student { get; set; } = new();
-        public HighSchool? HighSchool { get; set; }
+        public HighSchool HighSchool { get; set; } = new();
     }
 }
