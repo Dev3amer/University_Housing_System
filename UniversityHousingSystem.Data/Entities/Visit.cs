@@ -1,24 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using UniversityHousingSystem.Data.Helpers.Enums;
 
 namespace UniversityHousingSystem.Data.Entities
 {
     public class Visit
     {
-        public int VisitID { get; set; }
-        public string FirstName { get; set; }
-        public string SecondName { get; set; }
-        public string ThirdName { get; set; }
-        public string FourthName { get; set; }
-        public string NationalID { get; set; }
+        public int VisitId { get; set; }
+        public string FirstName { get; set; } = default!;
+        public string SecondName { get; set; } = default!;
+        public string ThirdName { get; set; } = default!;
+        public string FourthName { get; set; } = default!;
+        public string NationalId { get; set; } = default!;
         public DateTime VisitDate { get; set; }
-        public string Status { get; set; }
+        public EnStatus Status { get; set; } = EnStatus.Pending;
+
+        // Foreign Keys
         public int StudentId { get; set; }
 
         // Navigation Property
-        public Student Student { get; set; }
+        public Student Student { get; set; } = new();
     }
 }

@@ -1,26 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace UniversityHousingSystem.Data.Entities
+﻿namespace UniversityHousingSystem.Data.Entities
 {
     public class Issue
     {
+        public int IssueId { get; set; }
+        public string Description { get; set; } = default!;
+        public DateTime CreatedDate { get; set; } = DateTime.Now;
+        public DateTime? ResponseDate { get; set; }
+        public string? Response { get; set; }
 
-        public int IssueID { get; set; }
-        public string Description { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public DateTime ResponseDate { get; set; }
-        public string Response { get; set; }
+        //Foreign Keys
         public int IssueTypeId { get; set; }
         public int StudentId { get; set; }
-        public int EmployeeId { get; set; }
+        public int? EmployeeId { get; set; }
 
         // Navigation Properties
-        public IssueType IssueType { get; set; }
-        public Student Student { get; set; }
-        public Employee Employee { get; set; }
+        public IssueType IssueType { get; set; } = new();
+        public Student Student { get; set; } = new();
+        public Employee? Employee { get; set; }
     }
 }

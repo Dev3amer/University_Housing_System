@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Identity;
 
 namespace UniversityHousingSystem.Data.Entities
 {
-    public class User
+    public class ApplicationUser : IdentityUser
     {
-
+        public Employee? Employee { get; set; }
+        public Student? Student { get; set; }
     }
 }

@@ -1,21 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace UniversityHousingSystem.Data.Entities
+﻿namespace UniversityHousingSystem.Data.Entities
 {
     public class Response
     {
-        public int ResponseID { get; set; }
-        public DateTime ResponseAt { get; set; }
-        public int UserID { get; set; }
+        public int ResponseId { get; set; }
+        public DateTime ResponseAt { get; set; } = DateTime.UtcNow;
+
+        // Foreign Keys
+        public int UserId { get; set; }
         public int QuestionnaireId { get; set; }
 
         // Navigation Properties
-        public User User { get; set; }
-        public Questionnaire Questionnaire { get; set; }
-        public ICollection<Answer> Answers { get; set; }
+        public Application User { get; set; } = new();
+        public Questionnaire Questionnaire { get; set; } = new();
+        public ICollection<Answer> Answers { get; set; } = new HashSet<Answer>();
     }
 }

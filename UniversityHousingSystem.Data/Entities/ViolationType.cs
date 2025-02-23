@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using UniversityHousingSystem.Data.Helpers.Enums;
 
 namespace UniversityHousingSystem.Data.Entities
 {
     public class ViolationType
     {
-        public int ViolationTypeID { get; set; }
-        public string Description { get; set; }
-        public bool? ViolationLevel { get; set; }
+        public int ViolationTypeId { get; set; }
+        public string? Description { get; set; }
+        public EnViolationLevel ViolationLevel { get; set; } = default!;
         public decimal? RequiredAmount { get; set; }
 
         // Navigation Property
-        public ICollection<Violation> Violations { get; set; }
+        public ICollection<Violation>? Violations { get; set; }
     }
 }

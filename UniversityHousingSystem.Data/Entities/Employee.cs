@@ -1,26 +1,20 @@
-﻿using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace UniversityHousingSystem.Data.Entities
+﻿namespace UniversityHousingSystem.Data.Entities
 {
     public class Employee
     {
+        public int EmployeeId { get; set; }
+        public string FirstName { get; set; } = default!;
+        public string SecondName { get; set; } = default!;
+        public string ThirdName { get; set; } = default!;
+        public string FourthName { get; set; } = default!;
 
-        public int EmployeeID { get; set; }
-        public string FirstName { get; set; }
-        public string SecondName { get; set; }
-        public string ThirdName { get; set; }
-        public string FourthName { get; set; }
-        public string UserID { get; set; }
+        // Foreign Keys
+        public string? UserId { get; set; }
 
         // Navigation Property
-        public User User { get; set; }
-        public ICollection<Event> Events { get; set; }
-        public ICollection<Issue> Issues { get; set; }
-        public ICollection<Questionnaire> Questionnaires { get; set; }
+        public ApplicationUser? User { get; set; }
+        public ICollection<Event>? Events { get; set; }
+        public ICollection<Issue>? Issues { get; set; }
+        public ICollection<Questionnaire>? Questionnaires { get; set; }
     }
 }

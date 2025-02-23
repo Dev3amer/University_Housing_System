@@ -1,20 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace UniversityHousingSystem.Data.Entities
+﻿namespace UniversityHousingSystem.Data.Entities
 {
     public class City
     {
-        public byte CityID { get; set; }
-        public string NameEn { get; set; }
-        public string NameAr { get; set; }
-        public byte GovernorateID { get; set; }
+        public byte CityId { get; set; }
+        public string NameEn { get; set; } = default!;
+        public string NameAr { get; set; } = default!;
+
+        // Foreign Keys
+        public byte GovernorateId { get; set; }
 
         // Navigation Property
-        public Governorate Governorate { get; set; }
-        public ICollection<Village> Villages { get; set; }
+        public Governorate Governorate { get; set; } = new();
+        public ICollection<Village> Villages { get; set; } = new HashSet<Village>();
     }
 }

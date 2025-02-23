@@ -1,21 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace UniversityHousingSystem.Data.Entities
+﻿namespace UniversityHousingSystem.Data.Entities
 {
     public class Notification
     {
-        public int NotificationID { get; set; }
-        public string Title { get; set; }
-        public string Content { get; set; }
+        public int NotificationId { get; set; }
+        public string Title { get; set; } = default!;
+        public string Content { get; set; } = default!;
         public bool IsRead { get; set; }
-        public DateTime Date { get; set; }
-        public int StudentId { get; set; }
+        public DateTime Date { get; set; } = DateTime.UtcNow;
 
         // Navigation Property
-        public Student Student { get; set; }
+        public ICollection<Student> Students { get; set; } = new HashSet<Student>();
     }
 }

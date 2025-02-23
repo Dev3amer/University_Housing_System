@@ -1,20 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace UniversityHousingSystem.Data.Entities
+﻿namespace UniversityHousingSystem.Data.Entities
 {
     public class NewStudent
     {
-        public int NewStudentID { get; set; }
+        public int NewStudentId { get; set; }
         public decimal HighSchoolPercentage { get; set; }
         public bool IsOutsideSchool { get; set; }
-        public int HighSchoolId { get; set; }
+
+        //Foreign Keys
+        public int? HighSchoolId { get; set; }
 
         // Navigation Property
-        public Student Student { get; set; }
-        public HighSchool HighSchool { get; set; }
+        public Student Student { get; set; } = new();
+        public HighSchool? HighSchool { get; set; }
     }
 }

@@ -1,20 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using UniversityHousingSystem.Data.Helpers.Enums;
 
 namespace UniversityHousingSystem.Data.Entities
 {
     public class Application
     {
-        public int ApplicationID { get; set; }
-        public DateTime SubmitDate { get; set; }
-        public string AIValidationStatus { get; set; }
-        public string FinalStatus { get; set; }
-        public string AdminNotes { get; set; }
+        public int ApplicationId { get; set; }
+        public DateTime SubmitDate { get; set; } = DateTime.UtcNow;
+        public EnStatus AIValidationStatus { get; set; } = EnStatus.Pending;
+        public EnStatus FinalStatus { get; set; } = EnStatus.Pending;
+        public string? AdminNotes { get; set; }
 
         // Navigation Property
-        public Student Student { get; set; }
+        public Student Student { get; set; } = new();
     }
 }

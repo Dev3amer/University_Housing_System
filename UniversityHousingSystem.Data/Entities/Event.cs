@@ -1,21 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace UniversityHousingSystem.Data.Entities
+﻿namespace UniversityHousingSystem.Data.Entities
 {
     public class Event
     {
-        public int EventID { get; set; }
-        public string Title { get; set; }
+        public int EventId { get; set; }
+        public string Title { get; set; } = default!;
         public DateTime Date { get; set; }
-        public string Description { get; set; }
+        public string? Description { get; set; }
+
+        // Foreign Key
         public int CreatedBy { get; set; }
 
         // Navigation Property
-        public Employee Employee { get; set; }
+        public Employee Employee { get; set; } = new();
 
     }
 }

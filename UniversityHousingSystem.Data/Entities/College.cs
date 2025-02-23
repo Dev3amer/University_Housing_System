@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace UniversityHousingSystem.Data.Entities
+﻿namespace UniversityHousingSystem.Data.Entities
 {
     public class College
     {
-        public int CollegeID { get; set; }
-        public string Name { get; set; }
+        public int CollegeId { get; set; }
+        public string Name { get; set; } = default!;
 
         // Navigation Property
-        public ICollection<CollegeDepartment> Departments { get; set; }
-        public ICollection<Student> Students { get; set; }
+        public ICollection<CollegeDepartment>? Departments { get; set; }
+        public ICollection<Student>? Students { get; set; }
     }
 }

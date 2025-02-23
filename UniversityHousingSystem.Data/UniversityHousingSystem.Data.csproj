@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="AppMetaData\" />
-    <Folder Include="Helpers\" />
   </ItemGroup>
 
   <ItemGroup>

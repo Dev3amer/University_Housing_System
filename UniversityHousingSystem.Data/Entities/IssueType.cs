@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace UniversityHousingSystem.Data.Entities
+﻿namespace UniversityHousingSystem.Data.Entities
 {
     public class IssueType
     {
-        public int IssueTypeID { get; set; }
-        public string TypeName { get; set; }
+        public int IssueTypeId { get; set; }
+        public string TypeName { get; set; } = default!;
 
         // Navigation Property
-        public ICollection<Issue> Issues { get; set; }
+        public ICollection<Issue>? Issues { get; set; }
     }
 }

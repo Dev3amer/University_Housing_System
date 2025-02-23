@@ -1,23 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using UniversityHousingSystem.Data.Helpers.Enums;
 
 namespace UniversityHousingSystem.Data.Entities
 {
     public class Invoice
     {
-        public int InvoiceID { get; set; }
-        public int Month { get; set; }
-        public int Day { get; set; }
+        public int InvoiceId { get; set; }
+        public int ForMonth { get; set; } = DateTime.UtcNow.Month;
         public decimal RequiredAmount { get; set; }
         public DateTime DueDate { get; set; }
-        public string Status { get; set; }
+        public EnPaymentStatus Status { get; set; } = EnPaymentStatus.Pending;
+
+        //Foreign Keys
         public int StudentId { get; set; }
 
         // Navigation Property
-        public Student Student { get; set; }
-        public ICollection<Payment> Payments { get; set; }
+        public Student Student { get; set; } = new();
+        public Payment? Payment { get; set; }
     }
 }
