@@ -6,11 +6,11 @@
         public DateTime ResponseAt { get; set; } = DateTime.UtcNow;
 
         // Foreign Keys
-        public int UserId { get; set; }
+        public int StudentId { get; set; }
         public int QuestionnaireId { get; set; }
 
         // Navigation Properties
-        public Application User { get; set; } = new();
+        public Student Student { get; set; } = new();
         public Questionnaire Questionnaire { get; set; } = new();
         public ICollection<Answer> Answers { get; set; } = new HashSet<Answer>();
     }

@@ -12,7 +12,7 @@ namespace UniversityHousingSystem.Data.Entities
         public string NationalId { get; set; } = default!;
         public string Phone { get; set; } = default!;
         public string? Telephone { get; set; }
-        public DateTime BirthDate { get; set; }
+        public DateOnly BirthDate { get; set; }
         public EnGender Gender { get; set; }
         public EnReligion Religion { get; set; }
         public string PlaceOfBirth { get; set; } = default!;
