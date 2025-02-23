@@ -28,12 +28,6 @@ namespace UniversityHousingSystem.Infrastructure.Config
                   .HasForeignKey(r => r.BuildingId)
                   .OnDelete(DeleteBehavior.Restrict);
 
-            // Navigation property configuration
-            builder.HasMany(r => r.Students)
-                  .WithOne(s => s.Room)
-                  .HasForeignKey(r => r.RoomId)
-                  .OnDelete(DeleteBehavior.Restrict);
-
             // Unique constraint for RoomNumber within a Building
             builder.HasIndex(r => new { r.BuildingId, r.RoomNumber })
                   .IsUnique();

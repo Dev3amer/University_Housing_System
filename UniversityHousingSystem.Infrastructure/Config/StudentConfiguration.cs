@@ -139,60 +139,16 @@ namespace UniversityHousingSystem.Infrastructure.Config
 
             #endregion
 
-            #region One-to-Many(Collections)
-
-            builder.HasMany(s => s.Issues)
-                  .WithOne(i => i.Student)
-                  .HasForeignKey(s => s.StudentId)
-                  .OnDelete(DeleteBehavior.Cascade);
-
-            builder.HasMany(s => s.Histories)
-                  .WithOne(h => h.Student)
-                  .HasForeignKey(s => s.StudentId)
-                  .OnDelete(DeleteBehavior.Cascade);
-
-            builder.HasMany(s => s.Visits)
-                  .WithOne(v => v.Student)
-                  .HasForeignKey(s => s.StudentId)
-                  .OnDelete(DeleteBehavior.Cascade);
-
-            builder.HasMany(s => s.Attendances)
-                  .WithOne(a => a.Student)
-                  .HasForeignKey(s => s.StudentId)
-                  .OnDelete(DeleteBehavior.Cascade);
-
-            builder.HasMany(s => s.Invoices)
-                  .WithOne(i => i.Student)
-                  .HasForeignKey("StudentId")
-                  .OnDelete(DeleteBehavior.NoAction);
-
-            builder.HasMany(s => s.StudentHistories)
-                  .WithOne(sh => sh.Student)
-                  .HasForeignKey(s => s.StudentId)
-                  .OnDelete(DeleteBehavior.Cascade);
-
-            builder.HasMany(s => s.Responses)
-                  .WithOne(r => r.Student)
-                  .HasForeignKey(s => s.StudentId)
-                  .OnDelete(DeleteBehavior.NoAction);
-
-            #endregion
-
             #region Many-To-Many
-
             builder.HasMany(s => s.Notifications)
                   .WithMany(n => n.Students)
                   .UsingEntity<StudentsNotifications>();
-
             #endregion
 
             #region Indexes
-
             builder.HasIndex(s => s.NationalId).IsUnique();
             builder.HasIndex(s => s.Email).IsUnique();
             builder.HasIndex(s => s.AcademicStudentCode).IsUnique();
-            builder.HasIndex(s => s.UserId).IsUnique();
-
             #endregion
 
             builder.ToTable("Students");
