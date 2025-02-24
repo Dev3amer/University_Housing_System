@@ -34,10 +34,12 @@ namespace UniversityHousingSystem.Infrastructure.Config
 
             builder.Property(s => s.Phone)
                   .IsRequired()
-                  .HasMaxLength(13);
+                  .HasMaxLength(13)
+                  .IsUnicode(false);
 
             builder.Property(s => s.Telephone)
-                  .HasMaxLength(15);
+                  .HasMaxLength(15)
+                  .IsUnicode(false);
 
             builder.Property(s => s.BirthDate)
                 .IsRequired()
@@ -146,6 +148,7 @@ namespace UniversityHousingSystem.Infrastructure.Config
             #endregion
 
             #region Indexes
+            builder.HasIndex(e => new { e.FirstName, e.SecondName, e.ThirdName, e.FourthName });
             builder.HasIndex(s => s.NationalId).IsUnique();
             builder.HasIndex(s => s.Email).IsUnique();
             builder.HasIndex(s => s.AcademicStudentCode).IsUnique();
