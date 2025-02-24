@@ -2,9 +2,7 @@
 {
     public class StudentsNotifications
     {
-        public int StudentsNotificationsId { get; set; }
-
-        //Foreign Keys
+        //Pk & Foreign Keys
         public int StudentId { get; set; }
         public int NotificationId { get; set; }
 
