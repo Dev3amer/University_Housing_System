@@ -1,4 +1,4 @@
-﻿namespace UniversityHousingSystem.Data.Entities
+﻿namespace UniversityHousingSystem.Data.Helpers.Enums
 {
     public enum EnInvoiceType
     {
