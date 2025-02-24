@@ -10,7 +10,7 @@ namespace UniversityHousingSystem.Infrastructure.Config
         {
             builder.HasKey(r => r.ResponseId);
 
-            // Response Date configuration
+            // Properties
             builder.Property(r => r.ResponseAt)
                 .IsRequired()
                 .HasDefaultValueSql("GETUTCDATE()");
@@ -24,11 +24,11 @@ namespace UniversityHousingSystem.Infrastructure.Config
             builder.HasOne(r => r.Questionnaire)
                 .WithMany(q => q.Responses)
                 .HasForeignKey(r => r.QuestionnaireId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.ToTable("Responses");
 
-            // Unique constraint to prevent multiple responses from same student for same questionnaire
+            // Unique constraint - one response per student per questionnaire
             builder.HasIndex(r => new { r.StudentId, r.QuestionnaireId })
                 .IsUnique()
                 .HasDatabaseName("IX_Response_Student_Questionnaire");
