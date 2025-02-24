@@ -37,6 +37,7 @@ namespace UniversityHousingSystem.Data.Entities
 
         // Navigation Properties
         public Guardian Guardian { get; set; } = new();
+        public ICollection<Document> Documents { get; set; } = new HashSet<Document>();
         public Village Village { get; set; } = new();
         public Country Country { get; set; } = new();
         public ICollection<Issue> Issues { get; set; } = new HashSet<Issue>();
