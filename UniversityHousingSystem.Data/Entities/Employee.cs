@@ -1,4 +1,6 @@
-﻿namespace UniversityHousingSystem.Data.Entities
+﻿using UniversityHousingSystem.Data.Entities.Identity;
+
+namespace UniversityHousingSystem.Data.Entities
 {
     public class Employee
     {

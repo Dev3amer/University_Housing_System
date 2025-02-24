@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using UniversityHousingSystem.Data.Entities;
+using UniversityHousingSystem.Data.Entities.Identity;
 
 namespace UniversityHousingSystem.Infrastructure.Context
 {

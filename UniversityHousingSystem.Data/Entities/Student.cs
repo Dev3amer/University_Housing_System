@@ -1,4 +1,5 @@
-﻿using UniversityHousingSystem.Data.Helpers.Enums;
+﻿using UniversityHousingSystem.Data.Entities.Identity;
+using UniversityHousingSystem.Data.Helpers.Enums;
 
 namespace UniversityHousingSystem.Data.Entities
 {
