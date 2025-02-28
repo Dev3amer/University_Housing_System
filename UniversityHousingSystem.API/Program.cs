@@ -4,13 +4,14 @@ using UniversityHousingSystem.Core;
 using UniversityHousingSystem.Core.Middleware;
 using UniversityHousingSystem.Infrastructure;
 using UniversityHousingSystem.Infrastructure.Context;
+using UniversityHousingSystem.Infrastructure.Seeding;
 using UniversityHousingSystem.Service;
 
 namespace UniversityHousingSystem.API
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -73,7 +74,34 @@ namespace UniversityHousingSystem.API
             });
             #endregion
 
+
             var app = builder.Build();
+
+            #region Seeders
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                var context = services.GetRequiredService<AppDbContext>();
+                var environment = services.GetRequiredService<IWebHostEnvironment>();
+                var contentRootPath = environment.ContentRootPath;
+
+                // Countries
+                var countriesSeeder = new CountrySeeder(context, contentRootPath);
+                await countriesSeeder.SeedAsync();
+
+                // Governorates
+                var governorateSeeder = new GovernorateSeeder(context, contentRootPath);
+                await governorateSeeder.SeedAsync();
+
+                // Cities
+                var citiesSeeder = new CitySeeder(context, contentRootPath);
+                await citiesSeeder.SeedAsync();
+
+                // Villages
+                var villagesSeeder = new VillageSeeder(context, contentRootPath);
+                await villagesSeeder.SeedAsync();
+            }
+            #endregion
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
