@@ -46,14 +46,13 @@ namespace UniversityHousingSystem.Data.Entities
         public Application Application { get; set; } = new();
         public Room? Room { get; set; }
         public ApplicationUser? User { get; set; }
-        public ICollection<StudentHistory> Histories { get; set; } = new HashSet<StudentHistory>();
+        public ICollection<StudentHistory>? Histories { get; set; }
         public OldStudent? OldStudent { get; set; }
         public NewStudent? NewStudent { get; set; }
-        public ICollection<Notification>? Notifications { get; set; }
+        public virtual ICollection<StudentsNotifications>? StudentsNotifications { get; set; }
         public ICollection<Visit>? Visits { get; set; }
         public ICollection<Attendance>? Attendances { get; set; }
         public ICollection<Invoice>? Invoices { get; set; }
-        public ICollection<StudentHistory>? StudentHistories { get; set; }
         public ICollection<Response>? Responses { get; set; }
 
     }

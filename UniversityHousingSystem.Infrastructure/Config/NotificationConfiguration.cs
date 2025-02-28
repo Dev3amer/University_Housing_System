@@ -11,9 +11,6 @@ namespace UniversityHousingSystem.Infrastructure.Config
             builder.HasKey(n => n.NotificationId);
 
             // Properties
-            builder.Property(n => n.NotificationId)
-                .ValueGeneratedOnAdd();
-
             builder.Property(n => n.Title)
                 .IsRequired()
                 .HasMaxLength(200);
@@ -21,10 +18,6 @@ namespace UniversityHousingSystem.Infrastructure.Config
             builder.Property(n => n.Content)
                 .IsRequired()
                 .HasMaxLength(1000);
-
-            builder.Property(n => n.IsRead)
-                .IsRequired()
-                .HasDefaultValue(false);
 
             builder.Property(n => n.Date)
                 .IsRequired()

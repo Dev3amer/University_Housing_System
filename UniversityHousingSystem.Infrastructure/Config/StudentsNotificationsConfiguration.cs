@@ -10,6 +10,18 @@ namespace UniversityHousingSystem.Infrastructure.Config
         {
             builder.HasKey(sn => new { sn.StudentId, sn.NotificationId });
 
+            builder.HasOne(sn => sn.Student)
+            .WithMany(s => s.StudentsNotifications)
+            .HasForeignKey(sn => sn.StudentId);
+
+            builder.HasOne(sn => sn.Notification)
+                .WithMany(n => n.StudentsNotifications)
+                .HasForeignKey(sn => sn.NotificationId);
+
+
+            builder.Property(sn => sn.IsRead)
+                .HasDefaultValue(false);
+
             builder.ToTable("StudentsNotifications");
         }
     }
