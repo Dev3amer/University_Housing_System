@@ -19,7 +19,7 @@
             public const string GetById = Prefix + SingleRoute;
 
             public const string Create = Prefix + "Create";
-            public const string Edit = Prefix + "Update";
+            public const string Update = Prefix + "Update";
             public const string Delete = Prefix + SingleRoute;
         }
     }

@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using MovieReservationSystem.Core.Features.Movies.Commands.Models;
 using MovieReservationSystem.Data.AppMetaData;
 using UniversityHousingSystem.API.APIBases;
 using UniversityHousingSystem.Core.Features.Events.Commands.Models;
@@ -55,6 +56,25 @@ namespace UniversityHousingSystem.API.Controllers
         public async Task<IActionResult> CreateMovie([FromForm] CreateEventCommand model)
         {
             var result = await _mediator.Send(model);
+            return NewResult(result);
+        }
+
+        [HttpPut(Router.EventRouting.Update)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> EditMovie([FromForm] UpdateEventCommand model)
+        {
+            var result = await _mediator.Send(model);
+            return NewResult(result);
+        }
+
+        [HttpDelete(Router.EventRouting.Delete)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> DeleteMovie(int id)
+        {
+            var result = await _mediator.Send(new DeleteEventCommand() { EventId = id });
             return NewResult(result);
         }
         #endregion
