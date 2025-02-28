@@ -2,7 +2,7 @@
 {
     public class Village
     {
-        public byte VillageId { get; set; }
+        public int VillageId { get; set; }
         public string NameEn { get; set; } = default!;
         public string NameAr { get; set; } = default!;
 
@@ -11,7 +11,7 @@
 
         // Navigation Property
         public ICollection<Building>? Buildings { get; set; }
-        public City City { get; set; } = new();
+        public City City { get; set; } = default!;
         public ICollection<Student>? Students { get; set; }
 
     }

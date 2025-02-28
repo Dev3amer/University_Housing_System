@@ -7,10 +7,10 @@
         public string NameAr { get; set; } = default!;
 
         // Foreign Keys
-        public byte GovernorateId { get; set; }
+        public int GovernorateId { get; set; }
 
         // Navigation Property
-        public Governorate Governorate { get; set; } = new();
+        public Governorate Governorate { get; set; } = default!;
         public ICollection<Village> Villages { get; set; } = new HashSet<Village>();
     }
 }

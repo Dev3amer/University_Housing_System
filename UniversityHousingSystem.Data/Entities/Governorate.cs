@@ -2,7 +2,7 @@
 {
     public class Governorate
     {
-        public byte GovernorateId { get; set; }
+        public int GovernorateId { get; set; }
         public string NameEn { get; set; } = default!;
         public string NameAr { get; set; } = default!;
 
@@ -10,7 +10,7 @@
         public int CountryId { get; set; }
 
         // Navigation Property
-        public Country Country { get; set; } = new();
+        public Country Country { get; set; } = default!;
         public ICollection<City> Cities { get; set; } = new HashSet<City>();
     }
 }
