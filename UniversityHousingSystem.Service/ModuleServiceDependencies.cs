@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using UniversityHousingSystem.Service.Abstractions;
+using UniversityHousingSystem.Service.implementation;
 
 namespace UniversityHousingSystem.Service
 {
@@ -6,7 +8,7 @@ namespace UniversityHousingSystem.Service
     {
         public static void AddModuleServicesDependencies(this IServiceCollection services)
         {
-
+            services.AddScoped<IEventService, EventService>();
         }
     }
 }
