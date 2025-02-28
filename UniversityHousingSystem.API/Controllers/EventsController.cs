@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MovieReservationSystem.Data.AppMetaData;
 using UniversityHousingSystem.API.APIBases;
+using UniversityHousingSystem.Core.Features.Events.Commands.Models;
 using UniversityHousingSystem.Core.Features.Events.Queries.Models;
 
 namespace UniversityHousingSystem.API.Controllers
@@ -47,6 +48,15 @@ namespace UniversityHousingSystem.API.Controllers
             return NewResult(result);
         }
         #endregion
-
+        #region Commands
+        [HttpPost(Router.EventRouting.Create)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> CreateMovie([FromForm] CreateEventCommand model)
+        {
+            var result = await _mediator.Send(model);
+            return NewResult(result);
+        }
+        #endregion
     }
 }
