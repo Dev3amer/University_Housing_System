@@ -2,7 +2,7 @@
 {
     public class City
     {
-        public byte CityId { get; set; }
+        public int CityId { get; set; }
         public string NameEn { get; set; } = default!;
         public string NameAr { get; set; } = default!;
 
