@@ -1,0 +1,26 @@
+﻿namespace MovieReservationSystem.Data.AppMetaData
+{
+    public static class Router
+    {
+        public const string Root = "Api/";
+        public const string Version = "V1/";
+        public const string Rule = Root + Version;
+
+        public const string SingleRoute = "{id}";
+
+
+        public static class EventRouting
+        {
+            public const string Prefix = Rule + "Event/";
+
+            public const string list = Prefix + "List";
+            public const string coming = Prefix + "coming";
+            public const string paginated = Prefix + "paginated";
+            public const string GetById = Prefix + SingleRoute;
+
+            public const string Create = Prefix + "Create";
+            public const string Edit = Prefix + "Update";
+            public const string Delete = Prefix + SingleRoute;
+        }
+    }
+}

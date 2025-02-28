@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Features\" />
+    <Folder Include="Features\Events\Commands\Models\" />
+    <Folder Include="Features\Events\Commands\Handler\" />
+    <Folder Include="Features\Events\Commands\Validator\" />
     <Folder Include="Mapping\" />
   </ItemGroup>
 
