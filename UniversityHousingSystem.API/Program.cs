@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using UniversityHousingSystem.Core;
 using UniversityHousingSystem.Core.Middleware;
+using UniversityHousingSystem.Data.Entities.Identity;
 using UniversityHousingSystem.Infrastructure;
 using UniversityHousingSystem.Infrastructure.Context;
 using UniversityHousingSystem.Infrastructure.Seeding;
@@ -74,6 +76,30 @@ namespace UniversityHousingSystem.API
             });
             #endregion
 
+            #region Identity
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            {
+                //Password Settings
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequiredLength = 6;
+                options.Password.RequiredUniqueChars = 1;
+
+                //Lockout Settings
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                options.Lockout.AllowedForNewUsers = true;
+
+                // User settings.
+                options.User.AllowedUserNameCharacters =
+                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+                options.User.RequireUniqueEmail = true;
+                options.SignIn.RequireConfirmedEmail = false;
+            }).AddEntityFrameworkStores<AppDbContext>()
+            .AddDefaultTokenProviders();
+            #endregion
 
             var app = builder.Build();
 
@@ -82,23 +108,22 @@ namespace UniversityHousingSystem.API
             {
                 var services = scope.ServiceProvider;
                 var context = services.GetRequiredService<AppDbContext>();
-                var environment = services.GetRequiredService<IWebHostEnvironment>();
-                var contentRootPath = environment.ContentRootPath;
 
                 // Countries
-                var countriesSeeder = new CountrySeeder(context, contentRootPath);
+                var countriesSeeder = new CountrySeeder(context);
                 await countriesSeeder.SeedAsync();
 
+
                 // Governorates
-                var governorateSeeder = new GovernorateSeeder(context, contentRootPath);
+                var governorateSeeder = new GovernorateSeeder(context);
                 await governorateSeeder.SeedAsync();
 
                 // Cities
-                var citiesSeeder = new CitySeeder(context, contentRootPath);
+                var citiesSeeder = new CitySeeder(context);
                 await citiesSeeder.SeedAsync();
 
                 // Villages
-                var villagesSeeder = new VillageSeeder(context, contentRootPath);
+                var villagesSeeder = new VillageSeeder(context);
                 await villagesSeeder.SeedAsync();
             }
             #endregion

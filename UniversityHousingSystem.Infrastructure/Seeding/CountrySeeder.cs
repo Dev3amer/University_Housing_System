@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 using UniversityHousingSystem.Data.Entities;
 using UniversityHousingSystem.Infrastructure.Context;
 
@@ -7,27 +8,24 @@ namespace UniversityHousingSystem.Infrastructure.Seeding
     public class CountrySeeder
     {
         private readonly AppDbContext _context;
-        private readonly string _contentRootPath;
-        public CountrySeeder(AppDbContext context, string contentRootPath)
+        public CountrySeeder(AppDbContext context)
         {
             _context = context;
-            _contentRootPath = contentRootPath;
         }
 
         public async Task SeedAsync()
         {
             // Use IWebHostEnvironment to get the correct path
             var seedDataPath = Path.Combine(
-                _contentRootPath,
-                "UniversityHousingSystem.Infrastructure",
-                "Seeding",
-                "Json",
-                "Countries",
-                "EgyptCountriesCompact.json"
-            );
+            AppDomain.CurrentDomain.BaseDirectory,
+            "Seeding",
+            "Json",
+            "Countries",
+            "CountriesCompact.json"
+             );
             try
             {
-                if (!_context.Countries.Any())
+                if (!await _context.Countries.AnyAsync())
                 {
                     // Read from JSON file
                     var countriesData = await File.ReadAllTextAsync(seedDataPath);
@@ -36,11 +34,23 @@ namespace UniversityHousingSystem.Infrastructure.Seeding
                     if (countries == null || countries.Count == 0)
                         return;
 
-                    await _context.Countries.AddRangeAsync(countries);
-                    await _context.SaveChangesAsync();
+                    using (var transaction = await _context.Database.BeginTransactionAsync())
+                    {
+                        // Enable identity insert
+                        await _context.Database.ExecuteSqlRawAsync($"SET IDENTITY_INSERT Countries ON");
+
+                        await _context.Countries.AddRangeAsync(countries);
+                        await _context.SaveChangesAsync();
+
+                        // Disable identity insert
+                        await _context.Database.ExecuteSqlRawAsync($"SET IDENTITY_INSERT Countries OFF");
+
+                        await transaction.CommitAsync();
+
+                    }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }

@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 using UniversityHousingSystem.Data.Entities;
 using UniversityHousingSystem.Infrastructure.Context;
 
@@ -7,19 +8,16 @@ namespace UniversityHousingSystem.Infrastructure.Seeding
     public class VillageSeeder
     {
         private readonly AppDbContext _context;
-        private readonly string _contentRootPath;
-        public VillageSeeder(AppDbContext context, string contentRootPath)
+        public VillageSeeder(AppDbContext context)
         {
             _context = context;
-            _contentRootPath = contentRootPath;
         }
 
         public async Task SeedAsync()
         {
             // Use IWebHostEnvironment to get the correct path
             var seedDataPath = Path.Combine(
-                _contentRootPath,
-                "UniversityHousingSystem.Infrastructure",
+                AppDomain.CurrentDomain.BaseDirectory,
                 "Seeding",
                 "Json",
                 "Villages",
@@ -36,17 +34,28 @@ namespace UniversityHousingSystem.Infrastructure.Seeding
                     if (villages == null || villages.Count == 0)
                         return;
 
-                    // Use batch insertion for better performance
-                    const int batchSize = 1000;
-                    for (int i = 0; i < villages.Count; i += batchSize)
+                    using (var transaction = await _context.Database.BeginTransactionAsync())
                     {
-                        var villagesBatch = villages.Skip(i).Take(batchSize);
-                        await _context.Villages.AddRangeAsync(villagesBatch);
-                        await _context.SaveChangesAsync();
+                        // Enable identity insert
+                        await _context.Database.ExecuteSqlRawAsync($"SET IDENTITY_INSERT Villages ON");
+
+                        // Use batch insertion for better performance
+                        const int batchSize = 1000;
+                        for (int i = 0; i < villages.Count; i += batchSize)
+                        {
+                            var villagesBatch = villages.Skip(i).Take(batchSize);
+                            await _context.Villages.AddRangeAsync(villagesBatch);
+                            await _context.SaveChangesAsync();
+                        }
+
+                        // Disable identity insert
+                        await _context.Database.ExecuteSqlRawAsync($"SET IDENTITY_INSERT Villages OFF");
+
+                        await transaction.CommitAsync();
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }

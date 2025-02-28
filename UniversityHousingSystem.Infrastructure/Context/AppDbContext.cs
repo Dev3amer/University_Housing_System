@@ -1,14 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using UniversityHousingSystem.Data.Entities;
 using UniversityHousingSystem.Data.Entities.Identity;
 
 namespace UniversityHousingSystem.Infrastructure.Context
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<ApplicationUser>
     {
-        protected AppDbContext()
-        {
-        }
         public AppDbContext(DbContextOptions options) : base(options)
         {
         }
@@ -48,5 +46,12 @@ namespace UniversityHousingSystem.Infrastructure.Context
         public DbSet<Event> Events { get; set; }
         public DbSet<Question> Questions { get; set; }
         public DbSet<Questionnaire> Questionnaires { get; set; }
+        public DbSet<UserRefreshToken> UserRefreshTokens { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
+        }
     }
 }
