@@ -141,12 +141,6 @@ namespace UniversityHousingSystem.Infrastructure.Config
 
             #endregion
 
-            #region Many-To-Many
-            builder.HasMany(s => s.Notifications)
-                  .WithMany(n => n.Students)
-                  .UsingEntity<StudentsNotifications>();
-            #endregion
-
             #region Indexes
             builder.HasIndex(e => new { e.FirstName, e.SecondName, e.ThirdName, e.FourthName });
             builder.HasIndex(s => s.NationalId).IsUnique();

@@ -13,11 +13,11 @@ namespace UniversityHousingSystem.Infrastructure.Config
             // Properties
             builder.Property(v => v.NameEn)
                 .IsRequired()
-                .HasMaxLength(50);
+                .HasMaxLength(150);
 
             builder.Property(v => v.NameAr)
                 .IsRequired()
-                .HasMaxLength(50);
+                .HasMaxLength(150);
 
             // Relationship
             builder.HasOne(v => v.City)

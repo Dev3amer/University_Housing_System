@@ -23,7 +23,7 @@ namespace UniversityHousingSystem.Infrastructure.Config
                 .WithMany(hs => hs.NewStudents)
                 .HasForeignKey(ns => ns.HighSchoolId)
                 .IsRequired()
-                .OnDelete(DeleteBehavior.SetNull);
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.ToTable("NewStudents");
         }

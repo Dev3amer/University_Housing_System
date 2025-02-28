@@ -19,7 +19,7 @@ namespace UniversityHousingSystem.Infrastructure.Config
 
             // Relationships
             builder.HasOne(sh => sh.Student)
-                .WithMany(s => s.StudentHistories)
+                .WithMany(s => s.Histories)
                 .HasForeignKey(sh => sh.StudentId)
                 .OnDelete(DeleteBehavior.Restrict);
 
