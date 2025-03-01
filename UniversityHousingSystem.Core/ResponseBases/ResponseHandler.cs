@@ -63,15 +63,24 @@ namespace UniversityHousingSystem.Core.ResponseBases
             };
         }
 
-        public Response<T> Created<T>(T entity, object Meta = null)
+        public Response<T> Created<T>(T entity, string? message = null, object? Meta = null)
         {
             return new Response<T>()
             {
                 Data = entity,
                 StatusCode = System.Net.HttpStatusCode.Created,
                 Succeeded = true,
-                Message = SharedResourcesKeys.Created,
+                Message = message ?? SharedResourcesKeys.Created,
                 Meta = Meta
+            };
+        }
+        public Response<T> InternalServerError<T>(string message = null)
+        {
+            return new Response<T>()
+            {
+                StatusCode = System.Net.HttpStatusCode.InternalServerError,
+                Succeeded = false,
+                Message = message ?? SharedResourcesKeys.TryAgain
             };
         }
     }
