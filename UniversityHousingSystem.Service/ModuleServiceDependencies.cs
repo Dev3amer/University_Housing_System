@@ -12,6 +12,7 @@ namespace UniversityHousingSystem.Service
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddTransient<IAuthenticationService, AuthenticationService>();
             services.AddTransient<IAuthorizationService, AuthorizationService>();
+            services.AddTransient<IBuildingService, BuildingService>();
         }
     }
 }
