@@ -9,6 +9,5 @@ namespace UniversityHousingSystem.Core.Features.Events.Commands.Models
         public string Title { get; set; } = default!;
         public DateTime Date { get; set; }
         public string? Description { get; set; }
-        public int CreatedBy { get; set; } = default!;
     }
 }

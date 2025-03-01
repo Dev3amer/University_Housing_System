@@ -31,10 +31,8 @@ namespace UniversityHousingSystem.Core.Features.Events.Commands.Handler
         #endregion
         public async Task<Response<GetEventByIdResponse>> Handle(CreateEventCommand request, CancellationToken cancellationToken)
         {
-            // _currentUserService.GetUserId() => will work after implement security module 
-            // for test use this hard coded id => "9D61EAB0-5680-46BD-9842-58F0CA2460CB"
             var currentEmployee = _userManager.Users
-                .Where(u => u.Id == "9D61EAB0-5680-46BD-9842-58F0CA2460CB")
+                .Where(u => u.Id == _currentUserService.GetUserId())
                 .Select(u => u.Employee)
                 .FirstOrDefault();
 
@@ -59,7 +57,7 @@ namespace UniversityHousingSystem.Core.Features.Events.Commands.Handler
                 Description = addedEvent.Description
             };
 
-            return Created(mappedResponse);
+            return Created(mappedResponse, string.Format(SharedResourcesKeys.Created, nameof(Event)));
         }
 
         public async Task<Response<GetEventByIdResponse>> Handle(UpdateEventCommand request, CancellationToken cancellationToken)
