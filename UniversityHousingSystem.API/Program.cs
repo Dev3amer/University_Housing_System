@@ -132,6 +132,12 @@ namespace UniversityHousingSystem.API
            });
             #endregion
 
+            #region Emails Settings
+            var smtpSettings = new SmtpSettings();
+            builder.Configuration.GetSection("SMTP").Bind(smtpSettings);
+            builder.Services.AddSingleton(smtpSettings);
+            #endregion
+
             var app = builder.Build();
 
             #region Seeders
