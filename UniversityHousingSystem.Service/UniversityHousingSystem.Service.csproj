@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <PackageReference Include="MailKit" Version="4.10.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.3.0" />
     <PackageReference Include="Stripe.net" Version="47.3.0" />
   </ItemGroup>
 

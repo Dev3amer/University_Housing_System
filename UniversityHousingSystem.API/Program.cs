@@ -1,9 +1,13 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Text;
 using UniversityHousingSystem.Core;
 using UniversityHousingSystem.Core.Middleware;
 using UniversityHousingSystem.Data.Entities.Identity;
+using UniversityHousingSystem.Data.Helpers;
 using UniversityHousingSystem.Infrastructure;
 using UniversityHousingSystem.Infrastructure.Context;
 using UniversityHousingSystem.Infrastructure.Seeding;
@@ -99,6 +103,33 @@ namespace UniversityHousingSystem.API
                 options.SignIn.RequireConfirmedEmail = false;
             }).AddEntityFrameworkStores<AppDbContext>()
             .AddDefaultTokenProviders();
+            #endregion
+
+            #region Authentication
+            var jwtSettings = new JwtSettings();
+            builder.Configuration.GetSection(nameof(jwtSettings)).Bind(jwtSettings);
+            builder.Services.AddSingleton(jwtSettings);
+
+            builder.Services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+           .AddJwtBearer(x =>
+           {
+               x.RequireHttpsMetadata = false;
+               x.SaveToken = true;
+               x.TokenValidationParameters = new TokenValidationParameters
+               {
+                   ValidateIssuer = jwtSettings.ValidateIssuer,
+                   ValidIssuers = new[] { jwtSettings.Issuer },
+                   ValidateIssuerSigningKey = jwtSettings.ValidateIssuerSigningKey,
+                   IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.Secret)),
+                   ValidAudience = jwtSettings.Audience,
+                   ValidateAudience = jwtSettings.ValidateAudience,
+                   ValidateLifetime = jwtSettings.ValidateLifeTime,
+               };
+           });
             #endregion
 
             var app = builder.Build();

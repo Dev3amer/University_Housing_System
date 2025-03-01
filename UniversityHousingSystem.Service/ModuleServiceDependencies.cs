@@ -9,6 +9,9 @@ namespace UniversityHousingSystem.Service
         public static void AddModuleServicesDependencies(this IServiceCollection services)
         {
             services.AddScoped<IEventService, EventService>();
+            services.AddScoped<ICurrentUserService, CurrentUserService>();
+            services.AddTransient<IAuthenticationService, AuthenticationService>();
+            services.AddTransient<IAuthorizationService, AuthorizationService>();
         }
     }
 }

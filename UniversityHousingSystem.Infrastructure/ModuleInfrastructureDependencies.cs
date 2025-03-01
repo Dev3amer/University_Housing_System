@@ -11,6 +11,7 @@ namespace UniversityHousingSystem.Infrastructure
         {
             services.AddTransient(typeof(IGenericRepositoryAsync<>), typeof(GenericRepositoryAsync<>));
             services.AddScoped<IEventRepository, EventRepository>();
+            services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
         }
     }
 }

@@ -4,8 +4,11 @@
     {
         #region General Response Messages
         public const string Success = "Operation completed successfully.";
+        public const string DefaultCreated = "Created successfully.";
         public const string Created = "{0} has been created successfully.";
+        public const string DefaultUpdated = "Updated successfully.";
         public const string Updated = "{0} has been updated successfully.";
+        public const string DefaultDeleted = "{Deleted successfully.";
         public const string Deleted = "{0} has been deleted successfully.";
         public const string NotFound = "{0} was not found in the system.";
         public const string TryAgain = "An error occurred. Please try again later.";
