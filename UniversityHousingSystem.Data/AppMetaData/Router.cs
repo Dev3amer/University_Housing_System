@@ -1,4 +1,4 @@
-﻿namespace MovieReservationSystem.Data.AppMetaData
+﻿namespace UniversityHousingSystem.Data.AppMetaData
 {
     public static class Router
     {

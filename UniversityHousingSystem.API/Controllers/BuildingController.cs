@@ -1,10 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using MovieReservationSystem.Core.Features.Movies.Commands.Models;
-using MovieReservationSystem.Data.AppMetaData;
 using UniversityHousingSystem.API.APIBases;
 using UniversityHousingSystem.Core.Features.Events.Commands.Models;
 using UniversityHousingSystem.Core.Features.Events.Queries.Models;
+using UniversityHousingSystem.Data.AppMetaData;
 
 namespace UniversityHousingSystem.API.Controllers
 {

@@ -2,7 +2,7 @@
 using UniversityHousingSystem.Core.Features.Events.Queries.Results;
 using UniversityHousingSystem.Core.ResponseBases;
 
-namespace MovieReservationSystem.Core.Features.Movies.Commands.Models
+namespace UniversityHousingSystem.Core.Features.Events.Commands.Models
 {
     public class UpdateEventCommand : IRequest<Response<GetEventByIdResponse>>
     {

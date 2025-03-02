@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
-using MovieReservationSystem.Core.Features.Movies.Commands.Models;
 using UniversityHousingSystem.Core.Features.Events.Commands.Models;
 using UniversityHousingSystem.Core.Features.Events.Queries.Results;
 using UniversityHousingSystem.Core.ResponseBases;
