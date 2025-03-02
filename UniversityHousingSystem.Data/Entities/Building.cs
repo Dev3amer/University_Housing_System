@@ -15,7 +15,7 @@ namespace UniversityHousingSystem.Data.Entities
         public int VillageId { get; set; }
 
         // Navigation Property
-        public Village Village { get; set; } = new();
+        public Village Village { get; set; } = default!;
         public ICollection<Room> Rooms { get; set; } = new HashSet<Room>();
     }
 }

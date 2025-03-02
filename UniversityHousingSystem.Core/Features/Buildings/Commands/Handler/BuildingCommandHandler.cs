@@ -51,7 +51,7 @@ namespace UniversityHousingSystem.Core.Features.Events.Commands.Handler
                 AddressInDetails = request.AddressInDetails,
                 MapSearchText = request.MapSearchText,
                 Type = request.Type,
-                VillageId = request.VillageId
+                VillageId = village.VillageId
             };
 
             var createdBuilding = await _buildingService.CreateAsync(newBuilding);
