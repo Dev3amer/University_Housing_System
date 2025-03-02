@@ -8,6 +8,11 @@
 
   <ItemGroup>
     <Folder Include="Features\Events\Commands\Validator\" />
+    <Folder Include="Features\Rooms\Commands\Handler\" />
+    <Folder Include="Features\Rooms\Commands\Models\" />
+    <Folder Include="Features\Rooms\Queries\Handler\" />
+    <Folder Include="Features\Rooms\Queries\Models\" />
+    <Folder Include="Features\Rooms\Queries\Results\" />
     <Folder Include="Mapping\" />
   </ItemGroup>
 

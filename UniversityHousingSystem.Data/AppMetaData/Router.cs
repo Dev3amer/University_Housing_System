@@ -1,4 +1,4 @@
-﻿namespace MovieReservationSystem.Data.AppMetaData
+﻿namespace UniversityHousingSystem.Data.AppMetaData
 {
     public static class Router
     {
@@ -20,6 +20,17 @@
 
             public const string Create = Prefix + "Create";
             public const string Update = Prefix + "Update";
+            public const string Delete = Prefix + SingleRoute;
+        }
+
+        public static class BuildingRouting
+        {
+            public const string Prefix = Rule + "Buildings/";
+
+            public const string List = Prefix + nameof(List);
+            public const string GetById = Prefix + SingleRoute;
+            public const string Create = Prefix + nameof(Create);
+            public const string Update = Prefix + nameof(Update);
             public const string Delete = Prefix + SingleRoute;
         }
     }

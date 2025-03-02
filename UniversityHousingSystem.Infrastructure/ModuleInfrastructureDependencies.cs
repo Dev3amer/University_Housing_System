@@ -10,8 +10,11 @@ namespace UniversityHousingSystem.Infrastructure
         public static void AddModuleInfrastructureDependencies(this IServiceCollection services)
         {
             services.AddTransient(typeof(IGenericRepositoryAsync<>), typeof(GenericRepositoryAsync<>));
-            services.AddScoped<IEventRepository, EventRepository>();
-            services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+            services.AddTransient<IEventRepository, EventRepository>();
+            services.AddTransient<IRefreshTokenRepository, RefreshTokenRepository>();
+            services.AddTransient<IBuildingRepository, BuildingRepository>();
+            services.AddTransient<IRoomRepository, RoomRepository>();
+            services.AddTransient<IVillageRepository, VillageRepository>();
         }
     }
 }
