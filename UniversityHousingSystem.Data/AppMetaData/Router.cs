@@ -33,5 +33,16 @@
             public const string Update = Prefix + nameof(Update);
             public const string Delete = Prefix + SingleRoute;
         }
+
+        public static class RoomRouting
+        {
+            public const string Prefix = Rule + "Rooms/";
+
+            public const string List = Prefix + "List";
+            public const string GetById = Prefix + SingleRoute;
+            public const string Create = Prefix + "Create";
+            public const string Update = Prefix + "Update";
+            public const string Delete = Prefix + SingleRoute;
+        }
     }
 }
