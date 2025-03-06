@@ -3,9 +3,9 @@ using UniversityHousingSystem.Infrastructure.GenericBases;
 
 namespace UniversityHousingSystem.Infrastructure.Repositories
 {
-    public interface IRoomRepository : IGenericRepositoryAsync<Room>
+    public interface IRoomPhotoRepository : IGenericRepositoryAsync<RoomPhoto>
     {
-        Task<List<Student>> GetStudentsByRoomIdAsync(int roomId);
+        Task DeleteAsync(RoomPhoto roomPhoto);
         Task SaveChangesAsync();
     }
 }

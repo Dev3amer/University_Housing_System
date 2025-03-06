@@ -9,5 +9,7 @@
         public int BuildingId { get; set; }
         public int OccupiedSpaces { get; set; }  // Number of students in the room
         public int FreeSpaces => Capacity - OccupiedSpaces; // Calculated field
+        public List<string> PhotoUrls { get; set; } = new List<string>(); // ✅ Return multiple photos
+
     }
 }

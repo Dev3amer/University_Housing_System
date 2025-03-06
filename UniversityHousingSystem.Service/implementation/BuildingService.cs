@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using UniversityHousingSystem.Data.Entities;
 using UniversityHousingSystem.Data.Helpers.Enums;
+using UniversityHousingSystem.Infrastructure.implementation;
 using UniversityHousingSystem.Infrastructure.Repositories;
 using UniversityHousingSystem.Service.Abstractions;
 
@@ -10,12 +11,15 @@ namespace UniversityHousingSystem.Service.Implementation
     {
         #region Fields
         private readonly IBuildingRepository _buildingRepository;
+        private readonly IRoomRepository _roomRepository;
         #endregion
 
         #region Constructors
-        public BuildingService(IBuildingRepository buildingRepository)
+        public BuildingService(IBuildingRepository buildingRepository, IRoomRepository roomRepository )
         {
             _buildingRepository = buildingRepository;
+            _roomRepository = roomRepository;
+             
         }
         #endregion
 
@@ -101,21 +105,67 @@ namespace UniversityHousingSystem.Service.Implementation
         }
 
         // ✅ Delete a building
+        //public async Task<bool> DeleteAsync(Building buildingToDelete)
+        //{
+        //    _buildingRepository.BeginTransaction();
+        //    try
+        //    {
+        //        await _buildingRepository.DeleteAsync(buildingToDelete);
+        //        _buildingRepository.Commit();
+        //        return true;
+        //    }
+        //    catch
+        //    {
+        //        _buildingRepository.RollBack();
+        //        return false;
+        //    }
+        //}
+        //3/6
+
+
         public async Task<bool> DeleteAsync(Building buildingToDelete)
         {
-            _buildingRepository.BeginTransaction();
+            _buildingRepository.BeginTransaction(); // ✅ Start transaction
             try
             {
+                // ✅ Step 1: Get all rooms in this building
+                var rooms = await _roomRepository.GetTableAsTracking()
+                                                 .Where(r => r.BuildingId == buildingToDelete.BuildingId)
+                                                 .Include(r => r.Students) // ✅ Include Students
+                                                 .Include(r => r.RoomPhotos) // ✅ Include Photos
+                                                 .ToListAsync();
+
+                if (rooms.Any())
+                {
+                    foreach (var room in rooms)
+                    {
+                        // ✅ Step 2: Disassociate students from the room
+                        if (room.Students.Any())
+                        {
+                            foreach (var student in room.Students)
+                            {
+                                student.RoomId = null; // ❌ Remove room assignment (but don't delete student)
+                            }
+                        }
+
+                        // ✅ Step 3: Delete the room (Photos will be removed via cascade delete)
+                        await _roomRepository.DeleteAsync(room);
+                    }
+                }
+
+                // ✅ Step 4: Delete the building after all rooms are gone
                 await _buildingRepository.DeleteAsync(buildingToDelete);
-                _buildingRepository.Commit();
+
+                _buildingRepository.Commit(); // ✅ Commit transaction
                 return true;
             }
             catch
             {
-                _buildingRepository.RollBack();
+                _buildingRepository.RollBack(); // ❌ Rollback if something fails
                 return false;
             }
         }
+
 
         #endregion
     }

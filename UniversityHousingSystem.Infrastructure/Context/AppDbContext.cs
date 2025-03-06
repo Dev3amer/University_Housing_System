@@ -20,6 +20,8 @@ namespace UniversityHousingSystem.Infrastructure.Context
         public DbSet<Document> Documents { get; set; }
         public DbSet<DocumentType> DocumentTypes { get; set; }
         public DbSet<Room> Rooms { get; set; }
+        public DbSet<RoomPhoto> RoomPhotos { get; set; }
+
         public DbSet<Response> Responses { get; set; }
         public DbSet<Building> Buildings { get; set; }
         public DbSet<Village> Villages { get; set; }

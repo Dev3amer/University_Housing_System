@@ -69,6 +69,13 @@ namespace UniversityHousingSystem.API.Controllers
             var result = await _mediator.Send(query);
             return NewResult(result);
         }
+        [HttpGet("FreeRooms")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetFreeRoomsAsync([FromQuery] GetFreeRoomsQuery query)
+        {
+            var result = await _mediator.Send(query);
+            return NewResult(result);
+        }
 
     }
 } 

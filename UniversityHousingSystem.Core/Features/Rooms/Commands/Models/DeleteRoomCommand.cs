@@ -5,7 +5,7 @@ using UniversityHousingSystem.Data.Helpers.Enums;
 
 namespace UniversityHousingSystem.Core.Features.Events.Commands.Models
 {
-    public class DeleteRoomCommand : IRequest<Response<string>> // ✅ Corrected to return string response
+    public class DeleteRoomCommand : IRequest<Response<bool>> // ✅ Corrected to return string response
     {
         public int RoomId { get; set; }
 

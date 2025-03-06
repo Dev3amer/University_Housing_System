@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Stripe;
 using UniversityHousingSystem.Data.Entities;
 using UniversityHousingSystem.Data.Helpers.Enums;
 using UniversityHousingSystem.Infrastructure.implementation;
@@ -12,14 +13,22 @@ namespace UniversityHousingSystem.Service.Implementation
     {
         #region Fields
         private readonly IRoomRepository _roomRepository;
+        private readonly IFileService _fileService; // Add _fileService
+        private readonly IRoomPhotoRepository _roomPhotoRepository;
+
+
+
         private readonly IBuildingRepository _buildingRepository;
+
         #endregion
 
         #region Constructors
-        public RoomService(IRoomRepository roomRepository, IBuildingRepository buildingRepository)
+        public RoomService(IRoomRepository roomRepository, IBuildingRepository buildingRepository, IFileService fileService, IRoomPhotoRepository roomPhotoRepository)
         {
             _roomRepository = roomRepository;
             _buildingRepository = buildingRepository;
+            _fileService = fileService;
+            _roomPhotoRepository = roomPhotoRepository;
         }
         #endregion
 
@@ -28,8 +37,11 @@ namespace UniversityHousingSystem.Service.Implementation
         // ✅ Get all rooms
         public async Task<ICollection<Room>> GetAllAsync()
         {
-            return await _roomRepository.GetTableNoTracking().ToListAsync();
+            return await _roomRepository.GetTableNoTracking()
+                .Include(r => r.RoomPhotos) // Include the RoomPhotos navigation property
+                .ToListAsync();
         }
+
 
         // ✅ Get all rooms as IQueryable
         public IQueryable<Room> GetAllQueryable()
@@ -41,6 +53,8 @@ namespace UniversityHousingSystem.Service.Implementation
         public async Task<Room> GetByIdAsync(int id)
         {
             var room = await _roomRepository.GetTableNoTracking()
+                .Include(r => r.RoomPhotos) // ✅ Include photos
+                .Include(r => r.Students)   // (Optional) Include students if needed
                 .FirstOrDefaultAsync(r => r.RoomId == id);
 
             if (room == null)
@@ -92,20 +106,93 @@ namespace UniversityHousingSystem.Service.Implementation
         }
 
         // ✅ Delete a room
-        public async Task<bool> DeleteAsync(Room room)
+        // ✅ Delete a room
+        //public async Task DeleteAsync(Room room)
+        //{
+        //    try
+        //    {
+        //        var roomFromDb = await _roomRepository.GetTableNoTracking()
+        //            .Include(r => r.RoomPhotos)
+        //            .FirstOrDefaultAsync(r => r.RoomId == room.RoomId);
+
+        //        if (roomFromDb == null)
+        //        {
+        //            Console.WriteLine("Room not found.");
+        //            return; // Room not found, nothing to delete
+        //        }
+
+        //        // Delete room photos if they exist
+        //        if (roomFromDb.RoomPhotos != null && roomFromDb.RoomPhotos.Any())
+        //        {
+        //            foreach (var photo in roomFromDb.RoomPhotos)
+        //            {
+        //                await _fileService.DeleteFileAsync(photo.PhotoPath); // Call without assigning
+        //                Console.WriteLine($"Deleted photo: {photo.PhotoPath}");
+        //            }
+        //        }
+
+        //        // Disassociate students from the room
+        //        foreach (var student in roomFromDb.Students)
+        //        {
+        //            student.RoomId = null; // Remove the association with the room
+        //        }
+
+        //        // Commit changes to disassociate students and delete photos
+        //        await _roomRepository.SaveChangesAsync(); // No need to capture the result
+
+        //        // Delete the room from the repository
+        //        await _roomRepository.DeleteAsync(roomFromDb);
+        //        Console.WriteLine($"Room {roomFromDb.RoomId} deleted.");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine($"Error deleting room: {ex.Message}");
+        //    }
+        //}
+
+
+
+
+
+        // ✅ Count rooms in a specific building
+        public async Task DeleteAsync(Room room)
         {
             try
             {
-                await _roomRepository.DeleteAsync(room);
-                return true;
+                var roomFromDb = await _roomRepository.GetTableAsTracking() // ✅ REMOVE NoTracking to enable tracking
+                    .Include(r => r.RoomPhotos)
+                    .Include(r => r.Students)
+                    .FirstOrDefaultAsync(r => r.RoomId == room.RoomId);
+
+                if (roomFromDb == null)
+                {
+                    Console.WriteLine("Room not found.");
+                    return; // Room not found, nothing to delete
+                }
+
+                // ✅ Disassociate students from the room
+                if (roomFromDb.Students != null && roomFromDb.Students.Any())
+                {
+                    foreach (var student in roomFromDb.Students)
+                    {
+                        student.RoomId = null; // Remove room assignment
+                    }
+                }
+
+                await _roomRepository.SaveChangesAsync(); // ✅ Save changes first
+
+                // ✅ Now delete the tracked entity
+                await _roomRepository.DeleteAsync(roomFromDb);
+                await _roomRepository.SaveChangesAsync(); // ✅ Commit deletion
+
+                Console.WriteLine($"Room {roomFromDb.RoomId} deleted.");
             }
-            catch
+            catch (Exception ex)
             {
-                return false;
+                Console.WriteLine($"Error deleting room: {ex.Message}");
             }
         }
 
-        // ✅ Count rooms in a specific building
         public async Task<int> CountRoomsInBuilding(int buildingId)
         {
             return await _roomRepository.GetTableNoTracking()
@@ -116,6 +203,20 @@ namespace UniversityHousingSystem.Service.Implementation
         public decimal CalculateRoomsPrice(IEnumerable<Room> roomsList)
         {
             return roomsList.Sum(r => r.Price);
+        }
+
+        //////////3/6
+
+        public async Task DeleteRoomPhotosAsync(ICollection<RoomPhoto> roomPhotos)
+        {
+            foreach (var photo in roomPhotos)
+            {
+                // Assuming you have a repository for RoomPhotos
+                await _roomPhotoRepository.DeleteAsync(photo);  // Ensure you have a RoomPhoto repository for DB operations
+            }
+
+            // Save changes to persist the deletions in the database
+            await _roomPhotoRepository.SaveChangesAsync();
         }
 
         #endregion

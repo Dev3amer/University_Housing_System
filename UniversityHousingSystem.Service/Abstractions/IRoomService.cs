@@ -13,9 +13,11 @@ namespace UniversityHousingSystem.Service.Abstractions
         Task<bool> IsExistAsync(int id);
         Task<bool> IsExistInBuildingAsync(string roomNumber, int buildingId);
         Task<bool> IsExistByRoomIdInBuildingAsync(int roomId, int buildingId);
-        Task<bool> DeleteAsync(Room room);
+        Task DeleteAsync(Room room); // Make sure this method signature is correct
         Task<int> CountRoomsInBuilding(int buildingId);
         decimal CalculateRoomsPrice(IEnumerable<Room> roomsList);
+        Task DeleteRoomPhotosAsync(ICollection<RoomPhoto> roomPhotos); // Add this method signature
+
     }
 
 }

@@ -39,11 +39,15 @@ namespace UniversityHousingSystem.Core.Features.Events.Queries.Handler
                 Capacity = room.Capacity,
                 Price = room.Price,
                 BuildingId = room.BuildingId,
-                OccupiedSpaces = room.Students?.Count ?? 0
+                OccupiedSpaces = room.Students?.Count ?? 0,
+                PhotoUrls = room.RoomPhotos?.Select(p => p.PhotoPath).ToList() ?? new List<string>(),  // Retrieve photo URLs
+
             }).ToList();
 
             return Success(response);
         }
+
+
 
         public async Task<Response<List<FreeRoomResponse>>> Handle(GetFreeRoomsQuery request, CancellationToken cancellationToken)
         {
@@ -83,6 +87,7 @@ namespace UniversityHousingSystem.Core.Features.Events.Queries.Handler
                 Capacity = room.Capacity,
                 Price = room.Price,
                 OccupiedSpaces = room.Students?.Count ?? 0,
+                PhotoUrls = room.RoomPhotos?.Select(p => p.PhotoPath).ToList() ?? new List<string>(),
                 Students = room.Students?.Select(s => new StudentResponse
                 {
                     StudentId = s.StudentId,
