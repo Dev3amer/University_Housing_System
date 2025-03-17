@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace UniversityHousingSystem.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -360,6 +360,26 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                         principalTable: "Buildings",
                         principalColumn: "BuildingId",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RoomPhotos",
+                columns: table => new
+                {
+                    RoomPhotoId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RoomId = table.Column<int>(type: "int", nullable: false),
+                    PhotoPath = table.Column<string>(type: "nvarchar(255)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RoomPhotos", x => x.RoomPhotoId);
+                    table.ForeignKey(
+                        name: "FK_RoomPhotos_Rooms_RoomId",
+                        column: x => x.RoomId,
+                        principalTable: "Rooms",
+                        principalColumn: "RoomId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -1236,6 +1256,11 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                 column: "QuestionnaireId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_RoomPhotos_RoomId",
+                table: "RoomPhotos",
+                column: "RoomId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Rooms_BuildingId_RoomNumber",
                 table: "Rooms",
                 columns: new[] { "BuildingId", "RoomNumber" },
@@ -1464,6 +1489,9 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Payments");
+
+            migrationBuilder.DropTable(
+                name: "RoomPhotos");
 
             migrationBuilder.DropTable(
                 name: "StudentsNotifications");

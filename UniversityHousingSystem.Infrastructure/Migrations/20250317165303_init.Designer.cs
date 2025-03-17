@@ -12,8 +12,8 @@ using UniversityHousingSystem.Infrastructure.Context;
 namespace UniversityHousingSystem.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250305205846_roomphoto")]
-    partial class roomphoto
+    [Migration("20250317165303_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -1165,7 +1165,7 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
 
                     b.Property<string>("PhotoPath")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int>("RoomId")
                         .HasColumnType("int");
@@ -1174,7 +1174,7 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
 
                     b.HasIndex("RoomId");
 
-                    b.ToTable("RoomPhoto");
+                    b.ToTable("RoomPhotos", (string)null);
                 });
 
             modelBuilder.Entity("UniversityHousingSystem.Data.Entities.Student", b =>
