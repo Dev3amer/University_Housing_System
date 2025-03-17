@@ -27,8 +27,8 @@ namespace UniversityHousingSystem.Core.Features.Rooms.Queries.Handler
         {
             var rooms = await _roomService.GetAllAsync();
 
-            if (rooms == null || !rooms.Any())
-                return NotFound<List<GetAllRoomsResponse>>("No rooms found.");
+            //if (rooms == null || !rooms.Any())
+            //    return NotFound<List<GetAllRoomsResponse>>("No rooms found."); //Return 200 OK instead of Error 404 if there are no rooms
 
             var response = rooms.Select(room => new GetAllRoomsResponse
             {
