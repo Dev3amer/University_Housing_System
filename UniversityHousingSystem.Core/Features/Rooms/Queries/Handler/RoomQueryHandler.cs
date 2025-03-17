@@ -4,13 +4,11 @@ using UniversityHousingSystem.Core.Features.Events.Queries.Models;
 using UniversityHousingSystem.Core.Features.Events.Queries.Results;
 using UniversityHousingSystem.Core.Pagination;
 using UniversityHousingSystem.Core.ResponseBases;
-using UniversityHousingSystem.Data.Entities;
-using UniversityHousingSystem.Data.Resources;
 using UniversityHousingSystem.Service.Abstractions;
 
-namespace UniversityHousingSystem.Core.Features.Events.Queries.Handler
+namespace UniversityHousingSystem.Core.Features.Rooms.Queries.Handler
 {
-    public class RoomQueryHandler:ResponseHandler,
+    public class RoomQueryHandler : ResponseHandler,
         IRequestHandler<GetAllRoomsQuery, Response<List<GetAllRoomsResponse>>>,
         IRequestHandler<GetFreeRoomsQuery, Response<List<FreeRoomResponse>>>,
         IRequestHandler<GetRoomByIdQuery, Response<RoomResponse>>,
@@ -52,11 +50,11 @@ namespace UniversityHousingSystem.Core.Features.Events.Queries.Handler
         public async Task<Response<List<FreeRoomResponse>>> Handle(GetFreeRoomsQuery request, CancellationToken cancellationToken)
         {
             var rooms = _roomService.GetAllQueryable()
-                .Where(r => (r.Capacity - (r.Students != null ? r.Students.Count() : 0)) > 0);
+                .Where(r => r.Capacity - (r.Students != null ? r.Students.Count() : 0) > 0);
 
             if (request.MinAvailableSpace.HasValue)
             {
-                rooms = rooms.Where(r => (r.Capacity - (r.Students != null ? r.Students.Count() : 0)) >= request.MinAvailableSpace.Value);
+                rooms = rooms.Where(r => r.Capacity - (r.Students != null ? r.Students.Count() : 0) >= request.MinAvailableSpace.Value);
             }
 
             var result = await rooms.Select(r => new FreeRoomResponse
@@ -126,6 +124,6 @@ namespace UniversityHousingSystem.Core.Features.Events.Queries.Handler
 }
 
 
-        
-    
+
+
 

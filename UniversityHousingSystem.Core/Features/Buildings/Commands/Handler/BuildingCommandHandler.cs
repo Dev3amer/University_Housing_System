@@ -8,7 +8,7 @@ using UniversityHousingSystem.Data.Entities.Identity;
 using UniversityHousingSystem.Data.Resources;
 using UniversityHousingSystem.Service.Abstractions;
 
-namespace UniversityHousingSystem.Core.Features.Events.Commands.Handler
+namespace UniversityHousingSystem.Core.Features.Buildings.Commands.Handler
 {
     public class BuildingCommandHandler : ResponseHandler,
       IRequestHandler<CreateBuildingCommand, Response<GetBuildingByIdResponse>>,
