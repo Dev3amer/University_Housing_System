@@ -44,5 +44,15 @@
             public const string Update = Prefix + "Update";
             public const string Delete = Prefix + SingleRoute;
         }
+        public static class GuardianRouting
+        {
+            public const string Prefix = Rule + "Guardians/";
+
+            public const string List = Prefix + "List";
+            public const string GetById = Prefix + SingleRoute;
+            public const string Create = Prefix + "Create";
+            public const string Update = Prefix + "Update";
+            public const string Delete = Prefix + SingleRoute;
+        }
     }
 }

@@ -17,6 +17,7 @@ namespace UniversityHousingSystem.Service
             services.AddTransient<IRoomService, RoomService>();
             services.AddTransient<IVillageService, VillageService>();
             services.AddTransient<IFileService,FileService>();
+            services.AddTransient<IGuardianService,GuardianService>();
         }
     }
 }
