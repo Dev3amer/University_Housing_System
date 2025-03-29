@@ -54,5 +54,11 @@
             public const string Update = Prefix + "Update";
             public const string Delete = Prefix + SingleRoute;
         }
-    }
+        public static class GovernorateRouting
+        {
+            public const string Prefix = Rule + "Governorates/";
+
+            public const string List = "List";
+        }
+        }
 }

@@ -17,6 +17,7 @@ namespace UniversityHousingSystem.Infrastructure
             services.AddTransient<IVillageRepository, VillageRepository>();
             services.AddTransient<IRoomPhotoRepository, RoomPhotoRepository>();
             services.AddTransient<IGuardianRepository, GuardianRepository>();
+            services.AddTransient<IGovernorateRepository, GovernorateRepository>();
         }
     }
 }
