@@ -60,5 +60,11 @@
 
             public const string List = "List";
         }
+        public static class CityRouting
+        {
+            public const string Prefix = Rule + "Cities/";
+
+            public const string List = "List";
         }
+    }
 }
