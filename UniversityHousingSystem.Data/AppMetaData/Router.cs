@@ -54,6 +54,26 @@
             public const string Update = Prefix + "Update";
             public const string Delete = Prefix + SingleRoute;
         }
+        public static class CollegeRouting
+        {
+            public const string Prefix = Rule + "Colleges/";
+
+            public const string List = Prefix + "List";
+            public const string GetById = Prefix + SingleRoute;
+            public const string Create = Prefix + "Create";
+            public const string Update = Prefix + "Update";
+            public const string Delete = Prefix + SingleRoute;
+        }
+        public static class CollegeDepartmentRouting
+        {
+            public const string Prefix = Rule + "CollegesDepartments/";
+
+            public const string List = Prefix + "List";
+            public const string GetById = Prefix + SingleRoute;
+            public const string Create = Prefix + "Create";
+            public const string Update = Prefix + "Update";
+            public const string Delete = Prefix + SingleRoute;
+        }
         public static class GovernorateRouting
         {
             public const string Prefix = Rule + "Governorates/";

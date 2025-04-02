@@ -20,6 +20,8 @@ namespace UniversityHousingSystem.Service
             services.AddTransient<IGuardianService,GuardianService>();
             services.AddTransient<IGovernorateService, GovernorateService>();
             services.AddTransient<ICityService, CityService>();
+            services.AddTransient<ICollegeService, CollegeService>();
+            services.AddTransient<ICollegeDepartmentService, CollegeDepartmentService>();
         }
     }
 }

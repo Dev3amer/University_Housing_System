@@ -10,7 +10,6 @@ namespace UniversityHousingSystem.Infrastructure.Context
         public AppDbContext(DbContextOptions options) : base(options)
         {
         }
-
         public DbSet<Student> Students { get; set; }
         public DbSet<Answer> Answers { get; set; }
         public DbSet<College> Colleges { get; set; }

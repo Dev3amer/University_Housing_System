@@ -22,7 +22,11 @@ namespace UniversityHousingSystem.Service.implementation
         #region Methods
         public async Task<IEnumerable<Governorate>> GetAllAsync()
         {
-            return await _governorateRepository.GetTableNoTracking().ToListAsync();
+            return await _governorateRepository
+                .GetTableNoTracking()
+                .Include(g => g.Cities)  // Include related Cities for each Governorate
+                .ThenInclude(v=>v.Villages)
+                .ToListAsync();
         }
 
 

@@ -15,9 +15,6 @@ namespace UniversityHousingSystem.Service.Implementation
         private readonly IRoomRepository _roomRepository;
         private readonly IFileService _fileService; // Add _fileService
         private readonly IRoomPhotoRepository _roomPhotoRepository;
-
-
-
         private readonly IBuildingRepository _buildingRepository;
 
         #endregion
