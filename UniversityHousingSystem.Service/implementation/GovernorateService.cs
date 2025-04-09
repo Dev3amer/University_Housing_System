@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using UniversityHousingSystem.Data.Entities;
-using UniversityHousingSystem.Data.Helpers.Enums;
 using UniversityHousingSystem.Infrastructure.Repositories;
 using UniversityHousingSystem.Service.Abstractions;
 
@@ -20,16 +19,13 @@ namespace UniversityHousingSystem.Service.implementation
         #endregion
 
         #region Methods
-        public async Task<IEnumerable<Governorate>> GetAllAsync()
+        public async Task<IEnumerable<Governorate>> GetAllByCountryIdAsync(int countryId)
         {
             return await _governorateRepository
                 .GetTableNoTracking()
-                .Include(g => g.Cities)  // Include related Cities for each Governorate
-                .ThenInclude(v=>v.Villages)
+                .Where(g => g.CountryId == countryId)
                 .ToListAsync();
         }
-
-
         #endregion
     }
 }

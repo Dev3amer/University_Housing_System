@@ -74,17 +74,26 @@
             public const string Update = Prefix + "Update";
             public const string Delete = Prefix + SingleRoute;
         }
+        public static class CountryRouting
+        {
+            public const string Prefix = Rule + "countries/";
+
+            public const string List = Prefix + "list";
+
+            public const string Governorates = Prefix + "{countryId}/governorates";
+        }
         public static class GovernorateRouting
         {
             public const string Prefix = Rule + "Governorates/";
 
-            public const string List = "List";
+            public const string Cities = Prefix + "{governorateId}/cities";
         }
         public static class CityRouting
         {
-            public const string Prefix = Rule + "Cities/";
+            public const string Prefix = Rule + "cities/";
 
-            public const string List = "List";
+            public const string Villages = Prefix + "{cityId}/villages";
         }
+
     }
 }

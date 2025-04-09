@@ -2,9 +2,9 @@
 
 namespace UniversityHousingSystem.Service.Abstractions
 {
-    public interface ICityService
+    public interface ICountryService
     {
-        Task<IEnumerable<City>> GetAllByGovernorateIdAsync(int governorateId);
+        Task<IEnumerable<Country>> GetAllAsync();
 
     }
 }

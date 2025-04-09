@@ -19,11 +19,12 @@ namespace UniversityHousingSystem.Service.Implementation
         #endregion
 
         #region Methods
-        public async Task<IEnumerable<Village>> GetAllAsync()
+        public async Task<IEnumerable<Village>> GetVillagesByCityIdAsync(int cityId)
         {
             return await _villageRepository.GetTableNoTracking()
+                .Where(v => v.CityId == cityId)
                 .Include(v => v.City)
-                .Include(v => v.Buildings)
+                //.Include(v => v.Buildings)
                 .ToListAsync();
         }
 
@@ -31,7 +32,7 @@ namespace UniversityHousingSystem.Service.Implementation
         {
             return await _villageRepository.GetTableNoTracking()
                 .Include(v => v.City)
-                .Include(v => v.Buildings)
+                //.Include(v => v.Buildings)
                 .FirstOrDefaultAsync(v => v.VillageId == villageId);
         }
         #endregion

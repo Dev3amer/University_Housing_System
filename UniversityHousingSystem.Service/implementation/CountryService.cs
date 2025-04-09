@@ -5,27 +5,28 @@ using UniversityHousingSystem.Service.Abstractions;
 
 namespace UniversityHousingSystem.Service.implementation
 {
-    public class CityService : ICityService
+    public class CountryService : ICountryService
     {
         #region Fields
-        private readonly ICityRepository _cityRepository;
+        private readonly ICountryRepository _countryRepository;
         #endregion
 
         #region Contructors
-        public CityService(ICityRepository cityRepository)
+        public CountryService(ICountryRepository countryRepository)
         {
-            _cityRepository = cityRepository;
+            _countryRepository = countryRepository;
         }
         #endregion
 
         #region Methods
-        public async Task<IEnumerable<City>> GetAllByGovernorateIdAsync(int governorateId)
+        public async Task<IEnumerable<Country>> GetAllAsync()
         {
-            return await _cityRepository.GetTableNoTracking()
-                .Where(c => c.GovernorateId == governorateId)
-                .Include(v => v.Villages)
+            return await _countryRepository.GetTableNoTracking()
+                .Include(v => v.Governorates)
                 .ToListAsync();
         }
+
+
         #endregion
     }
 }

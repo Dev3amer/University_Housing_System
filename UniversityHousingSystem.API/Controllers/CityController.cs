@@ -1,31 +1,26 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using UniversityHousingSystem.API.APIBases;
-using UniversityHousingSystem.Core.Features.Events.Commands.Models;
-using UniversityHousingSystem.Core.Features.Events.Queries.Models;
-using UniversityHousingSystem.Core.Features.Governorate.Queries.Models;
+using UniversityHousingSystem.Core.Features.City.Queries.Models;
 using UniversityHousingSystem.Data.AppMetaData;
 
 namespace UniversityHousingSystem.API.Controllers
 {
     [ApiController]
-    [Route(Router.CityRouting.Prefix)] // 🔹 Base route for rooms
     public class CityController : AppController
     {
         public CityController(IMediator mediator) : base(mediator) { }
 
-
-        [HttpGet("List")]
+        [HttpGet(Router.CityRouting.Villages)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAllCitiesAsync()
+        public async Task<IActionResult> GetAllVillagesAsync(int cityId)
         {
-            var result = await _mediator.Send(new GetAllCityQuery());
+            var result = await _mediator.Send(new GetAllVillagesByCityIdQuery() { CityId = cityId });
             return NewResult(result);
         }
 
-
     }
-} 
+}
 
 
 

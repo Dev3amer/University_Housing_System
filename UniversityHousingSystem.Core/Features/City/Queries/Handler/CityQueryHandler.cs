@@ -1,41 +1,36 @@
 ﻿using MediatR;
-using UniversityHousingSystem.Core.Features.Events.Queries.Models;
-using UniversityHousingSystem.Core.Features.Events.Queries.Results;
+using UniversityHousingSystem.Core.Features.City.Queries.Models;
+using UniversityHousingSystem.Core.Features.City.Queries.Results;
 using UniversityHousingSystem.Core.ResponseBases;
 using UniversityHousingSystem.Service.Abstractions;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using UniversityHousingSystem.Core.Features.Governorate.Queries.Results;
-using UniversityHousingSystem.Core.Features.Governorate.Queries.Models;
 
 namespace UniversityHousingSystem.Core.Features.Governorate.Queries.Handler
 {
     public class CityQueryHandler : ResponseHandler,
-        IRequestHandler<GetAllCityQuery, Response<List<GetAllCityResponse>>>
-    {
-        private readonly ICityService _cityService;
+        IRequestHandler<GetAllVillagesByCityIdQuery, Response<List<GetAllVillagesByCityIdResponse>>>
 
-        public CityQueryHandler(ICityService cityService)
+    {
+        private readonly IVillageService _villageService;
+
+        public CityQueryHandler(IVillageService villageService)
         {
-            _cityService = cityService;
+            _villageService = villageService;
         }
 
-        public async Task<Response<List<GetAllCityResponse>>> Handle(GetAllCityQuery request, CancellationToken cancellationToken)
+        public async Task<Response<List<GetAllVillagesByCityIdResponse>>> Handle(GetAllVillagesByCityIdQuery request, CancellationToken cancellationToken)
         {
-            var cities = await _cityService.GetAllAsync(); // Use GetAllAsync()
+            var villages = await _villageService.GetVillagesByCityIdAsync(request.CityId);
 
-            if (cities == null || !cities.Any())
+            if (villages == null || !villages.Any())
             {
-                return NotFound<List<GetAllCityResponse>>("No cities found for the specified country.");
+                return NotFound<List<GetAllVillagesByCityIdResponse>>("No Villages found for the specified country.");
             }
 
-            var response = cities.Select(g => new GetAllCityResponse
+            var response = villages.Select(v => new GetAllVillagesByCityIdResponse
             {
-                CityId = g.CityId,
-                NameEn = g.NameEn,
-                NameAr = g.NameAr
+                VillageId = v.VillageId,
+                NameEn = v.NameEn,
+                NameAr = v.NameAr
             }).ToList();
 
             return Success(response);
