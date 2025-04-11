@@ -143,21 +143,6 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "OldStudents",
-                columns: table => new
-                {
-                    OldStudentId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PreviousYearGrade = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    GradePercentage = table.Column<decimal>(type: "decimal(5,2)", precision: 5, scale: 2, nullable: false),
-                    PreviousYearHosting = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_OldStudents", x => x.OldStudentId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ViolationTypes",
                 columns: table => new
                 {
@@ -251,27 +236,6 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                         principalTable: "HighSchools",
                         principalColumn: "HighSchoolId",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "NewStudents",
-                columns: table => new
-                {
-                    NewStudentId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    HighSchoolPercentage = table.Column<decimal>(type: "decimal(5,2)", precision: 5, scale: 2, nullable: false),
-                    IsOutsideSchool = table.Column<bool>(type: "bit", nullable: false),
-                    HighSchoolId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_NewStudents", x => x.NewStudentId);
-                    table.ForeignKey(
-                        name: "FK_NewStudents_HighSchools_HighSchoolId",
-                        column: x => x.HighSchoolId,
-                        principalTable: "HighSchools",
-                        principalColumn: "HighSchoolId",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -534,7 +498,7 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                     PlaceOfBirth = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     HasSpecialNeeds = table.Column<bool>(type: "bit", nullable: false),
                     AcademicStudentCode = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    AcademicYear = table.Column<byte>(type: "tinyint", nullable: false),
+                    AcademicYear = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     IsMarried = table.Column<bool>(type: "bit", nullable: false),
                     AddressLine = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
@@ -542,8 +506,6 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                     ApplicationId = table.Column<int>(type: "int", nullable: false),
                     CollegeId = table.Column<int>(type: "int", nullable: false),
                     GuardianId = table.Column<int>(type: "int", nullable: false),
-                    OldStudentId = table.Column<int>(type: "int", nullable: true),
-                    NewStudentId = table.Column<int>(type: "int", nullable: true),
                     CountryId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     RoomId = table.Column<int>(type: "int", nullable: true),
@@ -582,18 +544,6 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                         principalTable: "Guardians",
                         principalColumn: "GuardianId",
                         onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Students_NewStudents_NewStudentId",
-                        column: x => x.NewStudentId,
-                        principalTable: "NewStudents",
-                        principalColumn: "NewStudentId",
-                        onDelete: ReferentialAction.SetNull);
-                    table.ForeignKey(
-                        name: "FK_Students_OldStudents_OldStudentId",
-                        column: x => x.OldStudentId,
-                        principalTable: "OldStudents",
-                        principalColumn: "OldStudentId",
-                        onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
                         name: "FK_Students_Rooms_RoomId",
                         column: x => x.RoomId,
@@ -784,6 +734,54 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Issues_Students_StudentId",
+                        column: x => x.StudentId,
+                        principalTable: "Students",
+                        principalColumn: "StudentId");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "NewStudents",
+                columns: table => new
+                {
+                    NewStudentId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    HighSchoolPercentage = table.Column<decimal>(type: "decimal(5,2)", precision: 5, scale: 2, nullable: false),
+                    IsOutsideSchool = table.Column<bool>(type: "bit", nullable: false),
+                    HighSchoolId = table.Column<int>(type: "int", nullable: false),
+                    StudentId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_NewStudents", x => x.NewStudentId);
+                    table.ForeignKey(
+                        name: "FK_NewStudents_HighSchools_HighSchoolId",
+                        column: x => x.HighSchoolId,
+                        principalTable: "HighSchools",
+                        principalColumn: "HighSchoolId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_NewStudents_Students_StudentId",
+                        column: x => x.StudentId,
+                        principalTable: "Students",
+                        principalColumn: "StudentId");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OldStudents",
+                columns: table => new
+                {
+                    OldStudentId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PreviousYearGrade = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    GradePercentage = table.Column<decimal>(type: "decimal(5,2)", precision: 5, scale: 2, nullable: false),
+                    PreviousYearHosting = table.Column<bool>(type: "bit", nullable: false),
+                    StudentId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OldStudents", x => x.OldStudentId);
+                    table.ForeignKey(
+                        name: "FK_OldStudents_Students_StudentId",
                         column: x => x.StudentId,
                         principalTable: "Students",
                         principalColumn: "StudentId");
@@ -1212,6 +1210,18 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                 column: "HighSchoolId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_NewStudents_StudentId",
+                table: "NewStudents",
+                column: "StudentId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OldStudents_StudentId",
+                table: "OldStudents",
+                column: "StudentId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Option_Question_Text",
                 table: "Options",
                 columns: new[] { "QuestionId", "Text" },
@@ -1314,20 +1324,6 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                 table: "Students",
                 column: "NationalId",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Students_NewStudentId",
-                table: "Students",
-                column: "NewStudentId",
-                unique: true,
-                filter: "[NewStudentId] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Students_OldStudentId",
-                table: "Students",
-                column: "OldStudentId",
-                unique: true,
-                filter: "[OldStudentId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Students_ResidencePlace",
@@ -1488,6 +1484,12 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                 name: "Issues");
 
             migrationBuilder.DropTable(
+                name: "NewStudents");
+
+            migrationBuilder.DropTable(
+                name: "OldStudents");
+
+            migrationBuilder.DropTable(
                 name: "Payments");
 
             migrationBuilder.DropTable(
@@ -1521,6 +1523,9 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                 name: "IssueTypes");
 
             migrationBuilder.DropTable(
+                name: "HighSchools");
+
+            migrationBuilder.DropTable(
                 name: "Invoices");
 
             migrationBuilder.DropTable(
@@ -1551,16 +1556,7 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                 name: "Guardians");
 
             migrationBuilder.DropTable(
-                name: "NewStudents");
-
-            migrationBuilder.DropTable(
-                name: "OldStudents");
-
-            migrationBuilder.DropTable(
                 name: "Rooms");
-
-            migrationBuilder.DropTable(
-                name: "HighSchools");
 
             migrationBuilder.DropTable(
                 name: "Buildings");

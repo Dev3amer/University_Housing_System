@@ -8,6 +8,7 @@
 
         //Foreign Keys
         public int HighSchoolId { get; set; }
+        public int StudentId { get; set; }
 
         // Navigation Property
         public Student Student { get; set; } = new();

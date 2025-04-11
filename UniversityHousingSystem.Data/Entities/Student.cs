@@ -29,8 +29,6 @@ namespace UniversityHousingSystem.Data.Entities
         public int ApplicationId { get; set; }
         public int CollegeId { get; set; }
         public int GuardianId { get; set; }
-        public int? OldStudentId { get; set; }
-        public int? NewStudentId { get; set; }
         public int CountryId { get; set; }
         public string? UserId { get; set; }
         public int? RoomId { get; set; }
@@ -47,6 +45,7 @@ namespace UniversityHousingSystem.Data.Entities
         public Room? Room { get; set; }
         public ApplicationUser? User { get; set; }
         public ICollection<StudentHistory>? Histories { get; set; }
+
         public OldStudent? OldStudent { get; set; }
         public NewStudent? NewStudent { get; set; }
         public virtual ICollection<StudentsNotifications>? StudentsNotifications { get; set; }

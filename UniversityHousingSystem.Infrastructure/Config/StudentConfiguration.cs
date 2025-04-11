@@ -74,8 +74,8 @@ namespace UniversityHousingSystem.Infrastructure.Config
                   .HasMaxLength(50);
 
             builder.Property(s => s.AcademicYear)
-                  .HasColumnType("tinyint")
-                  .IsRequired();
+                  .IsRequired()
+                  .HasMaxLength(25);
 
             builder.Property(s => s.Email)
                   .IsRequired()
@@ -99,16 +99,6 @@ namespace UniversityHousingSystem.Infrastructure.Config
             builder.HasOne(s => s.User)
                   .WithOne(u => u.Student)
                   .HasForeignKey<Student>(s => s.UserId)
-                  .OnDelete(DeleteBehavior.SetNull);
-
-            builder.HasOne(s => s.OldStudent)
-                 .WithOne(o => o.Student)
-                 .HasForeignKey<Student>(s => s.OldStudentId)
-                 .OnDelete(DeleteBehavior.SetNull);
-
-            builder.HasOne(s => s.NewStudent)
-                  .WithOne(n => n.Student)
-                  .HasForeignKey<Student>(s => s.NewStudentId)
                   .OnDelete(DeleteBehavior.SetNull);
 
             #endregion
@@ -147,6 +137,7 @@ namespace UniversityHousingSystem.Infrastructure.Config
             builder.HasIndex(s => s.Email).IsUnique();
             builder.HasIndex(s => s.AcademicStudentCode).IsUnique();
             #endregion
+
 
             builder.ToTable("Students");
         }

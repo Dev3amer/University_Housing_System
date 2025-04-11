@@ -22,6 +22,10 @@ namespace UniversityHousingSystem.Infrastructure.Config
             builder.Property(os => os.PreviousYearHosting)
                 .IsRequired();
 
+            builder.HasOne(os => os.Student)
+                 .WithOne(s => s.OldStudent)
+                 .OnDelete(DeleteBehavior.NoAction);
+
             builder.ToTable("OldStudents");
         }
     }

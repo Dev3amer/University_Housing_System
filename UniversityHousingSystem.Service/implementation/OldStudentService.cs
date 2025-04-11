@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using UniversityHousingSystem.Data.Entities;
+using UniversityHousingSystem.Data.Helpers.Enums;
 using UniversityHousingSystem.Infrastructure.Repositories;
 using UniversityHousingSystem.Service.Abstractions;
 
@@ -24,37 +25,36 @@ namespace UniversityHousingSystem.Service.implementation
             return await _oldStudentRepository.GetTableNoTracking()
                 .ToListAsync();
         }
-        //public IQueryable<Student> GetAllQueryable(string? search, EnEventOrdering? eventOrderingEnum)
-        //{
+        public IQueryable<OldStudent> GetAllQueryable(string? search, EnStudentOrdering? studentOrderingEnum)
+        {
 
-        //    var queryableList = _studentRepository.GetTableNoTracking()
-        //       .AsQueryable();
+            var queryableList = _oldStudentRepository.GetTableNoTracking()
+               .AsQueryable();
 
-        //    if (search != null)
-        //    {
-        //        queryableList = queryableList.Where(m => m.Title.Contains(search));
-        //    }
+            if (search != null)
+            {
+                queryableList = queryableList.Where(os => os.Student.NationalId.Contains(search));
+            }
 
-        //    switch (eventOrderingEnum)
-        //    {
-        //        case EnEventOrdering.Title:
-        //            queryableList = queryableList.OrderBy(e => e.Title);
-        //            break;
-        //        case EnEventOrdering.Date:
-        //            queryableList = queryableList.OrderByDescending(e => e.Date);
-        //            break;
-        //        default:
-        //            queryableList = queryableList.OrderBy(m => m.Title);
-        //            break;
-        //    }
+            switch (studentOrderingEnum)
+            {
+                case EnStudentOrdering.FirstName:
+                    queryableList = queryableList.OrderBy(os => os.Student.FirstName);
+                    break;
+                case EnStudentOrdering.CollegeId:
+                    queryableList = queryableList.OrderByDescending(os => os.Student.CollegeId);
+                    break;
+                default:
+                    queryableList = queryableList.OrderBy(os => os.Student.FirstName);
+                    break;
+            }
 
-        //    return queryableList;
-        //}
+            return queryableList;
+        }
         public async Task<OldStudent?> GetAsync(int id)
         {
             return await _oldStudentRepository
                 .GetTableNoTracking()
-                .Include(os => os.Student)
                 .FirstOrDefaultAsync(s => s.OldStudentId == id);
         }
         public async Task<OldStudent> CreateAsync(OldStudent oldStudent)

@@ -25,6 +25,12 @@ namespace UniversityHousingSystem.Infrastructure.Config
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
 
+
+            builder.HasOne(os => os.Student)
+                 .WithOne(s => s.NewStudent)
+                 .OnDelete(DeleteBehavior.NoAction);
+
+
             builder.ToTable("NewStudents");
         }
     }

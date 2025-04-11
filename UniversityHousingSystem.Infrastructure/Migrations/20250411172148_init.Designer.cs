@@ -12,7 +12,7 @@ using UniversityHousingSystem.Infrastructure.Context;
 namespace UniversityHousingSystem.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250317165303_init")]
+    [Migration("20250411172148_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -908,9 +908,15 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                     b.Property<bool>("IsOutsideSchool")
                         .HasColumnType("bit");
 
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
                     b.HasKey("NewStudentId");
 
                     b.HasIndex("HighSchoolId");
+
+                    b.HasIndex("StudentId")
+                        .IsUnique();
 
                     b.ToTable("NewStudents", (string)null);
                 });
@@ -962,7 +968,13 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                     b.Property<bool>("PreviousYearHosting")
                         .HasColumnType("bit");
 
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
                     b.HasKey("OldStudentId");
+
+                    b.HasIndex("StudentId")
+                        .IsUnique();
 
                     b.ToTable("OldStudents", (string)null);
                 });
@@ -1190,8 +1202,10 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<byte>("AcademicYear")
-                        .HasColumnType("tinyint");
+                    b.Property<string>("AcademicYear")
+                        .IsRequired()
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
 
                     b.Property<string>("AddressLine")
                         .IsRequired()
@@ -1243,12 +1257,6 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
-
-                    b.Property<int?>("NewStudentId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("OldStudentId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Phone")
                         .IsRequired()
@@ -1313,14 +1321,6 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
 
                     b.HasIndex("NationalId")
                         .IsUnique();
-
-                    b.HasIndex("NewStudentId")
-                        .IsUnique()
-                        .HasFilter("[NewStudentId] IS NOT NULL");
-
-                    b.HasIndex("OldStudentId")
-                        .IsUnique()
-                        .HasFilter("[OldStudentId] IS NOT NULL");
 
                     b.HasIndex("ResidencePlace");
 
@@ -1774,7 +1774,26 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("UniversityHousingSystem.Data.Entities.Student", "Student")
+                        .WithOne("NewStudent")
+                        .HasForeignKey("UniversityHousingSystem.Data.Entities.NewStudent", "StudentId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.Navigation("HighSchool");
+
+                    b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("UniversityHousingSystem.Data.Entities.OldStudent", b =>
+                {
+                    b.HasOne("UniversityHousingSystem.Data.Entities.Student", "Student")
+                        .WithOne("OldStudent")
+                        .HasForeignKey("UniversityHousingSystem.Data.Entities.OldStudent", "StudentId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("UniversityHousingSystem.Data.Entities.Option", b =>
@@ -1887,16 +1906,6 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("UniversityHousingSystem.Data.Entities.NewStudent", "NewStudent")
-                        .WithOne("Student")
-                        .HasForeignKey("UniversityHousingSystem.Data.Entities.Student", "NewStudentId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
-                    b.HasOne("UniversityHousingSystem.Data.Entities.OldStudent", "OldStudent")
-                        .WithOne("Student")
-                        .HasForeignKey("UniversityHousingSystem.Data.Entities.Student", "OldStudentId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
                     b.HasOne("UniversityHousingSystem.Data.Entities.Village", "Village")
                         .WithMany("Students")
                         .HasForeignKey("ResidencePlace")
@@ -1920,10 +1929,6 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                     b.Navigation("Country");
 
                     b.Navigation("Guardian");
-
-                    b.Navigation("NewStudent");
-
-                    b.Navigation("OldStudent");
 
                     b.Navigation("Room");
 
@@ -2081,21 +2086,9 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                     b.Navigation("Issues");
                 });
 
-            modelBuilder.Entity("UniversityHousingSystem.Data.Entities.NewStudent", b =>
-                {
-                    b.Navigation("Student")
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("UniversityHousingSystem.Data.Entities.Notification", b =>
                 {
                     b.Navigation("StudentsNotifications");
-                });
-
-            modelBuilder.Entity("UniversityHousingSystem.Data.Entities.OldStudent", b =>
-                {
-                    b.Navigation("Student")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("UniversityHousingSystem.Data.Entities.Option", b =>
@@ -2140,6 +2133,10 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                     b.Navigation("Invoices");
 
                     b.Navigation("Issues");
+
+                    b.Navigation("NewStudent");
+
+                    b.Navigation("OldStudent");
 
                     b.Navigation("Responses");
 

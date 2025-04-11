@@ -9,6 +9,8 @@ namespace UniversityHousingSystem.Data.Entities
         public decimal GradePercentage { get; set; }
         public bool PreviousYearHosting { get; set; }
 
+        public int StudentId { get; set; }
+
         // Navigation Property
         public Student Student { get; set; } = new();
     }
