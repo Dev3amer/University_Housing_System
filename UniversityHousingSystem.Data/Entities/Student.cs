@@ -19,7 +19,7 @@ namespace UniversityHousingSystem.Data.Entities
         public string PlaceOfBirth { get; set; } = default!;
         public bool HasSpecialNeeds { get; set; }
         public string AcademicStudentCode { get; set; } = default!;
-        public byte AcademicYear { get; set; }
+        public string AcademicYear { get; set; } = default!;
         public string Email { get; set; } = default!;
         public bool IsMarried { get; set; }
         public string AddressLine { get; set; } = default!;

@@ -94,6 +94,17 @@
 
             public const string Villages = Prefix + "{cityId}/villages";
         }
+        public static class OldStudentRouting
+        {
+            public const string Prefix = Rule + "old-student/";
 
+            public const string list = Prefix + "list";
+            public const string paginated = Prefix + "paginated";
+            public const string GetById = Prefix + SingleRoute;
+
+            public const string Create = Prefix + "create";
+            public const string Update = Prefix + "update";
+            public const string Delete = Prefix + SingleRoute;
+        }
     }
 }

@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Folder Include="Features\Events\Commands\Validator\" />
+    <Folder Include="Features\OldStudent\Commands\" />
     <Folder Include="Mapping\" />
   </ItemGroup>
 
