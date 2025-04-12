@@ -30,6 +30,14 @@ namespace UniversityHousingSystem.API.Controllers
             var result = await _mediator.Send(new GetOldStudentByIdQuery() { OldStudentId = id });
             return NewResult(result);
         }
+
+        [HttpGet(Router.OldStudentRouting.paginated)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetOldStudentsPaginatedList([FromQuery] GetOldStudentsPaginatedListQuery model)
+        {
+            var result = await _mediator.Send(model);
+            return Ok(result);
+        }
         #endregion
 
     }
