@@ -26,6 +26,12 @@ namespace UniversityHousingSystem.Service.implementation
                 .ToListAsync();
         }
 
+        public async Task<Country?> GetAsync(int id)
+        {
+            var country = await _countryRepository.GetByIdAsync(id);
+            return country;
+        }
+
 
         #endregion
     }

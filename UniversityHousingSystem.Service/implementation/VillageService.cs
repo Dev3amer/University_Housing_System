@@ -35,6 +35,12 @@ namespace UniversityHousingSystem.Service.Implementation
                 //.Include(v => v.Buildings)
                 .FirstOrDefaultAsync(v => v.VillageId == villageId);
         }
+
+        public async Task<Village?> GetAsync(int id)
+        {
+            var village = await _villageRepository.GetByIdAsync(id);
+            return village;
+        }
         #endregion
     }
 }

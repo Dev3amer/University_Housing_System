@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using UniversityHousingSystem.API.APIBases;
+using UniversityHousingSystem.Core.Features.OldStudent.Commands.Models;
 using UniversityHousingSystem.Core.Features.OldStudent.Queries.Models;
 using UniversityHousingSystem.Data.AppMetaData;
 
@@ -39,6 +40,15 @@ namespace UniversityHousingSystem.API.Controllers
             return Ok(result);
         }
         #endregion
-
+        #region Commands
+        [HttpPost(Router.OldStudentRouting.Create)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> CreateOldStudent([FromForm] CreateOldStudentCommand model)
+        {
+            var result = await _mediator.Send(model);
+            return NewResult(result);
+        }
+        #endregion
     }
 }

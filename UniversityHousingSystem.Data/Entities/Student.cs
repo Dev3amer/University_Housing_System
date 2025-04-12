@@ -41,12 +41,12 @@ namespace UniversityHousingSystem.Data.Entities
         public Country Country { get; set; } = new();
         public ICollection<Issue> Issues { get; set; } = new HashSet<Issue>();
         public College College { get; set; } = new();
-        public Application Application { get; set; } = new();
+        public Application Application { get; set; } = default!;
         public Room? Room { get; set; }
         public ApplicationUser? User { get; set; }
         public ICollection<StudentHistory>? Histories { get; set; }
 
-        public OldStudent? OldStudent { get; set; }
+        //public OldStudent? OldStudent { get; set; }
         public NewStudent? NewStudent { get; set; }
         public virtual ICollection<StudentsNotifications>? StudentsNotifications { get; set; }
         public ICollection<Visit>? Visits { get; set; }

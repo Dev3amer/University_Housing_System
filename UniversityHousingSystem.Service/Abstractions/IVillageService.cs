@@ -6,5 +6,6 @@ namespace UniversityHousingSystem.Service.Abstractions
     {
         Task<Village?> GetByIdAsync(int villageId);
         Task<IEnumerable<Village>> GetVillagesByCityIdAsync(int cityId);
+        Task<Village?> GetAsync(int id);
     }
 }
