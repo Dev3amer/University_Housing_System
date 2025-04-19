@@ -3,10 +3,10 @@ using UniversityHousingSystem.Core.Features.Events.Queries.Results;
 using UniversityHousingSystem.Core.ResponseBases;
 using UniversityHousingSystem.Data.Helpers.Enums;
 
-namespace UniversityHousingSystem.Core.Features.Events.Commands.Models
+namespace UniversityHousingSystem.Core.Features.CollegeDepartment.Commands.Models
 {
     public class DeleteCollegeDepartmentCommand : IRequest<Response<bool>>
     {
-        public byte CollegeDepartmentId { get; set; }
+        public int CollegeDepartmentId { get; set; }
     }
 }

@@ -2,7 +2,7 @@
 {
     public class CollegeDepartment
     {
-        public byte CollegeDepartmentId { get; set; }
+        public int CollegeDepartmentId { get; set; }
         public string Name { get; set; } = default!;
 
         // Foreign Keys

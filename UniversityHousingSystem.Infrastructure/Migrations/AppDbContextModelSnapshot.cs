@@ -354,8 +354,11 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
 
             modelBuilder.Entity("UniversityHousingSystem.Data.Entities.CollegeDepartment", b =>
                 {
-                    b.Property<byte>("CollegeDepartmentId")
-                        .HasColumnType("tinyint");
+                    b.Property<int>("CollegeDepartmentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CollegeDepartmentId"));
 
                     b.Property<int>("CollegeId")
                         .HasColumnType("int");
@@ -1785,7 +1788,7 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
             modelBuilder.Entity("UniversityHousingSystem.Data.Entities.OldStudent", b =>
                 {
                     b.HasOne("UniversityHousingSystem.Data.Entities.Student", "Student")
-                        .WithOne("OldStudent")
+                        .WithOne()
                         .HasForeignKey("UniversityHousingSystem.Data.Entities.OldStudent", "StudentId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
@@ -2132,8 +2135,6 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                     b.Navigation("Issues");
 
                     b.Navigation("NewStudent");
-
-                    b.Navigation("OldStudent");
 
                     b.Navigation("Responses");
 

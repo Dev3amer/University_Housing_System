@@ -28,26 +28,10 @@ namespace UniversityHousingSystem.Service.implementation
             return _collegeDepartmentRepository.GetTableNoTracking();
         }
 
-
-
-        public async Task<CollegeDepartment?> GetAsync(byte id)
+        public async Task<CollegeDepartment?> GetAsync(int id)
         {
-            return await _collegeDepartmentRepository.GetByIdAsync((byte)id); // Cast to int
+            return await _collegeDepartmentRepository.GetByIdAsync(id);
         }
-
-        //public async Task<CollegeDepartment?> GetAsync(byte id)
-        //{
-        //    return await _collegeDepartmentRepository.GetByIdAsync(id);
-        //}
-        //public async Task<CollegeDepartment> CreateAsync(CollegeDepartment newCollegeDepartment)
-        //{
-        //    return await _collegeDepartmentRepository.AddAsync(newCollegeDepartment);
-        //}
-
-
-        ///
-
-
         public async Task<CollegeDepartment> CreateAsync(CollegeDepartment collegeDepartment)
         {
             var college= await _collegeRepository.GetByIdAsync(collegeDepartment.CollegeId);

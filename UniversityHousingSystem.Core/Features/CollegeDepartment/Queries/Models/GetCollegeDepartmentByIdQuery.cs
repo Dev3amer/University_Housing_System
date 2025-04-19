@@ -6,7 +6,7 @@ namespace UniversityHousingSystem.Core.Features.Events.Queries.Models
 {
     public class GetCollegeDepartmentByIdQuery : IRequest<Response<GetCollegeDepartmentByIdResponse>>
     {
-        public byte CollegeDepartmentId { get; set; }
-        public GetCollegeDepartmentByIdQuery(byte collegeId) => CollegeDepartmentId = collegeId;
+        public int CollegeDepartmentId { get; set; }
+        public GetCollegeDepartmentByIdQuery(int collegeId) => CollegeDepartmentId = collegeId;
     }
 }

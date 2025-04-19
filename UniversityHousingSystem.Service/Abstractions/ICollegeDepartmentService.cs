@@ -7,7 +7,7 @@ namespace UniversityHousingSystem.Service.Abstractions
     {
         Task<IEnumerable<CollegeDepartment>> GetAllAsync();
       //  IQueryable<Guardian> GetAllQueryable(string? search, EnEventOrdering? EventOrderingEnum);
-        Task<CollegeDepartment?> GetAsync(byte id);
+        Task<CollegeDepartment?> GetAsync(int id);
         Task<CollegeDepartment> CreateAsync(CollegeDepartment newEvent);
         Task<CollegeDepartment> UpdateAsync(CollegeDepartment eventToUpdate);
         Task<bool> DeleteAsync(CollegeDepartment eventToDelete);

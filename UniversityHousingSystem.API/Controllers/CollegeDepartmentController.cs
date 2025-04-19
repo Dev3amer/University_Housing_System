@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using UniversityHousingSystem.API.APIBases;
-using UniversityHousingSystem.Core.Features.Events.Commands.Models;
+using UniversityHousingSystem.Core.Features.CollegeDepartment.Commands.Models;
 using UniversityHousingSystem.Core.Features.Events.Queries.Models;
 using UniversityHousingSystem.Data.AppMetaData;
 
