@@ -23,6 +23,7 @@ namespace UniversityHousingSystem.Infrastructure
             services.AddTransient<ICollegeRepository, CollegeRepository>();
             services.AddTransient<ICollegeDepartmentRepository, CollegeDepartmentRepository>();
             services.AddTransient<IOldStudentRepository, OldStudentRepository>();
+            services.AddTransient<INewStudentRepository, NewStudentRepository>();
         }
     }
 }
