@@ -88,7 +88,7 @@ namespace UniversityHousingSystem.Service.implementation
             _newStudentRepository.BeginTransaction();
             try
             {
-                await _newStudentRepository.DeleteAsync(oldStudentToDelete);
+                await _newStudentRepository.DeleteAsync(newStudentToDelete);
                 _newStudentRepository.Commit();
                 return true;
             }

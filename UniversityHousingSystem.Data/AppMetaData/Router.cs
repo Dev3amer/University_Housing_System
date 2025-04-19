@@ -106,5 +106,17 @@
             public const string Update = Prefix + "update";
             public const string Delete = Prefix + SingleRoute;
         }
+        public static class NewStudentRouting
+        {
+            public const string Prefix = Rule + "new-student/";
+
+            public const string list = Prefix + "list";
+            public const string paginated = Prefix + "paginated";
+            public const string GetById = Prefix + SingleRoute;
+
+            public const string Create = Prefix + "create";
+            public const string Update = Prefix + "update";
+            public const string Delete = Prefix + SingleRoute;
+        }
     }
 }
