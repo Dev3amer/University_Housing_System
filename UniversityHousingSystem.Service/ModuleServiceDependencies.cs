@@ -25,6 +25,7 @@ namespace UniversityHousingSystem.Service
             services.AddTransient<ICollegeDepartmentService, CollegeDepartmentService>();
             services.AddTransient<IOldStudentService, OldStudentService>();
             services.AddTransient<INewStudentService, NewStudentService>();
+            services.AddTransient<IHighSchoolService, HighSchoolService>();
         }
     }
 }

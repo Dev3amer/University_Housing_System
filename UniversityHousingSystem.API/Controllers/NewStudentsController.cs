@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using UniversityHousingSystem.API.APIBases;
+using UniversityHousingSystem.Core.Features.NewStudent.Commands.Models;
 using UniversityHousingSystem.Core.Features.NewStudent.Queries.Models;
 using UniversityHousingSystem.Data.AppMetaData;
 
@@ -37,6 +38,35 @@ namespace UniversityHousingSystem.API.Controllers
         {
             var result = await _mediator.Send(model);
             return Ok(result);
+        }
+        #endregion
+        #region Commands
+        [HttpPost(Router.NewStudentRouting.Create)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> NewStudentStudent([FromForm] CreateNewStudentCommand model)
+        {
+            var result = await _mediator.Send(model);
+            return NewResult(result);
+        }
+
+        [HttpPut(Router.NewStudentRouting.Update)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> UpdateNewStudent([FromForm] UpdateNewStudentCommand model)
+        {
+            var result = await _mediator.Send(model);
+            return NewResult(result);
+        }
+
+        [HttpDelete(Router.NewStudentRouting.Delete)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> DeleteNewStudent(int id)
+        {
+            var result = await _mediator.Send(new DeleteNewStudentCommand() { NewStudentId = id });
+            return NewResult(result);
         }
         #endregion
     }
