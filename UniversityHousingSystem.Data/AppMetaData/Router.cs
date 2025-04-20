@@ -2,8 +2,8 @@
 {
     public static class Router
     {
-        public const string Root = "Api/";
-        public const string Version = "V1/";
+        public const string Root = "api/";
+        public const string Version = "v1/";
         public const string Rule = Root + Version;
 
         public const string SingleRoute = "{id}";
@@ -11,21 +11,21 @@
 
         public static class EventRouting
         {
-            public const string Prefix = Rule + "Event/";
+            public const string Prefix = Rule + "event/";
 
-            public const string list = Prefix + "List";
+            public const string list = Prefix + "list";
             public const string coming = Prefix + "coming";
             public const string paginated = Prefix + "paginated";
             public const string GetById = Prefix + SingleRoute;
 
-            public const string Create = Prefix + "Create";
-            public const string Update = Prefix + "Update";
+            public const string Create = Prefix + "create";
+            public const string Update = Prefix + "update";
             public const string Delete = Prefix + SingleRoute;
         }
 
         public static class BuildingRouting
         {
-            public const string Prefix = Rule + "Buildings/";
+            public const string Prefix = Rule + "buildings/";
 
             public const string List = Prefix + nameof(List);
             public const string GetById = Prefix + SingleRoute;
@@ -36,41 +36,41 @@
 
         public static class RoomRouting
         {
-            public const string Prefix = Rule + "Rooms/";
+            public const string Prefix = Rule + "rooms/";
 
-            public const string List = Prefix + "List";
+            public const string List = Prefix + "list";
             public const string GetById = Prefix + SingleRoute;
-            public const string Create = Prefix + "Create";
-            public const string Update = Prefix + "Update";
+            public const string Create = Prefix + "create";
+            public const string Update = Prefix + "update";
             public const string Delete = Prefix + SingleRoute;
         }
         public static class GuardianRouting
         {
-            public const string Prefix = Rule + "Guardians/";
+            public const string Prefix = Rule + "guardians/";
 
-            public const string List = Prefix + "List";
+            public const string List = Prefix + "list";
             public const string GetById = Prefix + SingleRoute;
-            public const string Create = Prefix + "Create";
-            public const string Update = Prefix + "Update";
+            public const string Create = Prefix + "create";
+            public const string Update = Prefix + "update";
             public const string Delete = Prefix + SingleRoute;
         }
         public static class CollegeRouting
         {
-            public const string Prefix = Rule + "Colleges/";
+            public const string Prefix = Rule + "colleges/";
 
-            public const string List = Prefix + "List";
+            public const string List = Prefix + "list";
             public const string GetById = Prefix + SingleRoute;
-            public const string Create = Prefix + "Create";
-            public const string Update = Prefix + "Update";
+            public const string Create = Prefix + "create";
+            public const string Update = Prefix + "update";
             public const string Delete = Prefix + SingleRoute;
         }
         public static class CollegeDepartmentRouting
         {
-            public const string Prefix = Rule + "CollegesDepartments/";
+            public const string Prefix = Rule + "collegesDepartments/";
 
-            public const string List = Prefix + "List";
+            public const string List = Prefix + "list";
             public const string GetById = Prefix + SingleRoute;
-            public const string Create = Prefix + "Create";
+            public const string Create = Prefix + "create";
             public const string Update = Prefix + "Update";
             public const string Delete = Prefix + SingleRoute;
         }
