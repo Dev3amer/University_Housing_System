@@ -36,7 +36,6 @@ namespace UniversityHousingSystem.Infrastructure.Context
         public DbSet<NewStudent> NewStudents { get; set; }
         public DbSet<Notification> Notification { get; set; }
         public DbSet<HighSchool> HighSchools { get; set; }
-        public DbSet<HighSchoolDepartment> HighSchoolDepartments { get; set; }
         public DbSet<Attendance> Attendances { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Option> Options { get; set; }
