@@ -12,8 +12,8 @@ using UniversityHousingSystem.Infrastructure.Context;
 namespace UniversityHousingSystem.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250420005918_RemoveHighSchoolDept")]
-    partial class RemoveHighSchoolDept
+    [Migration("20250422233105_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -1248,6 +1248,15 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("QRImagePath")
+                        .HasMaxLength(2500)
+                        .HasColumnType("nvarchar(2500)");
+
+                    b.Property<string>("QRText")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
                     b.Property<string>("Religion")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -1263,10 +1272,6 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(55)
                         .HasColumnType("nvarchar(55)");
-
-                    b.Property<string>("StudentQR")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("Telephone")
                         .HasMaxLength(15)
@@ -1739,7 +1744,7 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                     b.HasOne("UniversityHousingSystem.Data.Entities.HighSchool", "HighSchool")
                         .WithMany("NewStudents")
                         .HasForeignKey("HighSchoolId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("UniversityHousingSystem.Data.Entities.Student", "Student")

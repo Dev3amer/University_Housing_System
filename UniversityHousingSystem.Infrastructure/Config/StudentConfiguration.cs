@@ -85,8 +85,12 @@ namespace UniversityHousingSystem.Infrastructure.Config
                   .IsRequired()
                   .HasMaxLength(200);
 
-            builder.Property(s => s.StudentQR)
-                  .HasMaxLength(200);
+            builder.Property(s => s.QRText)
+                  .HasMaxLength(255);
+
+            builder.Property(s => s.QRImagePath)
+                  .HasMaxLength(2500)
+                  .IsRequired(false);
             #endregion
 
             #region One-to-One

@@ -48,7 +48,6 @@ namespace UniversityHousingSystem.Core.Features.OldStudent.Queries.Handler
                 Email = os.Student.Email,
                 IsMarried = os.Student.IsMarried,
                 AddressLine = os.Student.AddressLine,
-                StudentQR = os.Student.StudentQR,
                 PreviousYearGrade = os.PreviousYearGrade,
                 GradePercentage = os.GradePercentage,
                 PreviousYearHosting = os.PreviousYearHosting
@@ -78,7 +77,6 @@ namespace UniversityHousingSystem.Core.Features.OldStudent.Queries.Handler
                 Email = os.Student.Email,
                 IsMarried = os.Student.IsMarried,
                 AddressLine = os.Student.AddressLine,
-                StudentQR = os.Student.StudentQR,
                 PreviousYearGrade = os.PreviousYearGrade,
                 GradePercentage = os.GradePercentage,
                 PreviousYearHosting = os.PreviousYearHosting
@@ -114,7 +112,6 @@ namespace UniversityHousingSystem.Core.Features.OldStudent.Queries.Handler
                 Email = os.Student.Email,
                 IsMarried = os.Student.IsMarried,
                 AddressLine = os.Student.AddressLine,
-                StudentQR = os.Student.StudentQR,
                 PreviousYearGrade = os.PreviousYearGrade,
                 GradePercentage = os.GradePercentage,
                 PreviousYearHosting = os.PreviousYearHosting

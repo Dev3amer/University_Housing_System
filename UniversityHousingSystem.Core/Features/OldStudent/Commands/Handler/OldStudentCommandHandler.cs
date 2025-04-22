@@ -1,6 +1,4 @@
 ﻿using MediatR;
-using System.Diagnostics.Metrics;
-using UniversityHousingSystem.Core.Features.Events.Queries.Results;
 using UniversityHousingSystem.Core.Features.OldStudent.Commands.Models;
 using UniversityHousingSystem.Core.Features.OldStudent.Queries.Results;
 using UniversityHousingSystem.Core.ResponseBases;
@@ -20,15 +18,18 @@ namespace UniversityHousingSystem.Core.Features.OldStudent.Commands.Handler
         private readonly ICollegeService _collegeService;
         private readonly ICountryService _countryService;
         private readonly IVillageService _villageService;
-
+        private readonly IQRService _qRService;
+        private readonly IFileService _fileService;
         #endregion
         #region Constructor
-        public OldStudentCommandHandler(IOldStudentService oldStudentService, ICollegeService collegeService, ICountryService countryService, IVillageService villageService)
+        public OldStudentCommandHandler(IOldStudentService oldStudentService, ICollegeService collegeService, ICountryService countryService, IVillageService villageService, IQRService qRService, IFileService fileService)
         {
             _oldStudentService = oldStudentService;
             _collegeService = collegeService;
             _countryService = countryService;
             _villageService = villageService;
+            _qRService = qRService;
+            _fileService = fileService;
         }
         #endregion
         #region Handlers
@@ -45,6 +46,9 @@ namespace UniversityHousingSystem.Core.Features.OldStudent.Commands.Handler
             var village = await _villageService.GetAsync(request.VillageId);
             if (village is null)
                 return BadRequest<GetOldStudentByIdResponse>(string.Format(SharedResourcesKeys.NotFound, nameof(Data.Entities.Village)));
+
+            var qrText = Guid.NewGuid().ToString();
+
 
             var mappedOldStudent = new Data.Entities.OldStudent()
             {
@@ -67,7 +71,8 @@ namespace UniversityHousingSystem.Core.Features.OldStudent.Commands.Handler
                     Email = request.Email,
                     IsMarried = request.IsMarried,
                     AddressLine = request.AddressLine,
-                    StudentQR = request.StudentQR,
+                    QRText = qrText,
+                    QRImagePath = _qRService.GenerateAndSaveQRCodeForStudent(qrText),
                     College = collage,
                     Country = country,
                     Village = village,
@@ -116,7 +121,6 @@ namespace UniversityHousingSystem.Core.Features.OldStudent.Commands.Handler
                 Email = addedOldStudent.Student.Email,
                 IsMarried = addedOldStudent.Student.IsMarried,
                 AddressLine = addedOldStudent.Student.AddressLine,
-                StudentQR = addedOldStudent.Student.StudentQR,
                 PreviousYearGrade = addedOldStudent.PreviousYearGrade,
                 GradePercentage = addedOldStudent.GradePercentage,
                 PreviousYearHosting = addedOldStudent.PreviousYearHosting
@@ -150,7 +154,6 @@ namespace UniversityHousingSystem.Core.Features.OldStudent.Commands.Handler
             oldStudentOldObj.Student.Email = request.Email;
             oldStudentOldObj.Student.IsMarried = request.IsMarried;
             oldStudentOldObj.Student.AddressLine = request.AddressLine;
-            oldStudentOldObj.Student.StudentQR = request.StudentQR;
             oldStudentOldObj.PreviousYearGrade = request.PreviousYearGrade;
             oldStudentOldObj.GradePercentage = request.GradePercentage;
             oldStudentOldObj.PreviousYearHosting = request.PreviousYearHosting;
@@ -177,7 +180,6 @@ namespace UniversityHousingSystem.Core.Features.OldStudent.Commands.Handler
                 Email = updatedOldStudent.Student.Email,
                 IsMarried = updatedOldStudent.Student.IsMarried,
                 AddressLine = updatedOldStudent.Student.AddressLine,
-                StudentQR = updatedOldStudent.Student.StudentQR,
                 PreviousYearGrade = updatedOldStudent.PreviousYearGrade,
                 GradePercentage = updatedOldStudent.GradePercentage,
                 PreviousYearHosting = updatedOldStudent.PreviousYearHosting
@@ -192,6 +194,8 @@ namespace UniversityHousingSystem.Core.Features.OldStudent.Commands.Handler
 
             if (searchedOldStudent is null)
                 return BadRequest<bool>(string.Format(SharedResourcesKeys.NotFound, nameof(Data.Entities.OldStudent)));
+
+            await _fileService.DeleteFileAsync(searchedOldStudent.Student.QRImagePath);
 
             var isDeleted = await _oldStudentService.DeleteAsync(searchedOldStudent);
             return isDeleted ? Deleted<bool>(string.Format(SharedResourcesKeys.Deleted, nameof(Data.Entities.OldStudent))) : InternalServerError<bool>();

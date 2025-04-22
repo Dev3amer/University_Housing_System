@@ -6,7 +6,7 @@ using UniversityHousingSystem.Data.Entities;
 using UniversityHousingSystem.Data.Resources;
 using UniversityHousingSystem.Service.Abstractions;
 
-namespace UniversityHousingSystem.Core.Features.OldStudent.Commands.Handler
+namespace UniversityHousingSystem.Core.Features.NewStudent.Commands.Handler
 {
     public class NewStudentCommandHandler : ResponseHandler,
         IRequestHandler<CreateNewStudentCommand, Response<GetNewStudentByIdResponse>>,
@@ -19,16 +19,21 @@ namespace UniversityHousingSystem.Core.Features.OldStudent.Commands.Handler
         private readonly ICountryService _countryService;
         private readonly IVillageService _villageService;
         private readonly IHighSchoolService _highSchoolService;
+        private readonly IQRService _qRService;
+        private readonly IFileService _fileService;
+
 
         #endregion
         #region Constructor
-        public NewStudentCommandHandler(INewStudentService newStudentService, ICollegeService collegeService, ICountryService countryService, IVillageService villageService, IHighSchoolService highSchoolService)
+        public NewStudentCommandHandler(INewStudentService newStudentService, ICollegeService collegeService, ICountryService countryService, IVillageService villageService, IHighSchoolService highSchoolService, IQRService qRService, IFileService fileService)
         {
             _newStudentService = newStudentService;
             _collegeService = collegeService;
             _countryService = countryService;
             _villageService = villageService;
             _highSchoolService = highSchoolService;
+            _qRService = qRService;
+            _fileService = fileService;
         }
         #endregion
         #region Handlers
@@ -48,11 +53,13 @@ namespace UniversityHousingSystem.Core.Features.OldStudent.Commands.Handler
 
             var highSchool = await _highSchoolService.GetAsync(request.HighSchoolId);
             if (highSchool is null)
-                return BadRequest<GetNewStudentByIdResponse>(string.Format(SharedResourcesKeys.NotFound, nameof(Data.Entities.HighSchool)));
+                return BadRequest<GetNewStudentByIdResponse>(string.Format(SharedResourcesKeys.NotFound, nameof(HighSchool)));
+
+            var qrText = Guid.NewGuid().ToString();
 
             var mappedNewStudent = new Data.Entities.NewStudent()
             {
-                Student = new Data.Entities.Student()
+                Student = new Student()
                 {
                     FirstName = request.FirstName,
                     SecondName = request.SecondName,
@@ -71,7 +78,8 @@ namespace UniversityHousingSystem.Core.Features.OldStudent.Commands.Handler
                     Email = request.Email,
                     IsMarried = request.IsMarried,
                     AddressLine = request.AddressLine,
-                    StudentQR = request.StudentQR,
+                    QRText = qrText,
+                    QRImagePath = _qRService.GenerateAndSaveQRCodeForStudent(qrText),
                     College = collage,
                     Country = country,
                     Village = village,
@@ -96,7 +104,7 @@ namespace UniversityHousingSystem.Core.Features.OldStudent.Commands.Handler
                 },
                 HighSchoolPercentage = request.HighSchoolPercentage,
                 IsOutsideSchool = request.IsOutsideSchool,
-                HighSchool = highSchool
+                HighSchoolId = request.HighSchoolId
             };
 
             var addedNewStudent = await _newStudentService.CreateAsync(mappedNewStudent);
@@ -120,11 +128,10 @@ namespace UniversityHousingSystem.Core.Features.OldStudent.Commands.Handler
                 Email = addedNewStudent.Student.Email,
                 IsMarried = addedNewStudent.Student.IsMarried,
                 AddressLine = addedNewStudent.Student.AddressLine,
-                StudentQR = addedNewStudent.Student.StudentQR,
                 HighSchoolPercentage = addedNewStudent.HighSchoolPercentage,
                 IsOutsideSchool = addedNewStudent.IsOutsideSchool,
-                HighSchoolId = addedNewStudent.HighSchool.HighSchoolId,
-                HighSchoolName = addedNewStudent.HighSchool.Name
+                HighSchoolId = highSchool.HighSchoolId,
+                HighSchoolName = highSchool.Name
             };
 
             return Created(mappedResponse, string.Format(SharedResourcesKeys.Created, nameof(Data.Entities.NewStudent)));
@@ -155,7 +162,6 @@ namespace UniversityHousingSystem.Core.Features.OldStudent.Commands.Handler
             newStudentOldObj.Student.Email = request.Email;
             newStudentOldObj.Student.IsMarried = request.IsMarried;
             newStudentOldObj.Student.AddressLine = request.AddressLine;
-            newStudentOldObj.Student.StudentQR = request.StudentQR;
             newStudentOldObj.IsOutsideSchool = request.IsOutsideSchool;
             newStudentOldObj.HighSchoolPercentage = request.HighSchoolPercentage;
             #endregion
@@ -181,7 +187,6 @@ namespace UniversityHousingSystem.Core.Features.OldStudent.Commands.Handler
                 Email = updatedNewStudent.Student.Email,
                 IsMarried = updatedNewStudent.Student.IsMarried,
                 AddressLine = updatedNewStudent.Student.AddressLine,
-                StudentQR = updatedNewStudent.Student.StudentQR,
                 HighSchoolPercentage = updatedNewStudent.HighSchoolPercentage,
                 IsOutsideSchool = updatedNewStudent.IsOutsideSchool,
                 HighSchoolId = updatedNewStudent.HighSchool.HighSchoolId,
@@ -193,12 +198,15 @@ namespace UniversityHousingSystem.Core.Features.OldStudent.Commands.Handler
 
         public async Task<Response<bool>> Handle(DeleteNewStudentCommand request, CancellationToken cancellationToken)
         {
-            var searchedOldStudent = await _newStudentService.GetAsync(request.NewStudentId);
+            var searchedNewStudent = await _newStudentService.GetAsync(request.NewStudentId);
 
-            if (searchedOldStudent is null)
+
+            if (searchedNewStudent is null)
                 return BadRequest<bool>(string.Format(SharedResourcesKeys.NotFound, nameof(Data.Entities.NewStudent)));
 
-            var isDeleted = await _newStudentService.DeleteAsync(searchedOldStudent);
+            await _fileService.DeleteFileAsync(searchedNewStudent.Student.QRImagePath);
+
+            var isDeleted = await _newStudentService.DeleteAsync(searchedNewStudent);
             return isDeleted ? Deleted<bool>(string.Format(SharedResourcesKeys.Deleted, nameof(Data.Entities.NewStudent))) : InternalServerError<bool>();
         }
         #endregion

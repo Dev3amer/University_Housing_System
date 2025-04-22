@@ -22,8 +22,7 @@ namespace UniversityHousingSystem.Infrastructure.Config
             builder.HasOne(ns => ns.HighSchool)
                 .WithMany(hs => hs.NewStudents)
                 .HasForeignKey(ns => ns.HighSchoolId)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.NoAction);
 
 
             builder.HasOne(os => os.Student)

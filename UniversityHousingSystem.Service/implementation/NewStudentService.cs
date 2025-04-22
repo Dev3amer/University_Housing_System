@@ -55,6 +55,7 @@ namespace UniversityHousingSystem.Service.implementation
         {
             return await _newStudentRepository
                 .GetTableNoTracking()
+                .Include(s => s.Student)
                 .FirstOrDefaultAsync(s => s.NewStudentId == id);
         }
         public async Task<NewStudent> CreateAsync(NewStudent newStudent)
@@ -66,7 +67,6 @@ namespace UniversityHousingSystem.Service.implementation
 
             newStudent.Student.PlaceOfBirth = newStudent.Student.PlaceOfBirth.Trim();
             newStudent.Student.AddressLine = newStudent.Student.AddressLine.Trim();
-            newStudent.Student.StudentQR = Guid.NewGuid().ToString();
 
 
             return await _newStudentRepository.AddAsync(newStudent);

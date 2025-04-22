@@ -1,9 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
-using UniversityHousingSystem.Data.Entities;
-using UniversityHousingSystem.Data.Helpers.Enums;
-using UniversityHousingSystem.Infrastructure.implementation;
-using UniversityHousingSystem.Infrastructure.Repositories;
 using UniversityHousingSystem.Service.Abstractions;
 
 namespace UniversityHousingSystem.Service.Implementation

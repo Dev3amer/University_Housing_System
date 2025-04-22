@@ -66,7 +66,6 @@ namespace UniversityHousingSystem.Service.implementation
 
             oldStudent.Student.PlaceOfBirth = oldStudent.Student.PlaceOfBirth.Trim();
             oldStudent.Student.AddressLine = oldStudent.Student.AddressLine.Trim();
-            oldStudent.Student.StudentQR = Guid.NewGuid().ToString();
 
 
             return await _oldStudentRepository.AddAsync(oldStudent);

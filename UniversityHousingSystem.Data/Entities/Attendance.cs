@@ -12,6 +12,6 @@ namespace UniversityHousingSystem.Data.Entities
         public int StudentId { get; set; }
 
         // Navigation Property
-        public Student Student { get; set; } = new();
+        public Student Student { get; set; } = default!;
     }
 }

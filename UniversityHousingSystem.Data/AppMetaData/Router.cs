@@ -118,5 +118,13 @@
             public const string Update = Prefix + "update";
             public const string Delete = Prefix + SingleRoute;
         }
+        public static class AttendanceRouting
+        {
+            public const string Prefix = Rule + "attendance/";
+
+            public const string paginated = Prefix + "paginated";
+
+            public const string Create = Prefix + "scan";
+        }
     }
 }

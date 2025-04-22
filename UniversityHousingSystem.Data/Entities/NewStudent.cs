@@ -12,6 +12,6 @@
 
         // Navigation Property
         public Student Student { get; set; } = new();
-        public HighSchool HighSchool { get; set; } = new();
+        public HighSchool? HighSchool { get; set; }
     }
 }

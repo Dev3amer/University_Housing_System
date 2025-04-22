@@ -23,7 +23,8 @@ namespace UniversityHousingSystem.Data.Entities
         public string Email { get; set; } = default!;
         public bool IsMarried { get; set; }
         public string AddressLine { get; set; } = default!;
-        public string? StudentQR { get; set; }
+        public string QRText { get; set; } = default!;
+        public string? QRImagePath { get; set; }
 
         //Foreign Keys
         public int ApplicationId { get; set; }

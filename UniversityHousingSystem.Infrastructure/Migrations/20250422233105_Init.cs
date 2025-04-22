@@ -220,26 +220,6 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "HighSchoolDepartments",
-                columns: table => new
-                {
-                    HighSchoolDepartmentId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    HighSchoolId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_HighSchoolDepartments", x => x.HighSchoolDepartmentId);
-                    table.ForeignKey(
-                        name: "FK_HighSchoolDepartments_HighSchools_HighSchoolId",
-                        column: x => x.HighSchoolId,
-                        principalTable: "HighSchools",
-                        principalColumn: "HighSchoolId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Cities",
                 columns: table => new
                 {
@@ -503,7 +483,8 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                     Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     IsMarried = table.Column<bool>(type: "bit", nullable: false),
                     AddressLine = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    StudentQR = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    QRText = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    QRImagePath = table.Column<string>(type: "nvarchar(2500)", maxLength: 2500, nullable: true),
                     ApplicationId = table.Column<int>(type: "int", nullable: false),
                     CollegeId = table.Column<int>(type: "int", nullable: false),
                     GuardianId = table.Column<int>(type: "int", nullable: false),
@@ -758,8 +739,7 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                         name: "FK_NewStudents_HighSchools_HighSchoolId",
                         column: x => x.HighSchoolId,
                         principalTable: "HighSchools",
-                        principalColumn: "HighSchoolId",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "HighSchoolId");
                     table.ForeignKey(
                         name: "FK_NewStudents_Students_StudentId",
                         column: x => x.StudentId,
@@ -1158,12 +1138,6 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_HighSchoolDepartments_HighSchoolId_Name",
-                table: "HighSchoolDepartments",
-                columns: new[] { "HighSchoolId", "Name" },
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_HighSchools_Name",
                 table: "HighSchools",
                 column: "Name",
@@ -1477,9 +1451,6 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Events");
-
-            migrationBuilder.DropTable(
-                name: "HighSchoolDepartments");
 
             migrationBuilder.DropTable(
                 name: "Issues");

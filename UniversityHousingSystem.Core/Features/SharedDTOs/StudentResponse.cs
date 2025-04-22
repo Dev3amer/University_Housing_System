@@ -21,6 +21,6 @@ namespace UniversityHousingSystem.Core.Features.SharedDTOs
         public string Email { get; set; } = default!;
         public bool IsMarried { get; set; }
         public string AddressLine { get; set; } = default!;
-        public string? StudentQR { get; set; }
+        //public string? StudentQR { get; set; }
     }
 }
