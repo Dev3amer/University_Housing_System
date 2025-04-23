@@ -25,19 +25,24 @@ namespace UniversityHousingSystem.Service.implementation
                 .Include(a => a.Student)
                 .ToListAsync();
         }
-        public IQueryable<Attendance> GetAllQueryable(DateTime? search)
+        public IQueryable<Attendance> GetAllQueryable(DateTime? dateTime, string? studentNationalId)
         {
 
             var queryableList = _attendanceRepository.GetTableNoTracking()
                .Include(a => a.Student)
                .AsQueryable();
 
-            if (search != null)
+            if (dateTime != null)
             {
-                queryableList = queryableList.Where(a => a.DateAndTime == search);
+                queryableList = queryableList.Where(a => a.DateAndTime == dateTime);
             }
 
-            queryableList = queryableList.OrderBy(m => m.DateAndTime);
+            if (studentNationalId != null)
+            {
+                queryableList = queryableList.Where(a => a.Student.NationalId == studentNationalId);
+            }
+
+            queryableList = queryableList.OrderByDescending(m => m.DateAndTime);
 
             return queryableList;
         }
