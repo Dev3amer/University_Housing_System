@@ -29,6 +29,7 @@ namespace UniversityHousingSystem.Service
             services.AddTransient<IQRService, QRService>();
             services.AddTransient<IAttendanceService, AttendanceService>();
             services.AddTransient<IStudentService, StudentService>();
+            services.AddTransient<IEmployeeService, EmployeeService>();
         }
     }
 }
