@@ -126,5 +126,17 @@
 
             public const string Create = Prefix + "scan";
         }
+        public static class EmployeeRouting
+        {
+            public const string Prefix = Rule + "employee/";
+
+            public const string list = Prefix + "list";
+            public const string paginated = Prefix + "paginated";
+            public const string GetById = Prefix + SingleRoute;
+
+            public const string Create = Prefix + "create";
+            public const string Update = Prefix + "update";
+            public const string Delete = Prefix + SingleRoute;
+        }
     }
 }
