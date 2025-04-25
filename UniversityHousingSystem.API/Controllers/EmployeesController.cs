@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using UniversityHousingSystem.API.APIBases;
+using UniversityHousingSystem.Core.Features.Employees.Commands.Models;
 using UniversityHousingSystem.Core.Features.Employees.Queries.Models;
 using Router = UniversityHousingSystem.Data.AppMetaData.Router;
 
@@ -31,12 +32,23 @@ namespace UniversityHousingSystem.API.Controllers
         }
         #endregion
         #region Commands
-        // [HttpPost("api/employees")]
-        // public async Task<IActionResult> CreateEmployee([FromBody] CreateEmployeeCommand command)
-        // {
-        //     var response = await _mediator.Send(command);
-        //     return response.ToActionResult();
-        // }
+        [HttpPost(Router.EmployeeRouting.Create)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> CreateEmployee([FromForm] CreateEmployeeCommand model)
+        {
+            var result = await _mediator.Send(model);
+            return NewResult(result);
+        }
+        [HttpDelete(Router.EmployeeRouting.Delete)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> DeleteEmployee(int id)
+        {
+            var result = await _mediator.Send(new DeleteEmployeeCommand() { EmployeeId = id });
+            return NewResult(result);
+        }
         #endregion
     }
 }

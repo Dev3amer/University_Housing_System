@@ -37,7 +37,10 @@ namespace UniversityHousingSystem.Core.Features.Employees.Queries.Handlers
                 FirstName = employee.FirstName,
                 SecondName = employee.SecondName,
                 ThirdName = employee.ThirdName,
-                FourthName = employee.FourthName
+                FourthName = employee.FourthName,
+                UserName = employee.User.UserName,
+                Email = employee.User.Email,
+                PhoneNumber = employee.User?.PhoneNumber
             };
             return Success(employeeResponse);
         }
@@ -52,7 +55,10 @@ namespace UniversityHousingSystem.Core.Features.Employees.Queries.Handlers
                 FirstName = e.FirstName,
                 SecondName = e.SecondName,
                 ThirdName = e.ThirdName,
-                FourthName = e.FourthName
+                FourthName = e.FourthName,
+                UserName = e.User.UserName,
+                Email = e.User.Email,
+                PhoneNumber = e.User.PhoneNumber
             }).ToPaginatedListAsync(request.PageNumber, request.PageSize);
 
             return paginatedList;

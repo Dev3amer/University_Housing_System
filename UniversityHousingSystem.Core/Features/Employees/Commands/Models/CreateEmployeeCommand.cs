@@ -1,8 +1,11 @@
-﻿namespace UniversityHousingSystem.Core.Features.Employees.Queries.Results
+﻿using MediatR;
+using UniversityHousingSystem.Core.Features.Employees.Queries.Results;
+using UniversityHousingSystem.Core.ResponseBases;
+
+namespace UniversityHousingSystem.Core.Features.Employees.Commands.Models
 {
-    public class GetEmployeesPaginatedListResponse
+    public class CreateEmployeeCommand : IRequest<Response<GetEmployeeByIdResponse>>
     {
-        public int EmployeeId { get; set; }
         public string FirstName { get; set; } = default!;
         public string SecondName { get; set; } = default!;
         public string ThirdName { get; set; } = default!;

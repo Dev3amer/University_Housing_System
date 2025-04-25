@@ -1,8 +1,12 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using MovieReservationSystem.Infrastructure.Seeding;
 using System.Text;
 using UniversityHousingSystem.Core;
 using UniversityHousingSystem.Core.Middleware;
@@ -137,6 +141,15 @@ namespace UniversityHousingSystem.API
             builder.Configuration.GetSection("SMTP").Bind(smtpSettings);
             builder.Services.AddSingleton(smtpSettings);
             #endregion
+            #region UrlHelper
+            builder.Services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+            builder.Services.AddTransient<IUrlHelper>(x =>
+            {
+                var actionContext = x.GetRequiredService<IActionContextAccessor>().ActionContext;
+                var factory = x.GetRequiredService<IUrlHelperFactory>();
+                return factory.GetUrlHelper(actionContext);
+            });
+            #endregion
 
             var app = builder.Build();
 
@@ -162,6 +175,9 @@ namespace UniversityHousingSystem.API
                 // Villages
                 var villagesSeeder = new VillageSeeder(context);
                 await villagesSeeder.SeedAsync();
+
+                var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                await RolesSeeder.SeedRolesAsync(roleManager);
             }
             #endregion
 
