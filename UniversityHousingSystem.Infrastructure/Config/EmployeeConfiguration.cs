@@ -29,9 +29,8 @@ namespace UniversityHousingSystem.Infrastructure.Config
 
             // Relationship
             builder.HasOne(e => e.User)
-                .WithOne()
+                .WithOne(u => u.Employee)
                 .HasForeignKey<Employee>(e => e.UserId)
-                .IsRequired(false)
                 .OnDelete(DeleteBehavior.SetNull);
 
             builder.ToTable("Employees");

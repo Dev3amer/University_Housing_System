@@ -12,7 +12,7 @@ using UniversityHousingSystem.Infrastructure.Context;
 namespace UniversityHousingSystem.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250422233105_Init")]
+    [Migration("20250425034419_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -660,9 +660,6 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("EmployeeId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
@@ -701,8 +698,6 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("EmployeeId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -1653,7 +1648,7 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
             modelBuilder.Entity("UniversityHousingSystem.Data.Entities.Employee", b =>
                 {
                     b.HasOne("UniversityHousingSystem.Data.Entities.Identity.ApplicationUser", "User")
-                        .WithOne()
+                        .WithOne("Employee")
                         .HasForeignKey("UniversityHousingSystem.Data.Entities.Employee", "UserId")
                         .OnDelete(DeleteBehavior.SetNull);
 
@@ -1680,15 +1675,6 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Country");
-                });
-
-            modelBuilder.Entity("UniversityHousingSystem.Data.Entities.Identity.ApplicationUser", b =>
-                {
-                    b.HasOne("UniversityHousingSystem.Data.Entities.Employee", "Employee")
-                        .WithMany()
-                        .HasForeignKey("EmployeeId");
-
-                    b.Navigation("Employee");
                 });
 
             modelBuilder.Entity("UniversityHousingSystem.Data.Entities.Identity.UserRefreshToken", b =>
@@ -2042,6 +2028,8 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
 
             modelBuilder.Entity("UniversityHousingSystem.Data.Entities.Identity.ApplicationUser", b =>
                 {
+                    b.Navigation("Employee");
+
                     b.Navigation("Student");
 
                     b.Navigation("UserRefreshTokens");
