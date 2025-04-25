@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using UniversityHousingSystem.Service.Abstractions;
+using UniversityHousingSystem.Service.Abstractions.Helpers;
 using UniversityHousingSystem.Service.implementation;
+using UniversityHousingSystem.Service.implementation.Helpers;
 using UniversityHousingSystem.Service.Implementation;
 
 namespace UniversityHousingSystem.Service
@@ -30,6 +32,9 @@ namespace UniversityHousingSystem.Service
             services.AddTransient<IAttendanceService, AttendanceService>();
             services.AddTransient<IStudentService, StudentService>();
             services.AddTransient<IEmployeeService, EmployeeService>();
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IEmailService, EmailService>();
+            services.AddSingleton<IPasswordGeneratorService, PasswordGeneratorService>();
         }
     }
 }
