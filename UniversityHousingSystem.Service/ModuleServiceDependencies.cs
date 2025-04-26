@@ -36,6 +36,7 @@ namespace UniversityHousingSystem.Service
             services.AddTransient<IEmailService, EmailService>();
             services.AddSingleton<IPasswordGeneratorService, PasswordGeneratorService>();
             services.AddTransient<IIssueTypeService, IssueTypeService>();
+            services.AddTransient<IIssueService, IssueService>();
         }
     }
 }
