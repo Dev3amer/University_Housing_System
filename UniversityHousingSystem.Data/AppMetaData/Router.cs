@@ -138,5 +138,13 @@
             public const string Update = Prefix + "update";
             public const string Delete = Prefix + SingleRoute;
         }
+        public static class IssueTypeRouting
+        {
+            public const string Prefix = Rule + "issuetypes/";
+
+            public const string List = Prefix + nameof(List);
+            public const string GetById = Prefix + SingleRoute;
+           
+        }
     }
 }
