@@ -37,6 +37,38 @@ namespace UniversityHousingSystem.API.Controllers
 
         #endregion
 
+        #region Commands
+        [HttpPost("Create")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> CreateRoom([FromForm] CreateIssueCommand model)
+        {
+            var result = await _mediator.Send(model);
+            return NewResult(result);
+        }
+
+        [HttpPut("Update")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> EditRoom([FromForm] UpdateIssueCommand model)
+        {
+            var result = await _mediator.Send(model);
+            return NewResult(result);
+        }
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> DeleteRoom([FromRoute] int id)
+        {
+            var result = await _mediator.Send(new DeleteIssueCommand(id)); // ✅ Use constructor
+            return NewResult(result);
+        }
+
+
+        #endregion
+
     }
 }
 
