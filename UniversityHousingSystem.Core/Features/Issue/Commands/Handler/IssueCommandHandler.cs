@@ -1,15 +1,10 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Identity;
-using UniversityHousingSystem.Core.Features.CollegeDepartment.Commands.Models;
 using UniversityHousingSystem.Core.Features.Events.Commands.Models;
 using UniversityHousingSystem.Core.Features.Events.Queries.Results;
 using UniversityHousingSystem.Core.ResponseBases;
 using UniversityHousingSystem.Data.Entities;
-using UniversityHousingSystem.Data.Entities.Identity;
 using UniversityHousingSystem.Data.Resources;
 using UniversityHousingSystem.Service.Abstractions;
-using UniversityHousingSystem.Service.implementation;
-using UniversityHousingSystem.Service.Implementation;
 
 namespace UniversityHousingSystem.Core.Features.Events.Commands.Handler
 {
@@ -35,6 +30,7 @@ namespace UniversityHousingSystem.Core.Features.Events.Commands.Handler
                 Description = request.Description,
                 StudentId = request.StudentId,
                 EmployeeId = request.EmployeeId,
+                IssueTypeId = request.IssueTypeId
             };
 
             // Call the service to create the department
@@ -92,7 +88,7 @@ namespace UniversityHousingSystem.Core.Features.Events.Commands.Handler
             return Success(result);
         }
     }
-    }
+}
 
 
 

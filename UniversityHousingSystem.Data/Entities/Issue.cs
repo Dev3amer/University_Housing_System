@@ -15,7 +15,7 @@
 
         // Navigation Properties
         public IssueType IssueType { get; set; } = new();
-        public Student Student { get; set; } = new();
+        public Student Student { get; set; } = default!;
         public Employee? Employee { get; set; }
     }
 }
