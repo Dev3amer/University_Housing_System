@@ -21,19 +21,15 @@ namespace UniversityHousingSystem.Core.Features.Events.Commands.Handler
             _issueService = issueService;
         }
 
-        // ✅ Create Room Handler
         public async Task<Response<GetIssueByIdResponse>> Handle(CreateIssueCommand request, CancellationToken cancellationToken)
         {
-            // Create the new CollegeDepartment object
             var issue = new Issue
             {
                 Description = request.Description,
                 StudentId = request.StudentId,
-                EmployeeId = request.EmployeeId,
                 IssueTypeId = request.IssueTypeId
             };
 
-            // Call the service to create the department
             var createdissue = await _issueService.CreateAsync(issue);
 
             // Prepare the response
@@ -41,7 +37,12 @@ namespace UniversityHousingSystem.Core.Features.Events.Commands.Handler
             {
                 Description = createdissue.Description,
                 StudentId = createdissue.StudentId,
-                EmployeeId = createdissue.EmployeeId,
+                StudentName = $"{createdissue.Student.FirstName} {createdissue.Student.SecondName} {createdissue.Student.ThirdName} {createdissue.Student.FourthName}",  // 🔥 Concatenated full name
+                IssueID=createdissue.IssueId,
+                CreatedDate = createdissue.CreatedDate,
+                IssueTypeName = createdissue.IssueType.TypeName,  // 🆕 Get IssueType name
+
+
             };
 
             return Success(response);
@@ -53,7 +54,7 @@ namespace UniversityHousingSystem.Core.Features.Events.Commands.Handler
             if (issue == null)
                 return NotFound<GetIssueByIdResponse>(string.Format(SharedResourcesKeys.NotFound, nameof(Issue)));
 
-            issue.Description = request.Description;
+       //   issue.Description = request.Description;
             issue.ResponseDate = request.ResponseDate;
             issue.Response = request.Response;
             issue.IssueTypeId = request.IssueTypeId;

@@ -41,7 +41,7 @@ namespace UniversityHousingSystem.API.Controllers
         [HttpPost("Create")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> CreateRoom([FromForm] CreateIssueCommand model)
+        public async Task<IActionResult> CreateIssue([FromForm] CreateIssueCommand model)
         {
             var result = await _mediator.Send(model);
             return NewResult(result);
@@ -50,7 +50,7 @@ namespace UniversityHousingSystem.API.Controllers
         [HttpPut("Update")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> EditRoom([FromForm] UpdateIssueCommand model)
+        public async Task<IActionResult> EditIssue([FromForm] UpdateIssueCommand model)
         {
             var result = await _mediator.Send(model);
             return NewResult(result);
@@ -60,7 +60,7 @@ namespace UniversityHousingSystem.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> DeleteRoom([FromRoute] int id)
+        public async Task<IActionResult> DeleteIssue([FromRoute] int id)
         {
             var result = await _mediator.Send(new DeleteIssueCommand(id)); // ✅ Use constructor
             return NewResult(result);

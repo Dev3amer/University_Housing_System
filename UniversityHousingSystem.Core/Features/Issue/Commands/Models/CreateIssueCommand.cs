@@ -12,7 +12,6 @@ namespace UniversityHousingSystem.Core.Features.Events.Commands.Models
         public string Description { get; set; } = default!;
         public int IssueTypeId { get; set; }
         public int StudentId { get; set; }
-        public int? EmployeeId { get; set; }
 
     }
 }
