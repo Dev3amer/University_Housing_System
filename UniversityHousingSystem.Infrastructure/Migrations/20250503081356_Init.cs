@@ -599,6 +599,7 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                     AddressLine = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     QRText = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     QRImagePath = table.Column<string>(type: "nvarchar(2500)", maxLength: 2500, nullable: true),
+                    CurrentScore = table.Column<double>(type: "float", nullable: false),
                     ApplicationId = table.Column<int>(type: "int", nullable: false),
                     CollegeId = table.Column<int>(type: "int", nullable: false),
                     GuardianId = table.Column<int>(type: "int", nullable: false),

@@ -12,7 +12,7 @@ using UniversityHousingSystem.Infrastructure.Context;
 namespace UniversityHousingSystem.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250425034419_Init")]
+    [Migration("20250503081356_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -1198,6 +1198,9 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                     b.Property<int>("CountryId")
                         .HasColumnType("int");
 
+                    b.Property<double>("CurrentScore")
+                        .HasColumnType("float");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -1747,7 +1750,7 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
             modelBuilder.Entity("UniversityHousingSystem.Data.Entities.OldStudent", b =>
                 {
                     b.HasOne("UniversityHousingSystem.Data.Entities.Student", "Student")
-                        .WithOne()
+                        .WithOne("OldStudent")
                         .HasForeignKey("UniversityHousingSystem.Data.Entities.OldStudent", "StudentId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
@@ -2094,6 +2097,8 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                     b.Navigation("Issues");
 
                     b.Navigation("NewStudent");
+
+                    b.Navigation("OldStudent");
 
                     b.Navigation("Responses");
 
