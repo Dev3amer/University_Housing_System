@@ -16,16 +16,20 @@ namespace UniversityHousingSystem.Infrastructure.Config
                 .IsRequired()
                 .HasMaxLength(2500);
 
-            // Relationships (Document has both StudentId and DocTypeId FKs)
+            // Relationships 
             builder.HasOne(d => d.Student)
                 .WithMany(s => s.Documents)
                 .HasForeignKey(d => d.StudentId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasOne(d => d.DocumentType)
-                .WithMany(dt => dt.Documents)
-                .HasForeignKey(d => d.DocTypeId)
-                .OnDelete(DeleteBehavior.Restrict);
+            // Store enum as string
+            builder.Property(d => d.DocumentType)
+                  .IsRequired()
+                  .HasMaxLength(55)
+                  .HasConversion(
+                      v => v.ToString(),  // Convert enum to string when saving
+                      v => (EnDocumentType)Enum.Parse(typeof(EnDocumentType), v) // Convert string back to enum when reading
+                  );
 
             builder.ToTable("Documents");
         }

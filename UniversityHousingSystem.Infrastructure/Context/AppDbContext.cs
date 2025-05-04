@@ -17,7 +17,6 @@ namespace UniversityHousingSystem.Infrastructure.Context
         public DbSet<Application> Applications { get; set; }
         public DbSet<Guardian> Guardians { get; set; }
         public DbSet<Document> Documents { get; set; }
-        public DbSet<DocumentType> DocumentTypes { get; set; }
         public DbSet<Room> Rooms { get; set; }
         public DbSet<RoomPhoto> RoomPhotos { get; set; }
 

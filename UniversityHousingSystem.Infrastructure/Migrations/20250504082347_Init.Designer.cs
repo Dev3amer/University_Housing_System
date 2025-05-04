@@ -12,7 +12,7 @@ using UniversityHousingSystem.Infrastructure.Context;
 namespace UniversityHousingSystem.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250504071708_Init")]
+    [Migration("20250504082347_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -416,8 +416,10 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DocumentId"));
 
-                    b.Property<int>("DocTypeId")
-                        .HasColumnType("int");
+                    b.Property<string>("DocumentType")
+                        .IsRequired()
+                        .HasMaxLength(55)
+                        .HasColumnType("nvarchar(55)");
 
                     b.Property<string>("Path")
                         .IsRequired()
@@ -429,32 +431,9 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
 
                     b.HasKey("DocumentId");
 
-                    b.HasIndex("DocTypeId");
-
                     b.HasIndex("StudentId");
 
                     b.ToTable("Documents", (string)null);
-                });
-
-            modelBuilder.Entity("UniversityHousingSystem.Data.Entities.DocumentType", b =>
-                {
-                    b.Property<int>("DocumentTypeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DocumentTypeId"));
-
-                    b.Property<string>("DocumentTypeName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("DocumentTypeId");
-
-                    b.HasIndex("DocumentTypeName")
-                        .IsUnique();
-
-                    b.ToTable("DocumentTypes", (string)null);
                 });
 
             modelBuilder.Entity("UniversityHousingSystem.Data.Entities.Employee", b =>
@@ -1636,19 +1615,11 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
 
             modelBuilder.Entity("UniversityHousingSystem.Data.Entities.Document", b =>
                 {
-                    b.HasOne("UniversityHousingSystem.Data.Entities.DocumentType", "DocumentType")
-                        .WithMany("Documents")
-                        .HasForeignKey("DocTypeId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("UniversityHousingSystem.Data.Entities.Student", "Student")
                         .WithMany("Documents")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("DocumentType");
 
                     b.Navigation("Student");
                 });
@@ -2016,11 +1987,6 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                     b.Navigation("Governorates");
 
                     b.Navigation("Students");
-                });
-
-            modelBuilder.Entity("UniversityHousingSystem.Data.Entities.DocumentType", b =>
-                {
-                    b.Navigation("Documents");
                 });
 
             modelBuilder.Entity("UniversityHousingSystem.Data.Entities.Employee", b =>

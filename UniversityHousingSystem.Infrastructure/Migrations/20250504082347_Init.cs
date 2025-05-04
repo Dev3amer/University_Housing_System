@@ -95,19 +95,6 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "DocumentTypes",
-                columns: table => new
-                {
-                    DocumentTypeId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    DocumentTypeName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DocumentTypes", x => x.DocumentTypeId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Guardians",
                 columns: table => new
                 {
@@ -690,18 +677,12 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                     DocumentId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Path = table.Column<string>(type: "nvarchar(2500)", maxLength: 2500, nullable: false),
-                    StudentId = table.Column<int>(type: "int", nullable: false),
-                    DocTypeId = table.Column<int>(type: "int", nullable: false)
+                    DocumentType = table.Column<string>(type: "nvarchar(55)", maxLength: 55, nullable: false),
+                    StudentId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Documents", x => x.DocumentId);
-                    table.ForeignKey(
-                        name: "FK_Documents_DocumentTypes_DocTypeId",
-                        column: x => x.DocTypeId,
-                        principalTable: "DocumentTypes",
-                        principalColumn: "DocumentTypeId",
-                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Documents_Students_StudentId",
                         column: x => x.StudentId,
@@ -1120,20 +1101,9 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Documents_DocTypeId",
-                table: "Documents",
-                column: "DocTypeId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Documents_StudentId",
                 table: "Documents",
                 column: "StudentId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_DocumentTypes_DocumentTypeName",
-                table: "DocumentTypes",
-                column: "DocumentTypeName",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Employees_FirstName_SecondName_ThirdName_FourthName",
@@ -1468,9 +1438,6 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
-
-            migrationBuilder.DropTable(
-                name: "DocumentTypes");
 
             migrationBuilder.DropTable(
                 name: "IssueTypes");
