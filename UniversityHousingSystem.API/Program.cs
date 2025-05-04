@@ -141,6 +141,7 @@ namespace UniversityHousingSystem.API
             builder.Configuration.GetSection("SMTP").Bind(smtpSettings);
             builder.Services.AddSingleton(smtpSettings);
             #endregion
+
             #region UrlHelper
             builder.Services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             builder.Services.AddTransient<IUrlHelper>(x =>
@@ -176,8 +177,17 @@ namespace UniversityHousingSystem.API
                 var villagesSeeder = new VillageSeeder(context);
                 await villagesSeeder.SeedAsync();
 
+                // Roles
                 var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
                 await RolesSeeder.SeedRolesAsync(roleManager);
+
+                // highSchools
+                var highSchoolSeeder = new HighSchoolsSeeder(context);
+                await highSchoolSeeder.SeedHighSchoolsAsync();
+
+                // College
+                var collegeSeeder = new CollegeSeeder(context);
+                await collegeSeeder.SeedCollagesAsync();
             }
             #endregion
 
