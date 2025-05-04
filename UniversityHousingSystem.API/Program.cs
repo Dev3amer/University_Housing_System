@@ -200,6 +200,10 @@ namespace UniversityHousingSystem.API
                 // Rooms
                 var RoomsSeeder = new RoomsSeeder(context);
                 await RoomsSeeder.SeedRoomsAsync();
+
+                // CollegeDepartments
+                var collegeDepartmentsSeeder = new CollegeDepartmentsSeeder(context);
+                await collegeDepartmentsSeeder.SeedCollagesDepartmentsAsync();
             }
             #endregion
 

@@ -9,6 +9,6 @@
         public int CollegeId { get; set; }
 
         // Navigation Property
-        public College College { get; set; } = new();
+        public College College { get; set; } = default!;
     }
 }

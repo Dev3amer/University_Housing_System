@@ -1,7 +1,7 @@
 ﻿using UniversityHousingSystem.Data.Entities;
 using UniversityHousingSystem.Infrastructure.Context;
 
-namespace MovieReservationSystem.Infrastructure.Seeding
+namespace UniversityHousingSystem.Infrastructure.Seeding
 {
     public class CollegeSeeder
     {
