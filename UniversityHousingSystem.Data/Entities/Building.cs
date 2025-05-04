@@ -9,10 +9,8 @@ namespace UniversityHousingSystem.Data.Entities
         public string? Description { get; set; }
 
         public string AddressInDetails { get; set; } = default!;
-        public string? MapSearchText { get; set; }
+        public string? MapIFrame { get; set; }
         public EnBuildingType Type { get; set; }
-       // public int Capacity { get; set; }
-
 
         // Foreign Keys
         public int VillageId { get; set; }

@@ -275,8 +275,8 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar");
 
-                    b.Property<string>("MapSearchText")
-                        .HasMaxLength(200)
+                    b.Property<string>("MapIFrame")
+                        .HasMaxLength(2500)
                         .HasColumnType("nvarchar");
 
                     b.Property<string>("Name")

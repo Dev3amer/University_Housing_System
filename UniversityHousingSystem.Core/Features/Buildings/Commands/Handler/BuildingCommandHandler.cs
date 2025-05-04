@@ -49,7 +49,7 @@ namespace UniversityHousingSystem.Core.Features.Buildings.Commands.Handler
                 Name = request.Name,
                 Description = request.Description,
                 AddressInDetails = request.AddressInDetails,
-                MapSearchText = request.MapSearchText,
+                MapIFrame = request.MapSearchText,
                 Type = request.Type,
                 VillageId = village.VillageId
             };
@@ -62,7 +62,7 @@ namespace UniversityHousingSystem.Core.Features.Buildings.Commands.Handler
                 Name = createdBuilding.Name,
                 Description = createdBuilding.Description,
                 Address = createdBuilding.AddressInDetails,
-                MapSearchText = createdBuilding.MapSearchText,
+                MapSearchText = createdBuilding.MapIFrame,
                 Type = createdBuilding.Type.ToString(),
                 VillageName = village.NameEn
             };
@@ -83,7 +83,7 @@ namespace UniversityHousingSystem.Core.Features.Buildings.Commands.Handler
             existingBuilding.Name = request.Name;
             existingBuilding.Description = request.Description;
             existingBuilding.AddressInDetails = request.AddressInDetails;
-            existingBuilding.MapSearchText = request.MapSearchText;
+            existingBuilding.MapIFrame = request.MapSearchText;
             existingBuilding.Type = request.Type;
             existingBuilding.VillageId = request.VillageId;
 
@@ -95,7 +95,7 @@ namespace UniversityHousingSystem.Core.Features.Buildings.Commands.Handler
                 Name = updatedBuilding.Name,
                 Description = updatedBuilding.Description,
                 Address = updatedBuilding.AddressInDetails,
-                MapSearchText = updatedBuilding.MapSearchText,
+                MapSearchText = updatedBuilding.MapIFrame,
                 Type = updatedBuilding.Type.ToString(),
                 VillageName = village.NameEn
             };

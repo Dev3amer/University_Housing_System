@@ -27,9 +27,9 @@ namespace UniversityHousingSystem.Infrastructure.Config
                 .HasMaxLength(500)
                 .IsRequired();
 
-            builder.Property(b => b.MapSearchText)
+            builder.Property(b => b.MapIFrame)
                 .HasColumnType("nvarchar")
-                .HasMaxLength(200)
+                .HasMaxLength(2500)
                 .IsRequired(false);
 
             // Store enum as string

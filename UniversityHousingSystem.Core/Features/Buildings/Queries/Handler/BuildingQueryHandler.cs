@@ -54,7 +54,7 @@ namespace UniversityHousingSystem.Core.Features.Buildings.Queries.Handler
                 Name = building.Name,
                 Description = building.Description,
                 Address = building.AddressInDetails,
-                MapSearchText = building.MapSearchText,
+                MapSearchText = building.MapIFrame,
                 Type = building.Type.ToString(),
                 VillageName = building.Village.NameEn
             };

@@ -517,7 +517,7 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     AddressInDetails = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    MapSearchText = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    MapIFrame = table.Column<string>(type: "nvarchar(2500)", maxLength: 2500, nullable: true),
                     Type = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     VillageId = table.Column<int>(type: "int", nullable: false)
                 },

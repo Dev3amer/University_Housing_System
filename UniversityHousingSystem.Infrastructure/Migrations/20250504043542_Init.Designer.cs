@@ -12,7 +12,7 @@ using UniversityHousingSystem.Infrastructure.Context;
 namespace UniversityHousingSystem.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250503081356_Init")]
+    [Migration("20250504043542_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -278,8 +278,8 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar");
 
-                    b.Property<string>("MapSearchText")
-                        .HasMaxLength(200)
+                    b.Property<string>("MapIFrame")
+                        .HasMaxLength(2500)
                         .HasColumnType("nvarchar");
 
                     b.Property<string>("Name")

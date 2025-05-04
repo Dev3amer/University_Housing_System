@@ -188,6 +188,10 @@ namespace UniversityHousingSystem.API
                 // College
                 var collegeSeeder = new CollegeSeeder(context);
                 await collegeSeeder.SeedCollagesAsync();
+
+                // Buildings
+                var buildingsSeeder = new BuildingsSeeder(context);
+                await buildingsSeeder.SeedBuildingsAsync();
             }
             #endregion
 
