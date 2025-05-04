@@ -21,11 +21,12 @@ namespace UniversityHousingSystem.Core.Features.NewStudent.Commands.Handler
         private readonly IHighSchoolService _highSchoolService;
         private readonly IQRService _qRService;
         private readonly IFileService _fileService;
+        private readonly IRankingService _rankingService;
 
 
         #endregion
         #region Constructor
-        public NewStudentCommandHandler(INewStudentService newStudentService, ICollegeService collegeService, ICountryService countryService, IVillageService villageService, IHighSchoolService highSchoolService, IQRService qRService, IFileService fileService)
+        public NewStudentCommandHandler(INewStudentService newStudentService, ICollegeService collegeService, ICountryService countryService, IVillageService villageService, IHighSchoolService highSchoolService, IQRService qRService, IFileService fileService, IRankingService rankingService)
         {
             _newStudentService = newStudentService;
             _collegeService = collegeService;
@@ -34,6 +35,7 @@ namespace UniversityHousingSystem.Core.Features.NewStudent.Commands.Handler
             _highSchoolService = highSchoolService;
             _qRService = qRService;
             _fileService = fileService;
+            _rankingService = rankingService;
         }
         #endregion
         #region Handlers
@@ -100,15 +102,18 @@ namespace UniversityHousingSystem.Core.Features.NewStudent.Commands.Handler
                         NationalId = request.GuardianNationalId,
                         Phone = request.GuardianPhone,
                         GuardianRelation = request.GuardianRelation
-                    }
+                    },
+                    CurrentScore = 0.0
                 },
                 HighSchoolPercentage = request.HighSchoolPercentage,
                 IsOutsideSchool = request.IsOutsideSchool,
                 HighSchoolId = request.HighSchoolId
             };
 
+            mappedNewStudent.Student.CurrentScore = await _rankingService.CalculateNewStudentScore(mappedNewStudent);
             var addedNewStudent = await _newStudentService.CreateAsync(mappedNewStudent);
             var mappedResponse = new GetNewStudentByIdResponse()
+
             {
                 NewStudentId = addedNewStudent.NewStudentId,
                 FirstName = addedNewStudent.Student.FirstName,
@@ -131,7 +136,9 @@ namespace UniversityHousingSystem.Core.Features.NewStudent.Commands.Handler
                 HighSchoolPercentage = addedNewStudent.HighSchoolPercentage,
                 IsOutsideSchool = addedNewStudent.IsOutsideSchool,
                 HighSchoolId = highSchool.HighSchoolId,
-                HighSchoolName = highSchool.Name
+                HighSchoolName = highSchool.Name,
+                CurrentScore = addedNewStudent.Student.CurrentScore,
+                QRImagePath = addedNewStudent.Student.QRImagePath
             };
 
             return Created(mappedResponse, string.Format(SharedResourcesKeys.Created, nameof(Data.Entities.NewStudent)));

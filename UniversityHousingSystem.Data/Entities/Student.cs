@@ -25,6 +25,7 @@ namespace UniversityHousingSystem.Data.Entities
         public string AddressLine { get; set; } = default!;
         public string QRText { get; set; } = default!;
         public string? QRImagePath { get; set; }
+        public double CurrentScore { get; set; }
 
         //Foreign Keys
         public int ApplicationId { get; set; }
@@ -47,7 +48,7 @@ namespace UniversityHousingSystem.Data.Entities
         public ApplicationUser? User { get; set; }
         public ICollection<StudentHistory>? Histories { get; set; }
 
-        //public OldStudent? OldStudent { get; set; }
+        public OldStudent? OldStudent { get; set; }
         public NewStudent? NewStudent { get; set; }
         public virtual ICollection<StudentsNotifications>? StudentsNotifications { get; set; }
         public ICollection<Visit>? Visits { get; set; }

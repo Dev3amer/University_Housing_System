@@ -51,7 +51,9 @@ namespace UniversityHousingSystem.Core.Features.NewStudent.Queries.Handler
                 HighSchoolPercentage = ns.HighSchoolPercentage,
                 IsOutsideSchool = ns.IsOutsideSchool,
                 HighSchoolId = ns.HighSchool.HighSchoolId,
-                HighSchoolName = ns.HighSchool.Name
+                HighSchoolName = ns.HighSchool.Name,
+                QRImagePath = ns.Student.QRImagePath,
+                CurrentScore = ns.Student.CurrentScore
             }).ToListAsync();
 
             return Success(allNewStudents);
@@ -81,7 +83,9 @@ namespace UniversityHousingSystem.Core.Features.NewStudent.Queries.Handler
                 HighSchoolPercentage = ns.HighSchoolPercentage,
                 IsOutsideSchool = ns.IsOutsideSchool,
                 HighSchoolId = ns.HighSchool.HighSchoolId,
-                HighSchoolName = ns.HighSchool.Name
+                HighSchoolName = ns.HighSchool.Name,
+                QRImagePath = ns.Student.QRImagePath,
+                CurrentScore = ns.Student.CurrentScore
             }).FirstOrDefaultAsync(os => os.NewStudentId == request.NewStudentId);
 
             if (newStudent is null)
@@ -117,7 +121,9 @@ namespace UniversityHousingSystem.Core.Features.NewStudent.Queries.Handler
                 HighSchoolPercentage = ns.HighSchoolPercentage,
                 IsOutsideSchool = ns.IsOutsideSchool,
                 HighSchoolId = ns.HighSchool.HighSchoolId,
-                HighSchoolName = ns.HighSchool.Name
+                HighSchoolName = ns.HighSchool.Name,
+                QRImagePath = ns.Student.QRImagePath,
+                CurrentScore = ns.Student.CurrentScore
             }).ToPaginatedListAsync(request.PageNumber, request.PageSize);
 
             return paginatedList;

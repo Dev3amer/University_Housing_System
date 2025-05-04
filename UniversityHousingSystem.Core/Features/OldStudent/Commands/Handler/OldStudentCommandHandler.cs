@@ -20,9 +20,10 @@ namespace UniversityHousingSystem.Core.Features.OldStudent.Commands.Handler
         private readonly IVillageService _villageService;
         private readonly IQRService _qRService;
         private readonly IFileService _fileService;
+        private readonly IRankingService _rankingService;
         #endregion
         #region Constructor
-        public OldStudentCommandHandler(IOldStudentService oldStudentService, ICollegeService collegeService, ICountryService countryService, IVillageService villageService, IQRService qRService, IFileService fileService)
+        public OldStudentCommandHandler(IOldStudentService oldStudentService, ICollegeService collegeService, ICountryService countryService, IVillageService villageService, IQRService qRService, IFileService fileService, IRankingService rankingService)
         {
             _oldStudentService = oldStudentService;
             _collegeService = collegeService;
@@ -30,6 +31,7 @@ namespace UniversityHousingSystem.Core.Features.OldStudent.Commands.Handler
             _villageService = villageService;
             _qRService = qRService;
             _fileService = fileService;
+            _rankingService = rankingService;
         }
         #endregion
         #region Handlers
@@ -100,6 +102,7 @@ namespace UniversityHousingSystem.Core.Features.OldStudent.Commands.Handler
                 PreviousYearHosting = request.PreviousYearHosting,
             };
 
+            mappedOldStudent.Student.CurrentScore = await _rankingService.CalculateOldStudentScore(mappedOldStudent);
             var addedOldStudent = await _oldStudentService.CreateAsync(mappedOldStudent);
             var mappedResponse = new GetOldStudentByIdResponse()
             {
@@ -123,7 +126,9 @@ namespace UniversityHousingSystem.Core.Features.OldStudent.Commands.Handler
                 AddressLine = addedOldStudent.Student.AddressLine,
                 PreviousYearGrade = addedOldStudent.PreviousYearGrade,
                 GradePercentage = addedOldStudent.GradePercentage,
-                PreviousYearHosting = addedOldStudent.PreviousYearHosting
+                PreviousYearHosting = addedOldStudent.PreviousYearHosting,
+                CurrentScore = addedOldStudent.Student.CurrentScore,
+                QRImagePath = addedOldStudent.Student.QRImagePath
             };
 
             return Created(mappedResponse, string.Format(SharedResourcesKeys.Created, nameof(Data.Entities.OldStudent)));

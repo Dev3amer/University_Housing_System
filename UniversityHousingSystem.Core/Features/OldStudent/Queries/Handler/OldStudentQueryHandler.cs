@@ -50,7 +50,9 @@ namespace UniversityHousingSystem.Core.Features.OldStudent.Queries.Handler
                 AddressLine = os.Student.AddressLine,
                 PreviousYearGrade = os.PreviousYearGrade,
                 GradePercentage = os.GradePercentage,
-                PreviousYearHosting = os.PreviousYearHosting
+                PreviousYearHosting = os.PreviousYearHosting,
+                QRImagePath = os.Student.QRImagePath,
+                CurrentScore = os.Student.CurrentScore
             }).ToListAsync();
 
             return Success(allOldStudents);
@@ -79,7 +81,9 @@ namespace UniversityHousingSystem.Core.Features.OldStudent.Queries.Handler
                 AddressLine = os.Student.AddressLine,
                 PreviousYearGrade = os.PreviousYearGrade,
                 GradePercentage = os.GradePercentage,
-                PreviousYearHosting = os.PreviousYearHosting
+                PreviousYearHosting = os.PreviousYearHosting,
+                QRImagePath = os.Student.QRImagePath,
+                CurrentScore = os.Student.CurrentScore
             }).FirstOrDefaultAsync(os => os.OldStudentId == request.OldStudentId);
 
             if (oldStudent is null)
@@ -114,7 +118,9 @@ namespace UniversityHousingSystem.Core.Features.OldStudent.Queries.Handler
                 AddressLine = os.Student.AddressLine,
                 PreviousYearGrade = os.PreviousYearGrade,
                 GradePercentage = os.GradePercentage,
-                PreviousYearHosting = os.PreviousYearHosting
+                PreviousYearHosting = os.PreviousYearHosting,
+                QRImagePath = os.Student.QRImagePath,
+                CurrentScore = os.Student.CurrentScore
             }).ToPaginatedListAsync(request.PageNumber, request.PageSize);
 
             return paginatedList;

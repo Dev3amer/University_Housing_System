@@ -37,6 +37,8 @@ namespace UniversityHousingSystem.Service
             services.AddSingleton<IPasswordGeneratorService, PasswordGeneratorService>();
             services.AddTransient<IIssueTypeService, IssueTypeService>();
             services.AddTransient<IIssueService, IssueService>();
+            services.AddHttpClient<IDistanceService, DistanceService>();
+            services.AddScoped<IRankingService, RankingService>();
         }
     }
 }

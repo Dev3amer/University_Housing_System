@@ -23,8 +23,8 @@ namespace UniversityHousingSystem.Infrastructure.Config
                 .IsRequired();
 
             builder.HasOne(os => os.Student)
-                 .WithOne()
-                 .OnDelete(DeleteBehavior.NoAction);
+               .WithOne(s => s.OldStudent)
+               .OnDelete(DeleteBehavior.NoAction);
 
             builder.ToTable("OldStudents");
         }
