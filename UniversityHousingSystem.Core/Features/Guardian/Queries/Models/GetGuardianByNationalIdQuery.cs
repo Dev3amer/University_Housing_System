@@ -4,13 +4,13 @@ using UniversityHousingSystem.Core.ResponseBases;
 
 namespace UniversityHousingSystem.Core.Features.Events.Queries.Models
 {
-    public class GetGuardianByIdQuery : IRequest<Response<GetGuardianByIdResponse>>
+    public class GetGuardianByNationalIdQuery : IRequest<Response<GetGuardianByIdResponse>>
     {
-        public int GuardianId { get; set; }
+        public string NationalId { get; set; }
 
-        public GetGuardianByIdQuery(int guardianId)
+        public GetGuardianByNationalIdQuery(string nationalId)
         {
-            GuardianId = guardianId;
+            NationalId = nationalId;
         }
     }
 }

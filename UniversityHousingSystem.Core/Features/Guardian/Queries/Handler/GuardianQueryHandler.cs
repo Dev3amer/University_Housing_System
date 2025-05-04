@@ -12,7 +12,7 @@ namespace UniversityHousingSystem.Core.Features.Buildings.Queries.Handler
 {
     public class GuardianQueryHandler : ResponseHandler,
         IRequestHandler<GetAllGuardiansQuery, Response<List<GetAllGuardiansResponse>>>,
-        IRequestHandler<GetGuardianByIdQuery, Response<GetGuardianByIdResponse>>,
+        IRequestHandler<GetGuardianByNationalIdQuery, Response<GetGuardianByIdResponse>>,
         IRequestHandler<GetGuardiansPaginatedListQuery, PaginatedList<GetGuardiansPaginatedListResponse>>
     {
         #region Fields
@@ -44,9 +44,9 @@ namespace UniversityHousingSystem.Core.Features.Buildings.Queries.Handler
 
             return Success(mappedGuardiansList);
         }
-        public async Task<Response<GetGuardianByIdResponse>> Handle(GetGuardianByIdQuery request, CancellationToken cancellationToken)
+        public async Task<Response<GetGuardianByIdResponse>> Handle(GetGuardianByNationalIdQuery request, CancellationToken cancellationToken)
         {
-            var guardian = await _guardianService.GetAsync(request.GuardianId);
+            var guardian = await _guardianService.GetByNationalIdAsync(request.NationalId);
 
             if (guardian is null)
                 return NotFound<GetGuardianByIdResponse>(string.Format(SharedResourcesKeys.NotFound, nameof(Guardian)));

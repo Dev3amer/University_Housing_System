@@ -49,7 +49,7 @@
             public const string Prefix = Rule + "guardians/";
 
             public const string List = Prefix + "list";
-            public const string GetById = Prefix + SingleRoute;
+            public const string GetByNationalId = Prefix + "{nationalId}";
             public const string Create = Prefix + "create";
             public const string Update = Prefix + "update";
             public const string Delete = Prefix + SingleRoute;

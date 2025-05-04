@@ -1,4 +1,5 @@
-﻿using UniversityHousingSystem.Data.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using UniversityHousingSystem.Data.Entities;
 using UniversityHousingSystem.Infrastructure.Repositories;
 using UniversityHousingSystem.Service.Abstractions;
 
@@ -40,6 +41,13 @@ namespace UniversityHousingSystem.Service.implementation
         {
             return await _guardianRepository.GetByIdAsync(id);
         }
+
+        public async Task<Guardian?> GetByNationalIdAsync(string NationalId)
+        {
+            return await _guardianRepository.GetTableAsTracking()
+                .Where(g => g.NationalId == NationalId)
+                .FirstOrDefaultAsync();
+        }
         public async Task<Guardian> CreateAsync(Guardian newGuardian)
         {
             return await _guardianRepository.AddAsync(newGuardian);
@@ -55,6 +63,8 @@ namespace UniversityHousingSystem.Service.implementation
             await _guardianRepository.DeleteAsync(guardianToDelete);
             return true;
         }
+
+
 
         #endregion
     }

@@ -21,12 +21,12 @@ namespace UniversityHousingSystem.API.Controllers
             var result = await _mediator.Send(new GetAllGuardiansQuery());
             return NewResult(result);
         }
-        [HttpGet(Router.GuardianRouting.GetById)]
+        [HttpGet(Router.GuardianRouting.GetByNationalId)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetGuardianByIdAsync(int id)
+        public async Task<IActionResult> GetGuardianByNationalIdIdAsync(string nationalId)
         {
-            var result = await _mediator.Send(new GetGuardianByIdQuery(id));
+            var result = await _mediator.Send(new GetGuardianByNationalIdQuery(nationalId));
             return NewResult(result);
         }
 
