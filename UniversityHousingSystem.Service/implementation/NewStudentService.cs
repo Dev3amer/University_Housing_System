@@ -56,6 +56,7 @@ namespace UniversityHousingSystem.Service.implementation
             return await _newStudentRepository
                 .GetTableNoTracking()
                 .Include(s => s.Student)
+                .ThenInclude(s => s.Documents)
                 .FirstOrDefaultAsync(s => s.NewStudentId == id);
         }
         public async Task<NewStudent> CreateAsync(NewStudent newStudent)

@@ -57,6 +57,19 @@ namespace UniversityHousingSystem.Core.Features.OldStudent.Commands.Handler
 
             var qrText = Guid.NewGuid().ToString();
 
+            var studentDocuments = new List<Document>()
+            {
+                new Document(){DocumentType = EnDocumentType.NationalIdImage,
+                                Path = await _fileService.SaveFileAsync(request.NationalIdImage,"StudentsIDs")},
+                new Document(){DocumentType = EnDocumentType.GuardianNationalIdImage,
+                                Path = await _fileService.SaveFileAsync(request.GuardianNationalIdImage,"GuardiansIDs")},
+                new Document(){DocumentType = EnDocumentType.PersonalImage,
+                                Path = await _fileService.SaveFileAsync(request.PersonalImage,"StudentsImages")},
+                new Document(){DocumentType = EnDocumentType.waterBill,
+                                Path = await _fileService.SaveFileAsync(request.WaterBill,"WaterBillsImages")},
+                new Document(){DocumentType = EnDocumentType.ResidenceApplication,
+                                Path = await _fileService.SaveFileAsync(request.ResidenceApplication,"Applications")},
+            };
 
             var mappedOldStudent = new Data.Entities.OldStudent()
             {
@@ -102,7 +115,8 @@ namespace UniversityHousingSystem.Core.Features.OldStudent.Commands.Handler
                         NationalId = request.GuardianNationalId,
                         Phone = request.GuardianPhone,
                         GuardianRelation = request.GuardianRelation
-                    }
+                    },
+                    Documents = studentDocuments
                 },
                 PreviousYearGrade = request.PreviousYearGrade,
                 GradePercentage = request.GradePercentage,

@@ -43,7 +43,7 @@ namespace UniversityHousingSystem.Data.Entities
         public Village Village { get; set; } = new();
         public Country Country { get; set; } = new();
         public ICollection<Issue> Issues { get; set; } = new HashSet<Issue>();
-        public College College { get; set; } = new();
+        public College College { get; set; } = default!;
         public CollegeDepartment CollegeDepartment { get; set; } = default!;
         public Application Application { get; set; } = default!;
         public Room? Room { get; set; }

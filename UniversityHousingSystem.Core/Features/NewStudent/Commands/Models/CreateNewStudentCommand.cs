@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Http;
 using UniversityHousingSystem.Core.Features.NewStudent.Queries.Results;
 using UniversityHousingSystem.Core.ResponseBases;
 using UniversityHousingSystem.Data.Helpers.Enums;
@@ -39,5 +40,10 @@ namespace UniversityHousingSystem.Core.Features.NewStudent.Commands.Models
         public string Email { get; set; } = default!;
         public bool IsMarried { get; set; }
         public string AddressLine { get; set; } = default!;
+        public IFormFile NationalIdImage { get; set; } = default!;
+        public IFormFile GuardianNationalIdImage { get; set; } = default!;
+        public IFormFile PersonalImage { get; set; } = default!;
+        public IFormFile WaterBill { get; set; } = default!;
+        public IFormFile ResidenceApplication { get; set; } = default!;
     }
 }

@@ -39,6 +39,7 @@ namespace UniversityHousingSystem.Service
             services.AddTransient<IIssueService, IssueService>();
             services.AddHttpClient<IDistanceService, DistanceService>();
             services.AddScoped<IRankingService, RankingService>();
+            services.AddTransient<IDocumentService, DocumentService>();
         }
     }
 }

@@ -24,7 +24,6 @@ namespace UniversityHousingSystem.Core.Features.NewStudent.Commands.Handler
         private readonly IRankingService _rankingService;
         private readonly ICollegeDepartmentService _collegeDepartmentService;
 
-
         #endregion
         #region Constructor
         public NewStudentCommandHandler(INewStudentService newStudentService, ICollegeService collegeService, ICountryService countryService, IVillageService villageService, IHighSchoolService highSchoolService, IQRService qRService, IFileService fileService, IRankingService rankingService, ICollegeDepartmentService collegeDepartmentService)
@@ -40,6 +39,7 @@ namespace UniversityHousingSystem.Core.Features.NewStudent.Commands.Handler
             _collegeDepartmentService = collegeDepartmentService;
         }
         #endregion
+
         #region Handlers
         public async Task<Response<GetNewStudentByIdResponse>> Handle(CreateNewStudentCommand request, CancellationToken cancellationToken)
         {
@@ -64,6 +64,20 @@ namespace UniversityHousingSystem.Core.Features.NewStudent.Commands.Handler
                 return BadRequest<GetNewStudentByIdResponse>(string.Format(SharedResourcesKeys.NotFound, nameof(Data.Entities.CollegeDepartment)));
 
             var qrText = Guid.NewGuid().ToString();
+
+            var studentDocuments = new List<Document>()
+            {
+                new Document(){DocumentType = EnDocumentType.NationalIdImage,
+                                Path = await _fileService.SaveFileAsync(request.NationalIdImage,"StudentsIDs")},
+                new Document(){DocumentType = EnDocumentType.GuardianNationalIdImage,
+                                Path = await _fileService.SaveFileAsync(request.GuardianNationalIdImage,"GuardiansIDs")},
+                new Document(){DocumentType = EnDocumentType.PersonalImage,
+                                Path = await _fileService.SaveFileAsync(request.PersonalImage,"StudentsImages")},
+                new Document(){DocumentType = EnDocumentType.waterBill,
+                                Path = await _fileService.SaveFileAsync(request.WaterBill,"WaterBillsImages")},
+                new Document(){DocumentType = EnDocumentType.ResidenceApplication,
+                                Path = await _fileService.SaveFileAsync(request.ResidenceApplication,"Applications")},
+            };
 
             var mappedNewStudent = new Data.Entities.NewStudent()
             {
@@ -110,7 +124,8 @@ namespace UniversityHousingSystem.Core.Features.NewStudent.Commands.Handler
                         Phone = request.GuardianPhone,
                         GuardianRelation = request.GuardianRelation
                     },
-                    CurrentScore = 0.0
+                    CurrentScore = 0.0,
+                    Documents = studentDocuments
                 },
                 HighSchoolPercentage = request.HighSchoolPercentage,
                 IsOutsideSchool = request.IsOutsideSchool,
@@ -228,6 +243,11 @@ namespace UniversityHousingSystem.Core.Features.NewStudent.Commands.Handler
                 return BadRequest<bool>(string.Format(SharedResourcesKeys.NotFound, nameof(Data.Entities.NewStudent)));
 
             await _fileService.DeleteFileAsync(searchedNewStudent.Student.QRImagePath);
+
+            //foreach (var item in searchedNewStudent.Student.Documents)
+            //{
+            //    await _fileService.DeleteFileAsync(item.Path);
+            //}
 
             var isDeleted = await _newStudentService.DeleteAsync(searchedNewStudent);
             return isDeleted ? Deleted<bool>(string.Format(SharedResourcesKeys.Deleted, nameof(Data.Entities.NewStudent))) : InternalServerError<bool>();
