@@ -16,6 +16,22 @@ namespace UniversityHousingSystem.Service.implementation
         {
             _studentRepository = studentRepository;
         }
+
+        public async Task<bool> DeleteAsync(Student student)
+        {
+            _studentRepository.BeginTransaction();
+            try
+            {
+                await _studentRepository.DeleteAsync(student);
+                _studentRepository.Commit();
+                return true;
+            }
+            catch
+            {
+                _studentRepository.RollBack();
+                return false;
+            }
+        }
         #endregion
 
         #region Methods

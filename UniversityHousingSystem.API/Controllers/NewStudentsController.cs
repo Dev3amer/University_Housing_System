@@ -59,13 +59,13 @@ namespace UniversityHousingSystem.API.Controllers
             return NewResult(result);
         }
 
-        [HttpDelete(Router.NewStudentRouting.Delete)]
+        [HttpDelete(Router.NewStudentRouting.FullDelete)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeleteNewStudent(int id)
         {
-            var result = await _mediator.Send(new DeleteNewStudentCommand() { NewStudentId = id });
+            var result = await _mediator.Send(new DeleteNewStudentWithDependanciesCommand() { NewStudentId = id });
             return NewResult(result);
         }
         #endregion

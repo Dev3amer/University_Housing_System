@@ -38,10 +38,10 @@ namespace UniversityHousingSystem.Data.Entities
         public int ResidencePlace { get; set; } //Foreign Key For Village
 
         // Navigation Properties
-        public Guardian Guardian { get; set; } = new();
+        public Guardian Guardian { get; set; } = default!;
         public ICollection<Document> Documents { get; set; } = new HashSet<Document>();
-        public Village Village { get; set; } = new();
-        public Country Country { get; set; } = new();
+        public Village Village { get; set; } = default!;
+        public Country Country { get; set; } = default!;
         public ICollection<Issue> Issues { get; set; } = new HashSet<Issue>();
         public College College { get; set; } = default!;
         public CollegeDepartment CollegeDepartment { get; set; } = default!;

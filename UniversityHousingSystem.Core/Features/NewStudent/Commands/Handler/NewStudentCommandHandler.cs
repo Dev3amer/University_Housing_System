@@ -11,7 +11,7 @@ namespace UniversityHousingSystem.Core.Features.NewStudent.Commands.Handler
     public class NewStudentCommandHandler : ResponseHandler,
         IRequestHandler<CreateNewStudentCommand, Response<GetNewStudentByIdResponse>>,
         IRequestHandler<UpdateNewStudentCommand, Response<GetNewStudentByIdResponse>>,
-        IRequestHandler<DeleteNewStudentCommand, Response<bool>>
+        IRequestHandler<DeleteNewStudentWithDependanciesCommand, Response<bool>>
     {
         #region Fields
         private readonly INewStudentService _newStudentService;
@@ -23,7 +23,6 @@ namespace UniversityHousingSystem.Core.Features.NewStudent.Commands.Handler
         private readonly IFileService _fileService;
         private readonly IRankingService _rankingService;
         private readonly ICollegeDepartmentService _collegeDepartmentService;
-
         #endregion
         #region Constructor
         public NewStudentCommandHandler(INewStudentService newStudentService, ICollegeService collegeService, ICountryService countryService, IVillageService villageService, IHighSchoolService highSchoolService, IQRService qRService, IFileService fileService, IRankingService rankingService, ICollegeDepartmentService collegeDepartmentService)
@@ -234,20 +233,19 @@ namespace UniversityHousingSystem.Core.Features.NewStudent.Commands.Handler
             return Success(mappedResponse);
         }
 
-        public async Task<Response<bool>> Handle(DeleteNewStudentCommand request, CancellationToken cancellationToken)
+        public async Task<Response<bool>> Handle(DeleteNewStudentWithDependanciesCommand request, CancellationToken cancellationToken)
         {
             var searchedNewStudent = await _newStudentService.GetAsync(request.NewStudentId);
-
 
             if (searchedNewStudent is null)
                 return BadRequest<bool>(string.Format(SharedResourcesKeys.NotFound, nameof(Data.Entities.NewStudent)));
 
             await _fileService.DeleteFileAsync(searchedNewStudent.Student.QRImagePath);
 
-            //foreach (var item in searchedNewStudent.Student.Documents)
-            //{
-            //    await _fileService.DeleteFileAsync(item.Path);
-            //}
+            foreach (var doc in searchedNewStudent.Student.Documents)
+            {
+                await _fileService.DeleteFileAsync(doc.Path);
+            }
 
             var isDeleted = await _newStudentService.DeleteAsync(searchedNewStudent);
             return isDeleted ? Deleted<bool>(string.Format(SharedResourcesKeys.Deleted, nameof(Data.Entities.NewStudent))) : InternalServerError<bool>();

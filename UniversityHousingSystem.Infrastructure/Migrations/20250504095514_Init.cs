@@ -776,7 +776,8 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                         name: "FK_NewStudents_Students_StudentId",
                         column: x => x.StudentId,
                         principalTable: "Students",
-                        principalColumn: "StudentId");
+                        principalColumn: "StudentId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -797,7 +798,8 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                         name: "FK_OldStudents_Students_StudentId",
                         column: x => x.StudentId,
                         principalTable: "Students",
-                        principalColumn: "StudentId");
+                        principalColumn: "StudentId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(

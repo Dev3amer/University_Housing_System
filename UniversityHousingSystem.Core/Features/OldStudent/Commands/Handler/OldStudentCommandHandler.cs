@@ -231,6 +231,11 @@ namespace UniversityHousingSystem.Core.Features.OldStudent.Commands.Handler
 
             await _fileService.DeleteFileAsync(searchedOldStudent.Student.QRImagePath);
 
+            foreach (var doc in searchedOldStudent.Student.Documents)
+            {
+                await _fileService.DeleteFileAsync(doc.Path);
+            }
+
             var isDeleted = await _oldStudentService.DeleteAsync(searchedOldStudent);
             return isDeleted ? Deleted<bool>(string.Format(SharedResourcesKeys.Deleted, nameof(Data.Entities.OldStudent))) : InternalServerError<bool>();
         }

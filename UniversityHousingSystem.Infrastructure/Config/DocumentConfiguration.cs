@@ -20,15 +20,15 @@ namespace UniversityHousingSystem.Infrastructure.Config
             builder.HasOne(d => d.Student)
                 .WithMany(s => s.Documents)
                 .HasForeignKey(d => d.StudentId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             // Store enum as string
             builder.Property(d => d.DocumentType)
                   .IsRequired()
                   .HasMaxLength(55)
                   .HasConversion(
-                      v => v.ToString(),  // Convert enum to string when saving
-                      v => (EnDocumentType)Enum.Parse(typeof(EnDocumentType), v) // Convert string back to enum when reading
+                      v => v.ToString(),
+                      v => (EnDocumentType)Enum.Parse(typeof(EnDocumentType), v)
                   );
 
             builder.ToTable("Documents");

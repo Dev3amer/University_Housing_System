@@ -27,7 +27,7 @@ namespace UniversityHousingSystem.Infrastructure.Config
 
             builder.HasOne(os => os.Student)
                  .WithOne(s => s.NewStudent)
-                 .OnDelete(DeleteBehavior.NoAction);
+                 .OnDelete(DeleteBehavior.Cascade);
 
 
             builder.ToTable("NewStudents");

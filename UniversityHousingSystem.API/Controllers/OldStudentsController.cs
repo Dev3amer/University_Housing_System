@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using UniversityHousingSystem.API.APIBases;
-using UniversityHousingSystem.Core.Features.Events.Commands.Models;
 using UniversityHousingSystem.Core.Features.OldStudent.Commands.Models;
 using UniversityHousingSystem.Core.Features.OldStudent.Queries.Models;
 using UniversityHousingSystem.Data.AppMetaData;
@@ -60,7 +59,7 @@ namespace UniversityHousingSystem.API.Controllers
             return NewResult(result);
         }
 
-        [HttpDelete(Router.OldStudentRouting.Delete)]
+        [HttpDelete(Router.OldStudentRouting.FullDelete)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]

@@ -105,7 +105,7 @@
 
             public const string Create = Prefix + "create";
             public const string Update = Prefix + "update";
-            public const string Delete = Prefix + SingleRoute;
+            public const string FullDelete = Prefix + "full-delete/" + SingleRoute;
         }
         public static class NewStudentRouting
         {
@@ -117,7 +117,7 @@
 
             public const string Create = Prefix + "create";
             public const string Update = Prefix + "update";
-            public const string Delete = Prefix + SingleRoute;
+            public const string FullDelete = Prefix + "full-delete/" + SingleRoute;
         }
         public static class AttendanceRouting
         {

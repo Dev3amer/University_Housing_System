@@ -1712,7 +1712,7 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                     b.HasOne("UniversityHousingSystem.Data.Entities.Student", "Student")
                         .WithOne("NewStudent")
                         .HasForeignKey("UniversityHousingSystem.Data.Entities.NewStudent", "StudentId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("HighSchool");
@@ -1725,7 +1725,7 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                     b.HasOne("UniversityHousingSystem.Data.Entities.Student", "Student")
                         .WithOne("OldStudent")
                         .HasForeignKey("UniversityHousingSystem.Data.Entities.OldStudent", "StudentId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Student");

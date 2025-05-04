@@ -6,5 +6,6 @@ namespace UniversityHousingSystem.Service.Abstractions
     {
         Task<Student?> GetAsync(int id);
         Task<Student?> GetByQrTextAsync(string qrText);
+        Task<bool> DeleteAsync(Student student);
     }
 }
