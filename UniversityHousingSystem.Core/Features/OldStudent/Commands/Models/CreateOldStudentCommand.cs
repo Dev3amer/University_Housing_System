@@ -11,6 +11,7 @@ namespace UniversityHousingSystem.Core.Features.OldStudent.Commands.Models
         public decimal GradePercentage { get; set; }
         public bool PreviousYearHosting { get; set; }
         public int CollageId { get; set; }
+        public int CollageDepartmentId { get; set; }
         public int CountryId { get; set; }
         public int VillageId { get; set; }
         public string GuardianFirstName { get; set; } = default!;

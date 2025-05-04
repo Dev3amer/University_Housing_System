@@ -30,6 +30,7 @@ namespace UniversityHousingSystem.Data.Entities
         //Foreign Keys
         public int ApplicationId { get; set; }
         public int CollegeId { get; set; }
+        public int CollegeDepartmentId { get; set; }
         public int GuardianId { get; set; }
         public int CountryId { get; set; }
         public string? UserId { get; set; }
@@ -43,6 +44,7 @@ namespace UniversityHousingSystem.Data.Entities
         public Country Country { get; set; } = new();
         public ICollection<Issue> Issues { get; set; } = new HashSet<Issue>();
         public College College { get; set; } = new();
+        public CollegeDepartment CollegeDepartment { get; set; } = default!;
         public Application Application { get; set; } = default!;
         public Room? Room { get; set; }
         public ApplicationUser? User { get; set; }

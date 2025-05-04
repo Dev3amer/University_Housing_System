@@ -133,6 +133,11 @@ namespace UniversityHousingSystem.Infrastructure.Config
                   .HasForeignKey(s => s.RoomId)
                   .OnDelete(DeleteBehavior.SetNull);
 
+            builder.HasOne(s => s.CollegeDepartment)
+                  .WithMany(cd => cd.Students)
+                  .HasForeignKey(s => s.CollegeDepartmentId)
+                  .OnDelete(DeleteBehavior.Restrict);
+
             #endregion
 
             #region Indexes

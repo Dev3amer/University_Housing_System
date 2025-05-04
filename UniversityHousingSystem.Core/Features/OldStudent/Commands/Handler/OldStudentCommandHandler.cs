@@ -21,6 +21,8 @@ namespace UniversityHousingSystem.Core.Features.OldStudent.Commands.Handler
         private readonly IQRService _qRService;
         private readonly IFileService _fileService;
         private readonly IRankingService _rankingService;
+        private readonly ICollegeDepartmentService _collegeDepartmentService;
+
         #endregion
         #region Constructor
         public OldStudentCommandHandler(IOldStudentService oldStudentService, ICollegeService collegeService, ICountryService countryService, IVillageService villageService, IQRService qRService, IFileService fileService, IRankingService rankingService)
@@ -49,6 +51,10 @@ namespace UniversityHousingSystem.Core.Features.OldStudent.Commands.Handler
             if (village is null)
                 return BadRequest<GetOldStudentByIdResponse>(string.Format(SharedResourcesKeys.NotFound, nameof(Data.Entities.Village)));
 
+            var collegeDept = await _collegeDepartmentService.GetAsync(request.CollageDepartmentId);
+            if (collegeDept is null)
+                return BadRequest<GetOldStudentByIdResponse>(string.Format(SharedResourcesKeys.NotFound, nameof(Data.Entities.CollegeDepartment)));
+
             var qrText = Guid.NewGuid().ToString();
 
 
@@ -76,6 +82,7 @@ namespace UniversityHousingSystem.Core.Features.OldStudent.Commands.Handler
                     QRText = qrText,
                     QRImagePath = _qRService.GenerateAndSaveQRCodeForStudent(qrText),
                     College = collage,
+                    CollegeDepartment = collegeDept,
                     Country = country,
                     Village = village,
                     Application = new Application()

@@ -602,6 +602,7 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                     CurrentScore = table.Column<double>(type: "float", nullable: false),
                     ApplicationId = table.Column<int>(type: "int", nullable: false),
                     CollegeId = table.Column<int>(type: "int", nullable: false),
+                    CollegeDepartmentId = table.Column<int>(type: "int", nullable: false),
                     GuardianId = table.Column<int>(type: "int", nullable: false),
                     CountryId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
@@ -623,6 +624,12 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.SetNull);
+                    table.ForeignKey(
+                        name: "FK_Students_CollegeDepartments_CollegeDepartmentId",
+                        column: x => x.CollegeDepartmentId,
+                        principalTable: "CollegeDepartments",
+                        principalColumn: "CollegeDepartmentId",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Students_Colleges_CollegeId",
                         column: x => x.CollegeId,
@@ -1300,6 +1307,11 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Students_CollegeDepartmentId",
+                table: "Students",
+                column: "CollegeDepartmentId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Students_CollegeId",
                 table: "Students",
                 column: "CollegeId");
@@ -1416,9 +1428,6 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                 name: "Attendances");
 
             migrationBuilder.DropTable(
-                name: "CollegeDepartments");
-
-            migrationBuilder.DropTable(
                 name: "Documents");
 
             migrationBuilder.DropTable(
@@ -1494,7 +1503,7 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                 name: "Applications");
 
             migrationBuilder.DropTable(
-                name: "Colleges");
+                name: "CollegeDepartments");
 
             migrationBuilder.DropTable(
                 name: "Guardians");
@@ -1504,6 +1513,9 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Employees");
+
+            migrationBuilder.DropTable(
+                name: "Colleges");
 
             migrationBuilder.DropTable(
                 name: "Buildings");

@@ -22,11 +22,12 @@ namespace UniversityHousingSystem.Core.Features.NewStudent.Commands.Handler
         private readonly IQRService _qRService;
         private readonly IFileService _fileService;
         private readonly IRankingService _rankingService;
+        private readonly ICollegeDepartmentService _collegeDepartmentService;
 
 
         #endregion
         #region Constructor
-        public NewStudentCommandHandler(INewStudentService newStudentService, ICollegeService collegeService, ICountryService countryService, IVillageService villageService, IHighSchoolService highSchoolService, IQRService qRService, IFileService fileService, IRankingService rankingService)
+        public NewStudentCommandHandler(INewStudentService newStudentService, ICollegeService collegeService, ICountryService countryService, IVillageService villageService, IHighSchoolService highSchoolService, IQRService qRService, IFileService fileService, IRankingService rankingService, ICollegeDepartmentService collegeDepartmentService)
         {
             _newStudentService = newStudentService;
             _collegeService = collegeService;
@@ -36,6 +37,7 @@ namespace UniversityHousingSystem.Core.Features.NewStudent.Commands.Handler
             _qRService = qRService;
             _fileService = fileService;
             _rankingService = rankingService;
+            _collegeDepartmentService = collegeDepartmentService;
         }
         #endregion
         #region Handlers
@@ -56,6 +58,10 @@ namespace UniversityHousingSystem.Core.Features.NewStudent.Commands.Handler
             var highSchool = await _highSchoolService.GetAsync(request.HighSchoolId);
             if (highSchool is null)
                 return BadRequest<GetNewStudentByIdResponse>(string.Format(SharedResourcesKeys.NotFound, nameof(HighSchool)));
+
+            var collegeDept = await _collegeDepartmentService.GetAsync(request.CollageDepartmentId);
+            if (collegeDept is null)
+                return BadRequest<GetNewStudentByIdResponse>(string.Format(SharedResourcesKeys.NotFound, nameof(Data.Entities.CollegeDepartment)));
 
             var qrText = Guid.NewGuid().ToString();
 
@@ -83,6 +89,7 @@ namespace UniversityHousingSystem.Core.Features.NewStudent.Commands.Handler
                     QRText = qrText,
                     QRImagePath = _qRService.GenerateAndSaveQRCodeForStudent(qrText),
                     College = collage,
+                    CollegeDepartment = collegeDept,
                     Country = country,
                     Village = village,
                     Application = new Application()

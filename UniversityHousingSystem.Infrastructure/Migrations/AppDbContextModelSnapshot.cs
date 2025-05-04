@@ -1189,6 +1189,9 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                     b.Property<DateOnly>("BirthDate")
                         .HasColumnType("date");
 
+                    b.Property<int>("CollegeDepartmentId")
+                        .HasColumnType("int");
+
                     b.Property<int>("CollegeId")
                         .HasColumnType("int");
 
@@ -1288,6 +1291,8 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
 
                     b.HasIndex("ApplicationId")
                         .IsUnique();
+
+                    b.HasIndex("CollegeDepartmentId");
 
                     b.HasIndex("CollegeId");
 
@@ -1847,6 +1852,12 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("UniversityHousingSystem.Data.Entities.CollegeDepartment", "CollegeDepartment")
+                        .WithMany("Students")
+                        .HasForeignKey("CollegeDepartmentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("UniversityHousingSystem.Data.Entities.College", "College")
                         .WithMany("Students")
                         .HasForeignKey("CollegeId")
@@ -1884,6 +1895,8 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                     b.Navigation("Application");
 
                     b.Navigation("College");
+
+                    b.Navigation("CollegeDepartment");
 
                     b.Navigation("Country");
 
@@ -1987,6 +2000,11 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                 {
                     b.Navigation("Departments");
 
+                    b.Navigation("Students");
+                });
+
+            modelBuilder.Entity("UniversityHousingSystem.Data.Entities.CollegeDepartment", b =>
+                {
                     b.Navigation("Students");
                 });
 

@@ -10,5 +10,6 @@
 
         // Navigation Property
         public College College { get; set; } = default!;
+        public ICollection<Student>? Students { get; set; }
     }
 }
