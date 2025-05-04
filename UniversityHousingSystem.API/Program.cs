@@ -192,6 +192,10 @@ namespace UniversityHousingSystem.API
                 // Buildings
                 var buildingsSeeder = new BuildingsSeeder(context);
                 await buildingsSeeder.SeedBuildingsAsync();
+
+                // IssueTypes
+                var IssueTypesSeeder = new IssuesTypeSeeder(context);
+                await IssueTypesSeeder.SeedIssuesTypesAsync();
             }
             #endregion
 
