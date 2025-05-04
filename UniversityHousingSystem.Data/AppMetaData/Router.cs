@@ -158,5 +158,11 @@
             public const string Update = Prefix + "update";
             public const string Delete = Prefix + SingleRoute;
         }
+        public static class HighSchoolRouting
+        {
+            public const string Prefix = Rule + "high-school/";
+
+            public const string List = Prefix + nameof(List);
+        }
     }
 }
