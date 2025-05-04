@@ -128,7 +128,11 @@ namespace UniversityHousingSystem.Core.Features.OldStudent.Commands.Handler
                 GradePercentage = addedOldStudent.GradePercentage,
                 PreviousYearHosting = addedOldStudent.PreviousYearHosting,
                 CurrentScore = addedOldStudent.Student.CurrentScore,
-                QRImagePath = addedOldStudent.Student.QRImagePath
+                QRImagePath = addedOldStudent.Student.QRImagePath,
+                GuardianId = addedOldStudent.Student.Guardian.GuardianId,
+                GuardianFullName = $"{addedOldStudent.Student.Guardian.FirstName} " +
+                $"{addedOldStudent.Student.Guardian.SecondName} {addedOldStudent.Student.Guardian.ThirdName}",
+                GuardianPhone = addedOldStudent.Student.Guardian.Phone
             };
 
             return Created(mappedResponse, string.Format(SharedResourcesKeys.Created, nameof(Data.Entities.OldStudent)));
@@ -187,7 +191,11 @@ namespace UniversityHousingSystem.Core.Features.OldStudent.Commands.Handler
                 AddressLine = updatedOldStudent.Student.AddressLine,
                 PreviousYearGrade = updatedOldStudent.PreviousYearGrade,
                 GradePercentage = updatedOldStudent.GradePercentage,
-                PreviousYearHosting = updatedOldStudent.PreviousYearHosting
+                PreviousYearHosting = updatedOldStudent.PreviousYearHosting,
+                GuardianId = updatedOldStudent.Student.Guardian.GuardianId,
+                GuardianFullName = $"{updatedOldStudent.Student.Guardian.FirstName} " +
+                $"{updatedOldStudent.Student.Guardian.SecondName} {updatedOldStudent.Student.Guardian.ThirdName}",
+                GuardianPhone = updatedOldStudent.Student.Guardian.Phone
             };
 
             return Success(mappedResponse);

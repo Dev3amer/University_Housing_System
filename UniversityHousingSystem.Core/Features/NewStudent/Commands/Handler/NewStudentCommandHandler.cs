@@ -138,7 +138,12 @@ namespace UniversityHousingSystem.Core.Features.NewStudent.Commands.Handler
                 HighSchoolId = highSchool.HighSchoolId,
                 HighSchoolName = highSchool.Name,
                 CurrentScore = addedNewStudent.Student.CurrentScore,
-                QRImagePath = addedNewStudent.Student.QRImagePath
+                QRImagePath = addedNewStudent.Student.QRImagePath,
+
+                GuardianId = addedNewStudent.Student.Guardian.GuardianId,
+                GuardianFullName = $"{addedNewStudent.Student.Guardian.FirstName} " +
+                $"{addedNewStudent.Student.Guardian.SecondName} {addedNewStudent.Student.Guardian.ThirdName}",
+                GuardianPhone = addedNewStudent.Student.Guardian.Phone
             };
 
             return Created(mappedResponse, string.Format(SharedResourcesKeys.Created, nameof(Data.Entities.NewStudent)));
@@ -197,7 +202,11 @@ namespace UniversityHousingSystem.Core.Features.NewStudent.Commands.Handler
                 HighSchoolPercentage = updatedNewStudent.HighSchoolPercentage,
                 IsOutsideSchool = updatedNewStudent.IsOutsideSchool,
                 HighSchoolId = updatedNewStudent.HighSchool.HighSchoolId,
-                HighSchoolName = updatedNewStudent.HighSchool.Name
+                HighSchoolName = updatedNewStudent.HighSchool.Name,
+                GuardianId = updatedNewStudent.Student.Guardian.GuardianId,
+                GuardianFullName = $"{updatedNewStudent.Student.Guardian.FirstName} " +
+                $"{updatedNewStudent.Student.Guardian.SecondName} {updatedNewStudent.Student.Guardian.ThirdName}",
+                GuardianPhone = updatedNewStudent.Student.Guardian.Phone
             };
 
             return Success(mappedResponse);

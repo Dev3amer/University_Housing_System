@@ -23,5 +23,9 @@ namespace UniversityHousingSystem.Core.Features.SharedDTOs
         public string AddressLine { get; set; } = default!;
         public double CurrentScore { get; set; }
         public string? QRImagePath { get; set; }
+        public int GuardianId { get; set; }
+        public string GuardianFullName { get; set; } = default!;
+        public string GuardianPhone { get; set; } = default!;
+
     }
 }

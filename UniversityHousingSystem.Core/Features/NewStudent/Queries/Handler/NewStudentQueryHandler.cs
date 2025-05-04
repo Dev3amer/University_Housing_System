@@ -53,7 +53,11 @@ namespace UniversityHousingSystem.Core.Features.NewStudent.Queries.Handler
                 HighSchoolId = ns.HighSchool.HighSchoolId,
                 HighSchoolName = ns.HighSchool.Name,
                 QRImagePath = ns.Student.QRImagePath,
-                CurrentScore = ns.Student.CurrentScore
+                CurrentScore = ns.Student.CurrentScore,
+                GuardianId = ns.Student.Guardian.GuardianId,
+                GuardianFullName = $"{ns.Student.Guardian.FirstName} " +
+                $"{ns.Student.Guardian.SecondName} {ns.Student.Guardian.ThirdName}",
+                GuardianPhone = ns.Student.Guardian.Phone
             }).ToListAsync();
 
             return Success(allNewStudents);
@@ -85,7 +89,11 @@ namespace UniversityHousingSystem.Core.Features.NewStudent.Queries.Handler
                 HighSchoolId = ns.HighSchool.HighSchoolId,
                 HighSchoolName = ns.HighSchool.Name,
                 QRImagePath = ns.Student.QRImagePath,
-                CurrentScore = ns.Student.CurrentScore
+                CurrentScore = ns.Student.CurrentScore,
+                GuardianId = ns.Student.Guardian.GuardianId,
+                GuardianFullName = $"{ns.Student.Guardian.FirstName} " +
+                $"{ns.Student.Guardian.SecondName} {ns.Student.Guardian.ThirdName}",
+                GuardianPhone = ns.Student.Guardian.Phone
             }).FirstOrDefaultAsync(os => os.NewStudentId == request.NewStudentId);
 
             if (newStudent is null)
@@ -123,7 +131,11 @@ namespace UniversityHousingSystem.Core.Features.NewStudent.Queries.Handler
                 HighSchoolId = ns.HighSchool.HighSchoolId,
                 HighSchoolName = ns.HighSchool.Name,
                 QRImagePath = ns.Student.QRImagePath,
-                CurrentScore = ns.Student.CurrentScore
+                CurrentScore = ns.Student.CurrentScore,
+                GuardianId = ns.Student.Guardian.GuardianId,
+                GuardianFullName = $"{ns.Student.Guardian.FirstName} " +
+                $"{ns.Student.Guardian.SecondName} {ns.Student.Guardian.ThirdName}",
+                GuardianPhone = ns.Student.Guardian.Phone
             }).ToPaginatedListAsync(request.PageNumber, request.PageSize);
 
             return paginatedList;
