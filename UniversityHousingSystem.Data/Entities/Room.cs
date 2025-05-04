@@ -12,7 +12,7 @@
         public int BuildingId { get; set; }
 
         // Navigation Property
-        public Building Building { get; set; } = new();
+        public Building Building { get; set; } = default!;
         public ICollection<Student>? Students { get; set; }
         public ICollection<RoomPhoto>? RoomPhotos { get; set; }
 

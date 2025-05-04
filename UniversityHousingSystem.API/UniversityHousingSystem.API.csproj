@@ -18,10 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\UniversityHousingSystem.Core\UniversityHousingSystem.Core.csproj" />
     <ProjectReference Include="..\UniversityHousingSystem.Infrastructure\UniversityHousingSystem.Infrastructure.csproj" />
     <ProjectReference Include="..\UniversityHousingSystem.Service\UniversityHousingSystem.Service.csproj" />
