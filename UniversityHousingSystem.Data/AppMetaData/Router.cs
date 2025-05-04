@@ -53,6 +53,7 @@
             public const string Create = Prefix + "create";
             public const string Update = Prefix + "update";
             public const string Delete = Prefix + SingleRoute;
+            public const string paginated = Prefix + "paginated";
         }
         public static class CollegeRouting
         {

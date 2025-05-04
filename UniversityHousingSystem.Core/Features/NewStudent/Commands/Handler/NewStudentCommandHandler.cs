@@ -92,7 +92,7 @@ namespace UniversityHousingSystem.Core.Features.NewStudent.Commands.Handler
                         FinalStatus = Data.Helpers.Enums.EnStatus.Pending,
                         AdminNotes = null,
                     },
-                    Guardian = new Guardian()
+                    Guardian = new Data.Entities.Guardian()
                     {
                         FirstName = request.GuardianFirstName,
                         SecondName = request.GuardianSecondName,

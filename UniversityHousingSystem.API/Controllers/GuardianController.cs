@@ -2,35 +2,41 @@
 using Microsoft.AspNetCore.Mvc;
 using UniversityHousingSystem.API.APIBases;
 using UniversityHousingSystem.Core.Features.Events.Queries.Models;
+using UniversityHousingSystem.Core.Features.Guardian.Queries.Models;
 using UniversityHousingSystem.Data.AppMetaData;
 
 namespace UniversityHousingSystem.API.Controllers
 {
     [ApiController]
-    [Route(Router.GuardianRouting.Prefix)]
     public class GuardianController : AppController
     {
         public GuardianController(IMediator mediator) : base(mediator) { }
 
         #region Queries
 
-        [HttpGet("List")]
+        [HttpGet(Router.GuardianRouting.List)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllGuardiansAsync()
         {
             var result = await _mediator.Send(new GetAllGuardiansQuery());
             return NewResult(result);
         }
-        [HttpGet("{id}")]
+        [HttpGet(Router.GuardianRouting.GetById)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetGuardianByIdAsync(int id)
         {
-            var result = await _mediator.Send(new GetGuardianByIdQuery(id)); // ✅ Use constructor
+            var result = await _mediator.Send(new GetGuardianByIdQuery(id));
             return NewResult(result);
         }
 
-
+        [HttpGet(Router.GuardianRouting.paginated)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetGuardiansPaginatedList([FromQuery] GetGuardiansPaginatedListQuery model)
+        {
+            var result = await _mediator.Send(model);
+            return Ok(result);
+        }
 
         #endregion
 

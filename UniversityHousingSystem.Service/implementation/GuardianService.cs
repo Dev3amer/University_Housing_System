@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using UniversityHousingSystem.Data.Entities;
-using UniversityHousingSystem.Data.Helpers.Enums;
+﻿using UniversityHousingSystem.Data.Entities;
 using UniversityHousingSystem.Infrastructure.Repositories;
 using UniversityHousingSystem.Service.Abstractions;
 
@@ -22,12 +20,22 @@ namespace UniversityHousingSystem.Service.implementation
         #region Methods
         public async Task<IEnumerable<Guardian>> GetAllAsync()
         {
-            return  _guardianRepository.GetTableNoTracking();
+            return _guardianRepository.GetTableNoTracking();
         }
+        public IQueryable<Guardian> GetAllQueryable()
+        {
+            var queryableList = _guardianRepository.GetTableNoTracking()
+               .AsQueryable();
 
 
+            queryableList = queryableList
+                            .OrderBy(e => e.FirstName)
+                            .ThenBy(e => e.SecondName)
+                            .ThenBy(e => e.ThirdName)
+                            .ThenBy(e => e.FourthName);
 
-
+            return queryableList;
+        }
         public async Task<Guardian?> GetAsync(int id)
         {
             return await _guardianRepository.GetByIdAsync(id);

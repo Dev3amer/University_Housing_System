@@ -1,9 +1,10 @@
 ﻿using MediatR;
 using UniversityHousingSystem.Core.Features.Events.Queries.Models;
 using UniversityHousingSystem.Core.Features.Events.Queries.Results;
+using UniversityHousingSystem.Core.Features.Guardian.Queries.Models;
+using UniversityHousingSystem.Core.Features.Guardian.Queries.Results;
 using UniversityHousingSystem.Core.Pagination;
 using UniversityHousingSystem.Core.ResponseBases;
-using UniversityHousingSystem.Data.Entities;
 using UniversityHousingSystem.Data.Resources;
 using UniversityHousingSystem.Service.Abstractions;
 
@@ -11,10 +12,8 @@ namespace UniversityHousingSystem.Core.Features.Buildings.Queries.Handler
 {
     public class GuardianQueryHandler : ResponseHandler,
         IRequestHandler<GetAllGuardiansQuery, Response<List<GetAllGuardiansResponse>>>,
-        IRequestHandler<GetGuardianByIdQuery, Response<GetGuardianByIdResponse>>
-
-
-
+        IRequestHandler<GetGuardianByIdQuery, Response<GetGuardianByIdResponse>>,
+        IRequestHandler<GetGuardiansPaginatedListQuery, PaginatedList<GetGuardiansPaginatedListResponse>>
     {
         #region Fields
         private readonly IGuardianService _guardianService;
@@ -68,10 +67,25 @@ namespace UniversityHousingSystem.Core.Features.Buildings.Queries.Handler
             return Success(mappedGuardiansList);
         }
 
- 
+        public async Task<PaginatedList<GetGuardiansPaginatedListResponse>> Handle(GetGuardiansPaginatedListQuery request, CancellationToken cancellationToken)
+        {
+            var guardiansListQueryable = _guardianService.GetAllQueryable();
 
+            var paginatedList = await guardiansListQueryable.Select(e => new GetGuardiansPaginatedListResponse
+            {
+                GuardianId = e.GuardianId,
+                FirstName = e.FirstName,
+                SecondName = e.SecondName,
+                ThirdName = e.ThirdName,
+                FourthName = e.FourthName,
+                Job = e.Job,
+                NationalId = e.NationalId,
+                Phone = e.Phone,
+                GuardianRelation = e.GuardianRelation
+            }).ToPaginatedListAsync(request.PageNumber, request.PageSize);
 
-
+            return paginatedList;
+        }
         #endregion
     }
 }

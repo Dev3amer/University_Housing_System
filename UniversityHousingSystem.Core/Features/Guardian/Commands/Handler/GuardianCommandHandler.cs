@@ -1,10 +1,7 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Identity;
 using UniversityHousingSystem.Core.Features.Events.Commands.Models;
 using UniversityHousingSystem.Core.Features.Events.Queries.Results;
 using UniversityHousingSystem.Core.ResponseBases;
-using UniversityHousingSystem.Data.Entities;
-using UniversityHousingSystem.Data.Entities.Identity;
 using UniversityHousingSystem.Data.Resources;
 using UniversityHousingSystem.Service.Abstractions;
 
@@ -17,8 +14,8 @@ namespace UniversityHousingSystem.Core.Features.Buildings.Commands.Handler
     {
         #region Fields
         private readonly IGuardianService _guardianService;
-       // private readonly ICurrentUserService _currentUserService;
-     //   private readonly UserManager<ApplicationUser> _userManager;
+        // private readonly ICurrentUserService _currentUserService;
+        //   private readonly UserManager<ApplicationUser> _userManager;
         #endregion
 
         #region Constructor
@@ -26,7 +23,7 @@ namespace UniversityHousingSystem.Core.Features.Buildings.Commands.Handler
             IGuardianService guardianService)
         {
             _guardianService = guardianService;
-        
+
         }
         #endregion
 
@@ -35,7 +32,7 @@ namespace UniversityHousingSystem.Core.Features.Buildings.Commands.Handler
         public async Task<Response<GetGuardianByIdResponse>> Handle(CreateGuardianCommand request, CancellationToken cancellationToken)
         {
             // Map request data to Guardian entity
-            var guardian = new Guardian
+            var guardian = new Data.Entities.Guardian
             {
                 FirstName = request.FirstName,
                 SecondName = request.SecondName,
