@@ -31,6 +31,7 @@ namespace UniversityHousingSystem.Infrastructure
             services.AddTransient<IIssueTypeRepository, IssueTypeRepository>();
             services.AddTransient<IIssueRepository, IssueRepository>();
             services.AddTransient<IDocumentRepository, DocumentRepository>();
+            services.AddTransient<IViolationTypeRepository, ViolationTypeRepository>();
         }
     }
 }
