@@ -41,6 +41,7 @@ namespace UniversityHousingSystem.Service
             services.AddScoped<IRankingService, RankingService>();
             services.AddTransient<IDocumentService, DocumentService>();
             services.AddTransient<IViolationTypeService, ViolationTypeService>();
+            services.AddTransient<IViolationService, ViolationService>();
         }
     }
 }
