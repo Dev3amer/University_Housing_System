@@ -41,7 +41,7 @@ namespace UniversityHousingSystem.API.Controllers
         [HttpPost("Create")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> CreateBuilding([FromForm] CreateViolationTypeCommand model)
+        public async Task<IActionResult> CreateViolationType([FromForm] CreateViolationTypeCommand model)
         {
             var result = await _mediator.Send(model);
             return NewResult(result);
@@ -50,7 +50,7 @@ namespace UniversityHousingSystem.API.Controllers
         [HttpPut("Update")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> EditIssueType([FromForm] UpdateViolationTypeCommand model)
+        public async Task<IActionResult> EditViolationType([FromForm] UpdateViolationTypeCommand model)
         {
             var result = await _mediator.Send(model);
             return NewResult(result);
