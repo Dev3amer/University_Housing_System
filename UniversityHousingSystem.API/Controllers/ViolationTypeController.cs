@@ -47,6 +47,14 @@ namespace UniversityHousingSystem.API.Controllers
             return NewResult(result);
         }
 
+        [HttpPut("Update")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> EditIssueType([FromForm] UpdateViolationTypeCommand model)
+        {
+            var result = await _mediator.Send(model);
+            return NewResult(result);
+        }
 
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]

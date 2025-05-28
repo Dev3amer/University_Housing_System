@@ -13,6 +13,7 @@ namespace UniversityHousingSystem.Core.Features.Buildings.Commands.Handler
 {
     public class ViolationTypeCommandHandler : ResponseHandler,
       IRequestHandler<CreateViolationTypeCommand, Response<GetViolationTypeByIdResponse>>,
+      IRequestHandler<UpdateViolationTypeCommand, Response<GetViolationTypeByIdResponse>>,
       IRequestHandler<DeleteViolationTypeCommand, Response<bool>>
 
 
@@ -52,6 +53,30 @@ namespace UniversityHousingSystem.Core.Features.Buildings.Commands.Handler
                 ViolationTypeName = createdviolationType.Description,
                 ViolationLevel=createdviolationType.ViolationLevel.ToString(),
                 RequiredAmount=createdviolationType.RequiredAmount
+            };
+
+            return Success(response);
+        }
+
+        public async Task<Response<GetViolationTypeByIdResponse>> Handle(UpdateViolationTypeCommand request, CancellationToken cancellationToken)
+        {
+            var violationType = await _violationTypeServiceTypeService.GetAsync(request.ViolationTypeId);
+            if (violationType == null)
+                return NotFound<GetViolationTypeByIdResponse>(string.Format(SharedResourcesKeys.NotFound, nameof(ViolationType)));
+
+            violationType.Description = request.Description;
+            violationType.RequiredAmount = request.RequiredAmount;
+            violationType.ViolationLevel = request.ViolationLevel;
+
+
+            var updatedViolationType = await _violationTypeServiceTypeService.UpdateAsync(violationType);
+
+            var response = new GetViolationTypeByIdResponse
+            {
+                ViolationTypeId = updatedViolationType.ViolationTypeId,
+                ViolationTypeName = updatedViolationType.Description,
+                RequiredAmount = updatedViolationType.RequiredAmount,
+                ViolationLevel = updatedViolationType.ViolationLevel.ToString(),
             };
 
             return Success(response);
