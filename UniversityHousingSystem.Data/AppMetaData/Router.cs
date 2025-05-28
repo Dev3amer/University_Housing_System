@@ -165,5 +165,16 @@
 
             public const string List = Prefix + nameof(List);
         }
+
+        public static class ViolationTypeRouting
+        {
+            public const string Prefix = Rule + "violationtypes/";
+
+            public const string List = Prefix + nameof(List);
+            public const string GetById = Prefix + SingleRoute;
+            public const string Create = Prefix + "create";
+            public const string Update = Prefix + "update";
+            public const string Delete = Prefix + SingleRoute;
+        }
     }
 }
