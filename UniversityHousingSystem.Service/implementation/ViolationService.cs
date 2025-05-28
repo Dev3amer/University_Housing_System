@@ -11,12 +11,14 @@ namespace UniversityHousingSystem.Service.Implementation
     {
         #region Fields
         private readonly IViolationRepository _violationRepository;
+        private readonly IViolationTypeRepository _violationTypeRepository;
         #endregion
 
         #region Constructors
-        public ViolationService(IViolationRepository violationRepository)
+        public ViolationService(IViolationRepository violationRepository, IViolationTypeRepository violationTypeRepository)
         {
-            _violationRepository = violationRepository;             
+            _violationRepository = violationRepository;
+            _violationTypeRepository = violationTypeRepository;
         }
         #endregion
 
@@ -38,9 +40,15 @@ namespace UniversityHousingSystem.Service.Implementation
                .FirstOrDefaultAsync(i => i.ViolationId == id);
         }
 
-        public async Task<Violation> CreateAsync(Violation newViolation)
+        public async Task<Violation> CreateAsync(Violation Violation)
         {
-            return await _violationRepository.AddAsync(newViolation);
+            //return await _violationRepository.AddAsync(newViolation);
+            var VType = await _violationTypeRepository.GetByIdAsync(Violation.ViolationTypeId);
+            if (VType == null)
+                throw new ArgumentException("Invalid Violationtype. Violationtype does not exist.");
+
+            Violation.ViolationType = VType;
+            return await _violationRepository.AddAsync(Violation);
         }
 
         public async Task<Violation> UpdateAsync(Violation ViolationToUpdate)
