@@ -12,8 +12,10 @@ using UniversityHousingSystem.Service.Implementation;
 namespace UniversityHousingSystem.Core.Features.Buildings.Commands.Handler
 {
     public class ViolationTypeCommandHandler : ResponseHandler,
-      IRequestHandler<CreateViolationTypeCommand, Response<GetViolationTypeByIdResponse>>
-     
+      IRequestHandler<CreateViolationTypeCommand, Response<GetViolationTypeByIdResponse>>,
+      IRequestHandler<DeleteViolationTypeCommand, Response<bool>>
+
+
     {
         #region Fields
         private readonly IViolationTypeService _violationTypeServiceTypeService;
@@ -54,8 +56,18 @@ namespace UniversityHousingSystem.Core.Features.Buildings.Commands.Handler
 
             return Success(response);
         }
-        
 
+
+        public async Task<Response<bool>> Handle(DeleteViolationTypeCommand request, CancellationToken cancellationToken)
+        {
+            var violationType = await _violationTypeServiceTypeService.GetAsync(request.ViolationTypeId);
+
+            if (violationType == null)
+                return NotFound<bool>(string.Format(SharedResourcesKeys.NotFound, nameof(ViolationType)));
+
+            var result = await _violationTypeServiceTypeService.DeleteAsync(violationType);
+            return Success(result);
+        }
 
         #endregion
     }

@@ -48,6 +48,16 @@ namespace UniversityHousingSystem.API.Controllers
         }
 
 
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> DeleteViolationType([FromRoute] int id)
+        {
+            var result = await _mediator.Send(new DeleteViolationTypeCommand { ViolationTypeId = id });
+            return NewResult(result);
+        }
+
         #endregion
     }
 }
