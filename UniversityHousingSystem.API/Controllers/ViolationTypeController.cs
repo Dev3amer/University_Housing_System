@@ -38,8 +38,15 @@ namespace UniversityHousingSystem.API.Controllers
         #endregion
 
         #region Commands
+        [HttpPost("Create")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> CreateBuilding([FromForm] CreateViolationTypeCommand model)
+        {
+            var result = await _mediator.Send(model);
+            return NewResult(result);
+        }
 
-       
 
         #endregion
     }
