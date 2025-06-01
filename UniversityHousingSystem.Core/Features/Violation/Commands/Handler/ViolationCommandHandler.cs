@@ -35,8 +35,10 @@ namespace UniversityHousingSystem.Core.Features.Buildings.Commands.Handler
             var violation = new Violation
             {
                 ViolationDate = request.ViolationDate,
-                StudentHistoryId=request.StudentHistoryId,
-                ViolationTypeId=request.ViolationTypeId,
+                //  StudentHistoryId=request.StudentHistoryId,
+                StudentHistoryId = request.StudentId, // Pass STUDENT ID (not history ID)
+
+                ViolationTypeId = request.ViolationTypeId,
             };
 
             // Call the service to create the violation

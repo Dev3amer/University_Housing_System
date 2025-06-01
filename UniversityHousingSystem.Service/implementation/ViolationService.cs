@@ -12,13 +12,16 @@ namespace UniversityHousingSystem.Service.Implementation
         #region Fields
         private readonly IViolationRepository _violationRepository;
         private readonly IViolationTypeRepository _violationTypeRepository;
+        private readonly IStudentHistoryRepository _studentHistoryRepository;
+
         #endregion
 
         #region Constructors
-        public ViolationService(IViolationRepository violationRepository, IViolationTypeRepository violationTypeRepository)
+        public ViolationService(IViolationRepository violationRepository, IViolationTypeRepository violationTypeRepository, IStudentHistoryRepository studentHistoryRepository)
         {
             _violationRepository = violationRepository;
             _violationTypeRepository = violationTypeRepository;
+            _studentHistoryRepository = studentHistoryRepository;
         }
         #endregion
 
@@ -40,15 +43,41 @@ namespace UniversityHousingSystem.Service.Implementation
                .FirstOrDefaultAsync(i => i.ViolationId == id);
         }
 
-        public async Task<Violation> CreateAsync(Violation Violation)
-        {
-            //return await _violationRepository.AddAsync(newViolation);
-            var VType = await _violationTypeRepository.GetByIdAsync(Violation.ViolationTypeId);
-            if (VType == null)
-                throw new ArgumentException("Invalid Violationtype. Violationtype does not exist.");
+        //public async Task<Violation> CreateAsync(Violation Violation)
+        //{
+        //    //return await _violationRepository.AddAsync(newViolation);
+        //    var VType = await _violationTypeRepository.GetByIdAsync(Violation.ViolationTypeId);
+        //    if (VType == null)
+        //        throw new ArgumentException("Invalid Violationtype. Violationtype does not exist.");
 
-            Violation.ViolationType = VType;
-            return await _violationRepository.AddAsync(Violation);
+        //    Violation.ViolationType = VType;
+        //    return await _violationRepository.AddAsync(Violation);
+        //}
+
+        public async Task<Violation> CreateAsync(Violation violation)
+        {
+            // Validate violation type exists
+            var violationType = await _violationTypeRepository.GetByIdAsync(violation.ViolationTypeId);
+            if (violationType == null)
+                throw new ArgumentException("Invalid violation type");
+
+            // Find active student history
+            var activeHistory = await _studentHistoryRepository.GetTableNoTracking()
+                .FirstOrDefaultAsync(h => h.StudentId == violation.StudentHistoryId && h.To == null);
+
+            if (activeHistory == null)
+                throw new InvalidOperationException("No active housing history found for student");
+
+            // Clear student history navigation property only
+            violation.StudentHistory = null;
+
+            // Set the correct history ID
+            violation.StudentHistoryId = activeHistory.StudentHistoryId;
+
+            // Keep the violation type assignment
+            violation.ViolationType = violationType;
+
+            return await _violationRepository.AddAsync(violation);
         }
 
         public async Task<Violation> UpdateAsync(Violation ViolationToUpdate)

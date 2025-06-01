@@ -10,7 +10,8 @@ namespace UniversityHousingSystem.Core.Features.CollegeDepartment.Commands.Model
         public DateTime ViolationDate { get; set; }
 
         public int ViolationTypeId { get; set; }
-        public int StudentHistoryId { get; set; }
+      //  public int StudentHistoryId { get; set; }
+        public int StudentId { get; set; }
 
     }
 }

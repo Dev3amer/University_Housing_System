@@ -33,6 +33,7 @@ namespace UniversityHousingSystem.Infrastructure
             services.AddTransient<IDocumentRepository, DocumentRepository>();
             services.AddTransient<IViolationTypeRepository, ViolationTypeRepository>();
             services.AddTransient<IViolationRepository, ViolationRepository>();
+            services.AddTransient<IStudentHistoryRepository, StudentHistoryRepository>();
         }
     }
 }
