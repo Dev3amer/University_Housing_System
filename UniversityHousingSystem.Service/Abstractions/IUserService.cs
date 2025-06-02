@@ -10,6 +10,6 @@ namespace UniversityHousingSystem.Service.Abstractions
         Task ConfirmUserEmail(ApplicationUser user, string code);
         Task<bool> SendResetUserPasswordCode(string email);
         Task<bool> ValidatePasswordResetCode(string email, string code);
-        Task ResetUserPassword(string email, string newPassword);
+        Task<string> ResetUserPassword(string ResetCode, string newPassword);
     }
 }

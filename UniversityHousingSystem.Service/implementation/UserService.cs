@@ -136,12 +136,14 @@ namespace UniversityHousingSystem.Service.implementation
             return true;
         }
 
-        public async Task ResetUserPassword(string ResetCode, string newPassword)
+        public async Task<string> ResetUserPassword(string ResetCode, string newPassword)
         {
             var hashedSubmittedCode = HashCode(ResetCode);
 
-            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.ResetCode == hashedSubmittedCode) ??
-                throw new Exception(SharedResourcesKeys.EmailNotFound);
+            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.ResetCode == hashedSubmittedCode);
+            if (user is null)
+                return string.Format(SharedResourcesKeys.Invalid, new { x = "Email or Reset Code" });
+
 
             var transaction = _appDbContext.Database.BeginTransaction();
             try
@@ -152,11 +154,12 @@ namespace UniversityHousingSystem.Service.implementation
                 await _userManager.UpdateAsync(user);
 
                 transaction.Commit();
+                return string.Empty;
             }
             catch (Exception)
             {
                 transaction.Rollback();
-                throw;
+                return SharedResourcesKeys.TryAgain;
             }
         }
     }

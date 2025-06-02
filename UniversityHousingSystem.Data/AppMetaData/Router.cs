@@ -210,5 +210,21 @@
             public const string EditUserRoles = Prefix + "role/edit-user-roles";
 
         }
+        public static class UserRouting
+        {
+            public const string Prefix = Rule + "user/";
+
+            public const string list = Prefix + "list";
+            public const string GetById = Prefix + SingleRoute;
+
+
+            public const string Edit = Prefix + "edit";
+            public const string ChangePassword = Prefix + "change-password";
+            public const string Delete = Prefix + SingleRoute;
+            public const string RequestPasswordReset = Prefix + "request-password-reset";
+            public const string ValidatePasswordResetCode = Prefix + "validate-password-reset-code";
+            public const string ResetPassword = Prefix + "reset-password";
+
+        }
     }
 }

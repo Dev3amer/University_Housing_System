@@ -66,7 +66,7 @@
         public const string EmailConfirmed = "Email address {0} has been confirmed successfully.";
         public const string EmailAlreadyConfirmed = "Email address {0} was already confirmed on {1}.";
         public const string EmailNotFound = "No account found with email address {0}.";
-        public const string IncorrectCode = "Invalid verification code. {0} attempts remaining.";
+        public const string IncorrectCode = "Invalid verification code";
         public const string VerificationCodeSent = "A verification code has been sent to {0}. Code expires in {1} minutes.";
         #endregion
 
