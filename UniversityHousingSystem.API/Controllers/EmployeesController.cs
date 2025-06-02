@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UniversityHousingSystem.API.APIBases;
 using UniversityHousingSystem.Core.Features.Employees.Commands.Models;
@@ -7,6 +8,7 @@ using Router = UniversityHousingSystem.Data.AppMetaData.Router;
 
 namespace UniversityHousingSystem.API.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [ApiController]
     public class EmployeesController : AppController
     {

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using UniversityHousingSystem.API.APIBases;
@@ -9,14 +10,14 @@ using UniversityHousingSystem.Data.AppMetaData;
 namespace UniversityHousingSystem.API.Controllers
 {
     [ApiController]
-    [Route(Router.CollegeDepartmentRouting.Prefix)] // 🔹 Base route added
+    [Route(Router.CollegeDepartmentRouting.Prefix)]
     public class CollegeDepartmentController : AppController
     {
         public CollegeDepartmentController(IMediator mediator) : base(mediator) { }
 
         #region Queries
 
-        [HttpGet("List")]
+        [HttpGet("list")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllCollegesDepartmentAsync()
         {
@@ -27,19 +28,17 @@ namespace UniversityHousingSystem.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetCollegeDepartmentByIdAsync(
-    [FromRoute, SwaggerSchema(Format = "byte")] byte id)
+        [FromRoute, SwaggerSchema(Format = "byte")] byte id)
         {
-            var result = await _mediator.Send(new GetCollegeDepartmentByIdQuery(id)); // ✅ Use constructor
+            var result = await _mediator.Send(new GetCollegeDepartmentByIdQuery(id));
             return NewResult(result);
         }
-
-  
 
         #endregion
 
         #region Commands
-
-        [HttpPost("Create")]
+        [Authorize(Roles = "Admin,Employee")]
+        [HttpPost("create")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateCollegeDepartment([FromForm] CreateCollegeDepartmentCommand model)
@@ -47,8 +46,8 @@ namespace UniversityHousingSystem.API.Controllers
             var result = await _mediator.Send(model);
             return NewResult(result);
         }
-
-        [HttpPut("Update")]
+        [Authorize(Roles = "Admin,Employee")]
+        [HttpPut("update")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> EditCollegeDepartment([FromForm] UpdateCollegeDepartmentCommand model)
@@ -56,7 +55,7 @@ namespace UniversityHousingSystem.API.Controllers
             var result = await _mediator.Send(model);
             return NewResult(result);
         }
-
+        [Authorize(Roles = "Admin,Employee")]
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

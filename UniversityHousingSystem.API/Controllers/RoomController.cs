@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UniversityHousingSystem.API.APIBases;
 using UniversityHousingSystem.Core.Features.Events.Commands.Models;
@@ -8,13 +9,13 @@ using UniversityHousingSystem.Data.AppMetaData;
 namespace UniversityHousingSystem.API.Controllers
 {
     [ApiController]
-    [Route(Router.RoomRouting.Prefix)] // 🔹 Base route for rooms
+    [Route(Router.RoomRouting.Prefix)]
     public class RoomController : AppController
     {
         public RoomController(IMediator mediator) : base(mediator) { }
 
 
-        [HttpGet("List")]
+        [HttpGet("list")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllRoomsAsync()
         {
@@ -30,12 +31,8 @@ namespace UniversityHousingSystem.API.Controllers
             var result = await _mediator.Send(new GetRoomByIdQuery(id));
             return NewResult(result);
         }
-
-        
-
-  
-
-        [HttpPost("Create")]
+        [Authorize(Roles = "Admin,Employee")]
+        [HttpPost("create")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateRoom([FromForm] CreateRoomCommand model)
@@ -43,8 +40,8 @@ namespace UniversityHousingSystem.API.Controllers
             var result = await _mediator.Send(model);
             return NewResult(result);
         }
-
-        [HttpPut("Update")]
+        [Authorize(Roles = "Admin,Employee")]
+        [HttpPut("update")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> EditRoom([FromForm] UpdateRoomCommand model)
@@ -52,7 +49,7 @@ namespace UniversityHousingSystem.API.Controllers
             var result = await _mediator.Send(model);
             return NewResult(result);
         }
-
+        [Authorize(Roles = "Admin,Employee")]
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -62,14 +59,14 @@ namespace UniversityHousingSystem.API.Controllers
             var result = await _mediator.Send(new DeleteRoomCommand(id)); // ✅ Use constructor
             return NewResult(result);
         }
-        [HttpGet("Paginated")]
+        [HttpGet("paginated")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetRoomsPaginated([FromQuery] GetRoomsPaginatedQuery query)
         {
             var result = await _mediator.Send(query);
             return NewResult(result);
         }
-        [HttpGet("FreeRooms")]
+        [HttpGet("freeRooms")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetFreeRoomsAsync([FromQuery] GetFreeRoomsQuery query)
         {
@@ -78,7 +75,7 @@ namespace UniversityHousingSystem.API.Controllers
         }
 
     }
-} 
+}
 
 
 

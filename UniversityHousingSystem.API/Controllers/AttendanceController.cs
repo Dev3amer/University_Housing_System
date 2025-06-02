@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UniversityHousingSystem.API.APIBases;
 using UniversityHousingSystem.Core.Features.Attendance.Commands.Models;
@@ -8,6 +9,7 @@ using UniversityHousingSystem.Data.AppMetaData;
 namespace UniversityHousingSystem.API.Controllers
 {
     [ApiController]
+    [Authorize(Roles = "Employee,Admin")]
     public class AttendanceController : AppController
     {
         public AttendanceController(IMediator mediator) : base(mediator)

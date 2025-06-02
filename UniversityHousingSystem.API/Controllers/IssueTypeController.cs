@@ -1,45 +1,42 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UniversityHousingSystem.API.APIBases;
 using UniversityHousingSystem.Core.Features.CollegeDepartment.Commands.Models;
-using UniversityHousingSystem.Core.Features.Events.Commands.Models;
 using UniversityHousingSystem.Core.Features.Events.Queries.Models;
 using UniversityHousingSystem.Data.AppMetaData;
 
 namespace UniversityHousingSystem.API.Controllers
 {
     [ApiController]
-    [Route(Router.IssueTypeRouting.Prefix)] // 🔹 Base route added
+    [Route(Router.IssueTypeRouting.Prefix)]
     public class IssueTypeController : AppController
     {
         public IssueTypeController(IMediator mediator) : base(mediator) { }
 
         #region Queries
-
-        [HttpGet("List")]
+        [Authorize]
+        [HttpGet("list")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllIssuesTypesAsync()
         {
             var result = await _mediator.Send(new GetAllIssueTypeQuery());
             return NewResult(result);
         }
-
+        [Authorize]
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetIssueTypeByIdAsync(int id)
         {
-            var result = await _mediator.Send(new GetIssueTypeByIdQuery(id)); // ✅ Use constructor
+            var result = await _mediator.Send(new GetIssueTypeByIdQuery(id));
             return NewResult(result);
         }
-
-
-
         #endregion
 
         #region Commands
-
-        [HttpPost("Create")]
+        [Authorize]
+        [HttpPost("create")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateIssueType([FromForm] CreateIssueTypeCommand model)
@@ -47,8 +44,8 @@ namespace UniversityHousingSystem.API.Controllers
             var result = await _mediator.Send(model);
             return NewResult(result);
         }
-
-        [HttpPut("Update")]
+        [Authorize]
+        [HttpPut("update")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> EditIssueType([FromForm] UpdateIssueTypeCommand model)
@@ -56,7 +53,7 @@ namespace UniversityHousingSystem.API.Controllers
             var result = await _mediator.Send(model);
             return NewResult(result);
         }
-
+        [Authorize(Roles = "Admin,Employee")]
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

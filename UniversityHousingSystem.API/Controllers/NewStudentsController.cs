@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UniversityHousingSystem.API.APIBases;
 using UniversityHousingSystem.Core.Features.NewStudent.Commands.Models;
@@ -8,6 +9,7 @@ using UniversityHousingSystem.Data.AppMetaData;
 namespace UniversityHousingSystem.API.Controllers
 {
     [ApiController]
+    [Authorize(Roles = "Admin,Employee")]
     public class NewStudentsController : AppController
     {
         public NewStudentsController(IMediator mediator) : base(mediator)
@@ -41,6 +43,7 @@ namespace UniversityHousingSystem.API.Controllers
         }
         #endregion
         #region Commands
+        [AllowAnonymous]
         [HttpPost(Router.NewStudentRouting.Create)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -49,7 +52,7 @@ namespace UniversityHousingSystem.API.Controllers
             var result = await _mediator.Send(model);
             return NewResult(result);
         }
-
+        [Authorize]
         [HttpPut(Router.NewStudentRouting.Update)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -58,7 +61,6 @@ namespace UniversityHousingSystem.API.Controllers
             var result = await _mediator.Send(model);
             return NewResult(result);
         }
-
         [HttpDelete(Router.NewStudentRouting.FullDelete)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

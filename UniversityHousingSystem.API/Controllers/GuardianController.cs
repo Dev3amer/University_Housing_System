@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UniversityHousingSystem.API.APIBases;
 using UniversityHousingSystem.Core.Features.Events.Queries.Models;
@@ -13,7 +14,7 @@ namespace UniversityHousingSystem.API.Controllers
         public GuardianController(IMediator mediator) : base(mediator) { }
 
         #region Queries
-
+        [Authorize(Roles = "Admin,Employee")]
         [HttpGet(Router.GuardianRouting.List)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllGuardiansAsync()
@@ -21,6 +22,7 @@ namespace UniversityHousingSystem.API.Controllers
             var result = await _mediator.Send(new GetAllGuardiansQuery());
             return NewResult(result);
         }
+        [Authorize(Roles = "Admin,Employee")]
         [HttpGet(Router.GuardianRouting.GetByNationalId)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -29,7 +31,7 @@ namespace UniversityHousingSystem.API.Controllers
             var result = await _mediator.Send(new GetGuardianByNationalIdQuery(nationalId));
             return NewResult(result);
         }
-
+        [Authorize(Roles = "Admin,Employee")]
         [HttpGet(Router.GuardianRouting.paginated)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetGuardiansPaginatedList([FromQuery] GetGuardiansPaginatedListQuery model)
@@ -37,38 +39,6 @@ namespace UniversityHousingSystem.API.Controllers
             var result = await _mediator.Send(model);
             return Ok(result);
         }
-
-        #endregion
-
-        #region Commands
-
-        //[HttpPost("Create")]
-        //[ProducesResponseType(StatusCodes.Status201Created)]
-        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
-        //public async Task<IActionResult> CreateGuardian([FromForm] CreateGuardianCommand model)
-        //{
-        //    var result = await _mediator.Send(model);
-        //    return NewResult(result);
-        //}
-
-        //[HttpPut("Update")]
-        //[ProducesResponseType(StatusCodes.Status200OK)]
-        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
-        //public async Task<IActionResult> EditGuardian([FromForm] UpdateGuardianCommand model)
-        //{
-        //    var result = await _mediator.Send(model);
-        //    return NewResult(result);
-        //}
-
-        //[HttpDelete("{id}")]
-        //[ProducesResponseType(StatusCodes.Status200OK)]
-        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
-        //[ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        //public async Task<IActionResult> DeleteGuardian([FromRoute] int id)
-        //{
-        //    var result = await _mediator.Send(new DeleteGuardianCommand { GuardianId = id });
-        //    return NewResult(result);
-        //}
 
         #endregion
     }

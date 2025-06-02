@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UniversityHousingSystem.API.APIBases;
 using UniversityHousingSystem.Core.Features.Events.Commands.Models;
@@ -16,6 +17,7 @@ namespace UniversityHousingSystem.API.Controllers
         }
 
         #region Queries
+        [Authorize(Roles = "Admin,Employee")]
         [HttpGet(Router.EventRouting.list)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllEventAsync()
@@ -23,7 +25,7 @@ namespace UniversityHousingSystem.API.Controllers
             var result = await _mediator.Send(new GetAllEventsQuery());
             return NewResult(result);
         }
-
+        [Authorize]
         [HttpGet(Router.EventRouting.coming)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetComingEventsAsync()
@@ -31,6 +33,7 @@ namespace UniversityHousingSystem.API.Controllers
             var result = await _mediator.Send(new GetComingEventsQuery());
             return NewResult(result);
         }
+        [Authorize(Roles = "Admin,Employee")]
         [HttpGet(Router.EventRouting.paginated)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetEventsPaginatedList([FromQuery] GetEventsPaginatedListQuery model)
@@ -38,7 +41,7 @@ namespace UniversityHousingSystem.API.Controllers
             var result = await _mediator.Send(model);
             return Ok(result);
         }
-
+        [Authorize]
         [HttpGet(Router.EventRouting.GetById)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -49,6 +52,7 @@ namespace UniversityHousingSystem.API.Controllers
         }
         #endregion
         #region Commands
+        [Authorize(Roles = "Admin,Employee")]
         [HttpPost(Router.EventRouting.Create)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -57,7 +61,7 @@ namespace UniversityHousingSystem.API.Controllers
             var result = await _mediator.Send(model);
             return NewResult(result);
         }
-
+        [Authorize(Roles = "Admin,Employee")]
         [HttpPut(Router.EventRouting.Update)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -66,7 +70,7 @@ namespace UniversityHousingSystem.API.Controllers
             var result = await _mediator.Send(model);
             return NewResult(result);
         }
-
+        [Authorize(Roles = "Admin,Employee")]
         [HttpDelete(Router.EventRouting.Delete)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
