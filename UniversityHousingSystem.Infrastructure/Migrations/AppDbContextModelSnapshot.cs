@@ -1615,7 +1615,7 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                     b.HasOne("UniversityHousingSystem.Data.Entities.Student", "Student")
                         .WithMany("Documents")
                         .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Student");

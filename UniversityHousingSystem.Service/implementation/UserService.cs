@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using System.Text;
 using UniversityHousingSystem.Data.Entities.Identity;
+using UniversityHousingSystem.Data.Helpers.DTOs;
 using UniversityHousingSystem.Data.Resources;
 using UniversityHousingSystem.Infrastructure.Context;
 using UniversityHousingSystem.Service.Abstractions;
@@ -44,19 +45,28 @@ namespace UniversityHousingSystem.Service.implementation
             await _emailService.SendEmail(user.Email, userFullName, message, "Confirm Email");
         }
 
-        public async Task<ApplicationUser> CreateUser(ApplicationUser user, string password)
+        public async Task<CreateUserResult> CreateUser(ApplicationUser user, string password, string role)
         {
             var identityResult = await _userManager.CreateAsync(user, password);
 
             if (!identityResult.Succeeded)
-                throw new Exception(identityResult.Errors.FirstOrDefault().Description);
+            {
+                return new CreateUserResult
+                {
+                    User = null,
+                    Errors = identityResult.Errors
+                };
+            }
 
             user = await _userManager.FindByNameAsync(user.UserName);
 
-            await _userManager.AddToRoleAsync(user, "User");
+            await _userManager.AddToRoleAsync(user, role);
 
-            await SendConfirmUserEmailToken(user);
-            return user;
+            return new CreateUserResult
+            {
+                User = user,
+                Errors = null
+            };
         }
 
         public async Task ConfirmUserEmail(ApplicationUser user, string code)

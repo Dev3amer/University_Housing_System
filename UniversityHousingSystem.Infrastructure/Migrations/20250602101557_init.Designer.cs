@@ -12,8 +12,8 @@ using UniversityHousingSystem.Infrastructure.Context;
 namespace UniversityHousingSystem.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250504095514_Init")]
-    partial class Init
+    [Migration("20250602101557_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -1618,7 +1618,7 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                     b.HasOne("UniversityHousingSystem.Data.Entities.Student", "Student")
                         .WithMany("Documents")
                         .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Student");

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UniversityHousingSystem.API.APIBases;
 using UniversityHousingSystem.Core.Features.Employees.Commands.Models;
@@ -8,6 +9,7 @@ using Router = UniversityHousingSystem.Data.AppMetaData.Router;
 namespace UniversityHousingSystem.API.Controllers
 {
     [ApiController]
+    [Authorize(Roles = "Admin")]
     public class EmployeesController : AppController
     {
         public EmployeesController(IMediator mediator) : base(mediator)
