@@ -7,10 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Features\Authentication\Queries\Results\" />
     <Folder Include="Features\Events\Commands\Validator\" />
     <Folder Include="Features\NewStudent\Commands\Validator\" />
     <Folder Include="Features\OldStudent\Commands\Validator\" />
-    <Folder Include="Mapping\" />
+    <Folder Include="Features\Users\Queries\Validator\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,6 +20,7 @@
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
     <PackageReference Include="MediatR" Version="12.4.1" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.3.1" />
   </ItemGroup>
 
   <ItemGroup>

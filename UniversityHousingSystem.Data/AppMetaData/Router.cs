@@ -186,5 +186,45 @@
             public const string Update = Prefix + "update";
             public const string Delete = Prefix + SingleRoute;
         }
+        public static class AuthenticationRouting
+        {
+            public const string Prefix = Rule + "authentication/";
+
+            public const string ValidateToken = Prefix + "validateToken";
+
+            public const string SignIn = Prefix + "sign-in";
+
+            public const string RefreshToken = Prefix + "refresh-token";
+        }
+        public static class AuthorizationRouting
+        {
+            public const string Prefix = Rule + "authorization/";
+
+            public const string CreateRole = Prefix + "role/create";
+            public const string EditRole = Prefix + "role/edit";
+            public const string DeleteRole = Prefix + "role/" + SingleRoute;
+
+            public const string list = Prefix + "role/" + "list";
+            public const string GetById = Prefix + "role/" + SingleRoute;
+            public const string GetUserRoles = Prefix + "role/user-roles" + SingleRoute;
+            public const string EditUserRoles = Prefix + "role/edit-user-roles";
+
+        }
+        public static class UserRouting
+        {
+            public const string Prefix = Rule + "user/";
+
+            public const string list = Prefix + "list";
+            public const string GetById = Prefix + SingleRoute;
+
+
+            public const string Edit = Prefix + "edit";
+            public const string ChangePassword = Prefix + "change-password";
+            public const string Delete = Prefix + SingleRoute;
+            public const string RequestPasswordReset = Prefix + "request-password-reset";
+            public const string ValidatePasswordResetCode = Prefix + "validate-password-reset-code";
+            public const string ResetPassword = Prefix + "reset-password";
+
+        }
     }
 }

@@ -10,6 +10,7 @@ namespace UniversityHousingSystem.API.Controllers
 {
     [Authorize(Roles = "Admin")]
     [ApiController]
+    [Authorize(Roles = "Admin")]
     public class EmployeesController : AppController
     {
         public EmployeesController(IMediator mediator) : base(mediator)

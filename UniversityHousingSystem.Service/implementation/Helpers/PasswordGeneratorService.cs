@@ -8,7 +8,7 @@ namespace UniversityHousingSystem.Service.implementation.Helpers
         private const string Uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         private const string Lowercase = "abcdefghijklmnopqrstuvwxyz";
         private const string Digits = "0123456789";
-        private const string SpecialChars = "!@#$%^&*()-_=+[]{}|;:,.<>?";
+        private const string SpecialChars = "@#*";
 
         private static readonly string AllChars = Uppercase + Lowercase + Digits + SpecialChars;
 
