@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace UniversityHousingSystem.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -153,6 +153,43 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Notifications", x => x.NotificationId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RegistrationCodes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Email = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    IsPaid = table.Column<bool>(type: "bit", nullable: false),
+                    PaymentIntentId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClientSecret = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsUsed = table.Column<bool>(type: "bit", nullable: false),
+                    AllowedTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RegistrationCodes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RegistrationPeriods",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    From = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    To = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsClosed = table.Column<bool>(type: "bit", nullable: false),
+                    RegistrationFees = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RegistrationPeriods", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -573,20 +610,18 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                     FourthName = table.Column<string>(type: "nvarchar(55)", maxLength: 55, nullable: false),
                     NationalId = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Phone = table.Column<string>(type: "varchar(13)", unicode: false, maxLength: 13, nullable: false),
-                    Telephone = table.Column<string>(type: "varchar(15)", unicode: false, maxLength: 15, nullable: true),
                     BirthDate = table.Column<DateOnly>(type: "date", nullable: false),
                     Gender = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     Religion = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    PlaceOfBirth = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     HasSpecialNeeds = table.Column<bool>(type: "bit", nullable: false),
                     AcademicStudentCode = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     AcademicYear = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     IsMarried = table.Column<bool>(type: "bit", nullable: false),
-                    AddressLine = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     QRText = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     QRImagePath = table.Column<string>(type: "nvarchar(2500)", maxLength: 2500, nullable: true),
                     CurrentScore = table.Column<double>(type: "float", nullable: false),
+                    RegistrationCodeId = table.Column<int>(type: "int", nullable: false),
                     ApplicationId = table.Column<int>(type: "int", nullable: false),
                     CollegeId = table.Column<int>(type: "int", nullable: false),
                     CollegeDepartmentId = table.Column<int>(type: "int", nullable: false),
@@ -635,6 +670,12 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                         principalTable: "Guardians",
                         principalColumn: "GuardianId",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Students_RegistrationCodes_RegistrationCodeId",
+                        column: x => x.RegistrationCodeId,
+                        principalTable: "RegistrationCodes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Students_Rooms_RoomId",
                         column: x => x.RoomId,
@@ -1316,6 +1357,12 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Students_RegistrationCodeId",
+                table: "Students",
+                column: "RegistrationCodeId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Students_ResidencePlace",
                 table: "Students",
                 column: "ResidencePlace");
@@ -1418,6 +1465,9 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                 name: "Payments");
 
             migrationBuilder.DropTable(
+                name: "RegistrationPeriods");
+
+            migrationBuilder.DropTable(
                 name: "RoomPhotos");
 
             migrationBuilder.DropTable(
@@ -1476,6 +1526,9 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Guardians");
+
+            migrationBuilder.DropTable(
+                name: "RegistrationCodes");
 
             migrationBuilder.DropTable(
                 name: "Rooms");

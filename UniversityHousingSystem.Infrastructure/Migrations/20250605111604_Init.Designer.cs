@@ -12,8 +12,8 @@ using UniversityHousingSystem.Infrastructure.Context;
 namespace UniversityHousingSystem.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250602101557_init")]
-    partial class init
+    [Migration("20250605111604_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -1059,6 +1059,31 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                     b.ToTable("Questionnaires", (string)null);
                 });
 
+            modelBuilder.Entity("UniversityHousingSystem.Data.Entities.RegistrationPeriod", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("From")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsClosed")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("RegistrationFees")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("To")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RegistrationPeriods", (string)null);
+                });
+
             modelBuilder.Entity("UniversityHousingSystem.Data.Entities.Response", b =>
                 {
                     b.Property<int>("ResponseId")
@@ -1160,11 +1185,6 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                         .HasMaxLength(25)
                         .HasColumnType("nvarchar(25)");
 
-                    b.Property<string>("AddressLine")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
                     b.Property<int>("ApplicationId")
                         .HasColumnType("int");
 
@@ -1223,11 +1243,6 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(13)");
 
-                    b.Property<string>("PlaceOfBirth")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
                     b.Property<string>("QRImagePath")
                         .HasMaxLength(2500)
                         .HasColumnType("nvarchar(2500)");
@@ -1236,6 +1251,9 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
+
+                    b.Property<int>("RegistrationCodeId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Religion")
                         .IsRequired()
@@ -1252,11 +1270,6 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(55)
                         .HasColumnType("nvarchar(55)");
-
-                    b.Property<string>("Telephone")
-                        .HasMaxLength(15)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(15)");
 
                     b.Property<string>("ThirdName")
                         .IsRequired()
@@ -1286,6 +1299,9 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                     b.HasIndex("GuardianId");
 
                     b.HasIndex("NationalId")
+                        .IsUnique();
+
+                    b.HasIndex("RegistrationCodeId")
                         .IsUnique();
 
                     b.HasIndex("ResidencePlace");
@@ -1328,6 +1344,49 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                         {
                             t.HasCheckConstraint("CK_StudentHistory_ToDate_After_FromDate", "[To] IS NULL OR [To] > [From]");
                         });
+                });
+
+            modelBuilder.Entity("UniversityHousingSystem.Data.Entities.StudentRegistrationCode", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("AllowedTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("ClientSecret")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<bool>("IsPaid")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsUsed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PaymentIntentId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RegistrationCodes", (string)null);
                 });
 
             modelBuilder.Entity("UniversityHousingSystem.Data.Entities.StudentsNotifications", b =>
@@ -1850,6 +1909,12 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("UniversityHousingSystem.Data.Entities.StudentRegistrationCode", "StudentRegistrationCode")
+                        .WithOne("Student")
+                        .HasForeignKey("UniversityHousingSystem.Data.Entities.Student", "RegistrationCodeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("UniversityHousingSystem.Data.Entities.Village", "Village")
                         .WithMany("Students")
                         .HasForeignKey("ResidencePlace")
@@ -1877,6 +1942,8 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                     b.Navigation("Guardian");
 
                     b.Navigation("Room");
+
+                    b.Navigation("StudentRegistrationCode");
 
                     b.Navigation("User");
 
@@ -2094,6 +2161,11 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
             modelBuilder.Entity("UniversityHousingSystem.Data.Entities.StudentHistory", b =>
                 {
                     b.Navigation("Violations");
+                });
+
+            modelBuilder.Entity("UniversityHousingSystem.Data.Entities.StudentRegistrationCode", b =>
+                {
+                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("UniversityHousingSystem.Data.Entities.Village", b =>

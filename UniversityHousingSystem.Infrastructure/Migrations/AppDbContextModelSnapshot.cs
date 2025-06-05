@@ -1078,7 +1078,7 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RegistrationPeriods");
+                    b.ToTable("RegistrationPeriods", (string)null);
                 });
 
             modelBuilder.Entity("UniversityHousingSystem.Data.Entities.Response", b =>
@@ -1182,11 +1182,6 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                         .HasMaxLength(25)
                         .HasColumnType("nvarchar(25)");
 
-                    b.Property<string>("AddressLine")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
                     b.Property<int>("ApplicationId")
                         .HasColumnType("int");
 
@@ -1245,11 +1240,6 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(13)");
 
-                    b.Property<string>("PlaceOfBirth")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
                     b.Property<string>("QRImagePath")
                         .HasMaxLength(2500)
                         .HasColumnType("nvarchar(2500)");
@@ -1258,6 +1248,9 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
+
+                    b.Property<int>("RegistrationCodeId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Religion")
                         .IsRequired()
@@ -1274,11 +1267,6 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(55)
                         .HasColumnType("nvarchar(55)");
-
-                    b.Property<string>("Telephone")
-                        .HasMaxLength(15)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(15)");
 
                     b.Property<string>("ThirdName")
                         .IsRequired()
@@ -1308,6 +1296,9 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                     b.HasIndex("GuardianId");
 
                     b.HasIndex("NationalId")
+                        .IsUnique();
+
+                    b.HasIndex("RegistrationCodeId")
                         .IsUnique();
 
                     b.HasIndex("ResidencePlace");
@@ -1378,7 +1369,8 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<bool>("IsPaid")
                         .HasColumnType("bit");
@@ -1391,7 +1383,7 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("StudentRegistrationCodes");
+                    b.ToTable("RegistrationCodes", (string)null);
                 });
 
             modelBuilder.Entity("UniversityHousingSystem.Data.Entities.StudentsNotifications", b =>
@@ -1914,6 +1906,12 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("UniversityHousingSystem.Data.Entities.StudentRegistrationCode", "StudentRegistrationCode")
+                        .WithOne("Student")
+                        .HasForeignKey("UniversityHousingSystem.Data.Entities.Student", "RegistrationCodeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("UniversityHousingSystem.Data.Entities.Village", "Village")
                         .WithMany("Students")
                         .HasForeignKey("ResidencePlace")
@@ -1941,6 +1939,8 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                     b.Navigation("Guardian");
 
                     b.Navigation("Room");
+
+                    b.Navigation("StudentRegistrationCode");
 
                     b.Navigation("User");
 
@@ -2158,6 +2158,11 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
             modelBuilder.Entity("UniversityHousingSystem.Data.Entities.StudentHistory", b =>
                 {
                     b.Navigation("Violations");
+                });
+
+            modelBuilder.Entity("UniversityHousingSystem.Data.Entities.StudentRegistrationCode", b =>
+                {
+                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("UniversityHousingSystem.Data.Entities.Village", b =>

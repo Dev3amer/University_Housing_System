@@ -66,9 +66,6 @@ namespace UniversityHousingSystem.Service.implementation
             oldStudent.Student.ThirdName = oldStudent.Student.ThirdName.Trim();
             oldStudent.Student.FourthName = oldStudent.Student.FourthName.Trim();
 
-            oldStudent.Student.PlaceOfBirth = oldStudent.Student.PlaceOfBirth.Trim();
-            oldStudent.Student.AddressLine = oldStudent.Student.AddressLine.Trim();
-
 
             return await _oldStudentRepository.AddAsync(oldStudent);
         }
@@ -79,8 +76,6 @@ namespace UniversityHousingSystem.Service.implementation
             oldStudentToUpdate.Student.ThirdName = oldStudentToUpdate.Student.ThirdName.Trim();
             oldStudentToUpdate.Student.FourthName = oldStudentToUpdate.Student.FourthName.Trim();
 
-            oldStudentToUpdate.Student.PlaceOfBirth = oldStudentToUpdate.Student.PlaceOfBirth.Trim();
-            oldStudentToUpdate.Student.AddressLine = oldStudentToUpdate.Student.AddressLine.Trim();
 
             return await _oldStudentRepository.UpdateAsync(oldStudentToUpdate);
         }
