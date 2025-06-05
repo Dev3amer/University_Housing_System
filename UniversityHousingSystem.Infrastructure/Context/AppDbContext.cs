@@ -47,6 +47,7 @@ namespace UniversityHousingSystem.Infrastructure.Context
         public DbSet<Questionnaire> Questionnaires { get; set; }
         public DbSet<UserRefreshToken> UserRefreshTokens { get; set; }
         public DbSet<StudentRegistrationCode> StudentRegistrationCodes { get; set; }
+        public DbSet<RegistrationPeriod> RegistrationPeriods { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

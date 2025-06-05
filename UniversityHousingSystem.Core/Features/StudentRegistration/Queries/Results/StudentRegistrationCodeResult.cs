@@ -8,5 +8,6 @@
         public bool IsPaid { get; set; }
         public string? PaymentIntentId { get; set; }
         public string? ClientSecret { get; set; }
+        public DateTime AllowedTime { get; set; }
     }
 }

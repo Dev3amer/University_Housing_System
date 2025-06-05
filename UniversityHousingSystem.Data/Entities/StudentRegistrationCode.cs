@@ -16,6 +16,6 @@
         public DateTime CreatedAt { get; set; }
         public bool IsUsed { get; set; }
 
-        public DateTime AllowedTime { get; set; } = DateTime.Now.AddMinutes(60);
+        public DateTime AllowedTime { get; set; }
     }
 }

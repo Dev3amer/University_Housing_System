@@ -24,7 +24,7 @@ namespace UniversityHousingSystem.Service.implementation
             if (registrationCode == null || registrationCode.IsPaid || registrationCode.IsUsed)
                 return null;
 
-            var amount = 5000; // example: 50 EGP
+            var amount = registrationCode.Amount * 100;
             var currency = "egp";
             var service = new PaymentIntentService();
 
@@ -32,7 +32,7 @@ namespace UniversityHousingSystem.Service.implementation
             {
                 var options = new PaymentIntentCreateOptions
                 {
-                    Amount = amount,
+                    Amount = (long)amount,
                     Currency = currency,
                     PaymentMethodTypes = new List<string> { "card" },
                     Metadata = new Dictionary<string, string>
@@ -52,7 +52,7 @@ namespace UniversityHousingSystem.Service.implementation
             {
                 var options = new PaymentIntentUpdateOptions
                 {
-                    Amount = amount
+                    Amount = (long)amount
                 };
 
                 await service.UpdateAsync(registrationCode.PaymentIntentId, options);

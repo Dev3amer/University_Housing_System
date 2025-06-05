@@ -22,6 +22,17 @@
             public const string Update = Prefix + "update";
             public const string Delete = Prefix + SingleRoute;
         }
+        public static class PeriodsRouting
+        {
+            public const string Prefix = Rule + "periods/";
+
+            public const string list = Prefix + "list";
+            public const string GetById = Prefix + SingleRoute;
+
+            public const string Create = Prefix + "create";
+            public const string Update = Prefix + "update";
+            public const string Delete = Prefix + SingleRoute;
+        }
 
         public static class BuildingRouting
         {

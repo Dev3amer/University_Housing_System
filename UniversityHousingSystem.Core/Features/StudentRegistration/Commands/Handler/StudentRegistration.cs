@@ -15,27 +15,32 @@ namespace UniversityHousingSystem.Core.Features.StudentRegistration.Commands.Han
         private readonly IStudentRegistrationService _studentRegistrationService;
         private readonly IPaymentService _paymentService;
         private readonly IEmailService _emailService;
+        private readonly IRegistrationPeriodService _registrationPeriodService;
         #endregion
 
         #region Constructors
-        public StudentRegistration(IStudentRegistrationService studentRegistrationService, IEmailService emailService, IPaymentService paymentService)
+        public StudentRegistration(IStudentRegistrationService studentRegistrationService, IEmailService emailService, IPaymentService paymentService, IRegistrationPeriodService registrationPeriodService)
         {
             _studentRegistrationService = studentRegistrationService;
             _emailService = emailService;
             _paymentService = paymentService;
+            _registrationPeriodService = registrationPeriodService;
         }
         #endregion
 
         #region Actions
         public async Task<Response<StudentRegistrationCodeResult>> Handle(SendRegistrationCodeToEmail request, CancellationToken cancellationToken)
         {
+            var currentPeriod = await _registrationPeriodService.GetCurrentRegistrationPeriodAsync();
             StudentRegistrationCode code = new StudentRegistrationCode
             {
+                Amount = currentPeriod.RegistrationFees,
                 Email = request.Email,
                 Code = _studentRegistrationService.GenerateRandomCode(10),
                 IsUsed = false,
                 IsPaid = false,
-                CreatedAt = DateTime.UtcNow
+                CreatedAt = DateTime.UtcNow,
+                AllowedTime = currentPeriod.To
             };
 
             var result = await _studentRegistrationService.CreateAsync(code);
@@ -62,7 +67,8 @@ namespace UniversityHousingSystem.Core.Features.StudentRegistration.Commands.Han
                 ClientSecret = result.ClientSecret,
                 PaymentIntentId = result.PaymentIntentId,
                 Email = result.Email,
-                IsPaid = result.IsPaid
+                IsPaid = result.IsPaid,
+                AllowedTime = result.AllowedTime
             };
             return Success(mappedResult);
 
