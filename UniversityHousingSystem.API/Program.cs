@@ -16,6 +16,8 @@ using UniversityHousingSystem.Infrastructure;
 using UniversityHousingSystem.Infrastructure.Context;
 using UniversityHousingSystem.Infrastructure.Seeding;
 using UniversityHousingSystem.Service;
+using UniversityHousingSystem.Service.Abstractions;
+using UniversityHousingSystem.Service.Seeders;
 
 namespace UniversityHousingSystem.API
 {
@@ -187,7 +189,6 @@ namespace UniversityHousingSystem.API
                 var countriesSeeder = new CountrySeeder(context);
                 await countriesSeeder.SeedAsync();
 
-
                 // Governorates
                 var governorateSeeder = new GovernorateSeeder(context);
                 await governorateSeeder.SeedAsync();
@@ -227,6 +228,11 @@ namespace UniversityHousingSystem.API
                 // CollegeDepartments
                 var collegeDepartmentsSeeder = new CollegeDepartmentsSeeder(context);
                 await collegeDepartmentsSeeder.SeedCollagesDepartmentsAsync();
+
+                var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+                var configuration = services.GetRequiredService<IConfiguration>();
+                var emailService = services.GetRequiredService<IEmailService>();
+                await AdminSeeder.SeedAdminAsync(userManager, roleManager, configuration, emailService);
             }
             #endregion
 

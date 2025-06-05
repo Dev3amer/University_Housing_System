@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace MovieReservationSystem.Infrastructure.Seeding
+namespace UniversityHousingSystem.Infrastructure.Seeding
 {
     public static class RolesSeeder
     {
