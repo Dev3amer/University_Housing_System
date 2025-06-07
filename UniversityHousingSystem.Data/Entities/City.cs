@@ -12,5 +12,6 @@
         // Navigation Property
         public Governorate Governorate { get; set; } = default!;
         public ICollection<Village> Villages { get; set; } = new HashSet<Village>();
+        public ICollection<Student>? Students { get; set; }
     }
 }

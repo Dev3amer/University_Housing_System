@@ -30,6 +30,7 @@
             public const string GetById = Prefix + SingleRoute;
 
             public const string Create = Prefix + "create";
+            public const string Close = Prefix + "close";
             public const string Update = Prefix + "update";
             public const string Delete = Prefix + SingleRoute;
         }

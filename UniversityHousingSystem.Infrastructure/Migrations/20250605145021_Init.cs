@@ -185,7 +185,8 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                     From = table.Column<DateTime>(type: "datetime2", nullable: false),
                     To = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsClosed = table.Column<bool>(type: "bit", nullable: false),
-                    RegistrationFees = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    RegistrationFees = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    AvailableSpaces = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -626,10 +627,12 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                     CollegeId = table.Column<int>(type: "int", nullable: false),
                     CollegeDepartmentId = table.Column<int>(type: "int", nullable: false),
                     GuardianId = table.Column<int>(type: "int", nullable: false),
-                    CountryId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     RoomId = table.Column<int>(type: "int", nullable: true),
-                    ResidencePlace = table.Column<int>(type: "int", nullable: false)
+                    CountryId = table.Column<int>(type: "int", nullable: false),
+                    GovernorateId = table.Column<int>(type: "int", nullable: true),
+                    CityId = table.Column<int>(type: "int", nullable: true),
+                    VillageId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -647,6 +650,12 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
+                        name: "FK_Students_Cities_CityId",
+                        column: x => x.CityId,
+                        principalTable: "Cities",
+                        principalColumn: "CityId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_Students_CollegeDepartments_CollegeDepartmentId",
                         column: x => x.CollegeDepartmentId,
                         principalTable: "CollegeDepartments",
@@ -663,6 +672,12 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                         column: x => x.CountryId,
                         principalTable: "Countries",
                         principalColumn: "CountryId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Students_Governorates_GovernorateId",
+                        column: x => x.GovernorateId,
+                        principalTable: "Governorates",
+                        principalColumn: "GovernorateId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Students_Guardians_GuardianId",
@@ -683,8 +698,8 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                         principalColumn: "RoomId",
                         onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
-                        name: "FK_Students_Villages_ResidencePlace",
-                        column: x => x.ResidencePlace,
+                        name: "FK_Students_Villages_VillageId",
+                        column: x => x.VillageId,
                         principalTable: "Villages",
                         principalColumn: "VillageId",
                         onDelete: ReferentialAction.Restrict);
@@ -801,7 +816,6 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                     NewStudentId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     HighSchoolPercentage = table.Column<decimal>(type: "decimal(5,2)", precision: 5, scale: 2, nullable: false),
-                    IsOutsideSchool = table.Column<bool>(type: "bit", nullable: false),
                     HighSchoolId = table.Column<int>(type: "int", nullable: false),
                     StudentId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -1320,6 +1334,11 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Students_CityId",
+                table: "Students",
+                column: "CityId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Students_CollegeDepartmentId",
                 table: "Students",
                 column: "CollegeDepartmentId");
@@ -1346,6 +1365,11 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                 columns: new[] { "FirstName", "SecondName", "ThirdName", "FourthName" });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Students_GovernorateId",
+                table: "Students",
+                column: "GovernorateId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Students_GuardianId",
                 table: "Students",
                 column: "GuardianId");
@@ -1363,11 +1387,6 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Students_ResidencePlace",
-                table: "Students",
-                column: "ResidencePlace");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Students_RoomId",
                 table: "Students",
                 column: "RoomId");
@@ -1378,6 +1397,11 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                 column: "UserId",
                 unique: true,
                 filter: "[UserId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Students_VillageId",
+                table: "Students",
+                column: "VillageId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_StudentsNotifications_NotificationId",

@@ -12,5 +12,6 @@
         // Navigation Property
         public Country Country { get; set; } = default!;
         public ICollection<City> Cities { get; set; } = new HashSet<City>();
+        public ICollection<Student>? Students { get; set; }
     }
 }

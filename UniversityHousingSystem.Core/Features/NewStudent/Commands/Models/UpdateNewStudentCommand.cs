@@ -9,7 +9,6 @@ namespace UniversityHousingSystem.Core.Features.NewStudent.Commands.Models
     {
         public int NewStudentId { get; set; }
         public decimal HighSchoolPercentage { get; set; }
-        public bool IsOutsideSchool { get; set; }
         public int CollageId { get; set; }
         public int CountryId { get; set; }
         public int VillageId { get; set; }

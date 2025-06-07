@@ -113,9 +113,19 @@ namespace UniversityHousingSystem.Infrastructure.Config
                   .HasForeignKey(s => s.GuardianId)
                   .OnDelete(DeleteBehavior.Restrict);
 
+            builder.HasOne(s => s.Governorate)
+                  .WithMany(g => g.Students)
+                  .HasForeignKey(s => s.GovernorateId)
+                  .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(s => s.City)
+                  .WithMany(c => c.Students)
+                  .HasForeignKey(s => s.CityId)
+                  .OnDelete(DeleteBehavior.Restrict);
+
             builder.HasOne(s => s.Village)
                   .WithMany(v => v.Students)
-                  .HasForeignKey(s => s.ResidencePlace)
+                  .HasForeignKey(s => s.VillageId)
                   .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(s => s.Country)

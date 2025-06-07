@@ -37,6 +37,11 @@ namespace UniversityHousingSystem.Service.implementation
         {
             return await _studentRegistrationRepository.UpdateAsync(codeEntry);
         }
+        public async Task ChangeCodeState(StudentRegistrationCode registrationCode)
+        {
+            registrationCode.IsUsed = true;
+            await _studentRegistrationRepository.UpdateAsync(registrationCode);
+        }
         public string GenerateRandomCode(int length)
         {
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";

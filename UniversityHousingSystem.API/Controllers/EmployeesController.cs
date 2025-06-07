@@ -8,7 +8,6 @@ using Router = UniversityHousingSystem.Data.AppMetaData.Router;
 
 namespace UniversityHousingSystem.API.Controllers
 {
-    [Authorize(Roles = "Admin")]
     [ApiController]
     [Authorize(Roles = "Admin")]
     public class EmployeesController : AppController

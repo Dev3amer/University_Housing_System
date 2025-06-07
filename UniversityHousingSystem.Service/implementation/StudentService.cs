@@ -48,6 +48,20 @@ namespace UniversityHousingSystem.Service.implementation
                 .GetTableNoTracking()
                 .FirstOrDefaultAsync(a => a.QRText == qrText);
         }
+
+        public async Task<IEnumerable<Student>> GetTopStudents(int studentsNumber)
+        {
+            return await _studentRepository.GetTableAsTracking()
+                .OrderByDescending(s => s.CurrentScore)
+                .Include(s => s.Application)
+                .Take(studentsNumber)
+                .ToListAsync();
+        }
+
+        public async Task UpdateStudents(IEnumerable<Student> topStudents)
+        {
+            await _studentRepository.UpdateRangeAsync(topStudents);
+        }
         #endregion
     }
 }

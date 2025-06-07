@@ -855,9 +855,6 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                         .HasPrecision(5, 2)
                         .HasColumnType("decimal(5,2)");
 
-                    b.Property<bool>("IsOutsideSchool")
-                        .HasColumnType("bit");
-
                     b.Property<int>("StudentId")
                         .HasColumnType("int");
 
@@ -1064,6 +1061,9 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("AvailableSpaces")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("From")
                         .HasColumnType("datetime2");
 
@@ -1188,6 +1188,9 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                     b.Property<DateOnly>("BirthDate")
                         .HasColumnType("date");
 
+                    b.Property<int?>("CityId")
+                        .HasColumnType("int");
+
                     b.Property<int>("CollegeDepartmentId")
                         .HasColumnType("int");
 
@@ -1219,6 +1222,9 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
+
+                    b.Property<int?>("GovernorateId")
+                        .HasColumnType("int");
 
                     b.Property<int>("GuardianId")
                         .HasColumnType("int");
@@ -1257,9 +1263,6 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<int>("ResidencePlace")
-                        .HasColumnType("int");
-
                     b.Property<int?>("RoomId")
                         .HasColumnType("int");
 
@@ -1276,6 +1279,9 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int?>("VillageId")
+                        .HasColumnType("int");
+
                     b.HasKey("StudentId");
 
                     b.HasIndex("AcademicStudentCode")
@@ -1283,6 +1289,8 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
 
                     b.HasIndex("ApplicationId")
                         .IsUnique();
+
+                    b.HasIndex("CityId");
 
                     b.HasIndex("CollegeDepartmentId");
 
@@ -1293,6 +1301,8 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
+                    b.HasIndex("GovernorateId");
+
                     b.HasIndex("GuardianId");
 
                     b.HasIndex("NationalId")
@@ -1301,13 +1311,13 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                     b.HasIndex("RegistrationCodeId")
                         .IsUnique();
 
-                    b.HasIndex("ResidencePlace");
-
                     b.HasIndex("RoomId");
 
                     b.HasIndex("UserId")
                         .IsUnique()
                         .HasFilter("[UserId] IS NOT NULL");
+
+                    b.HasIndex("VillageId");
 
                     b.HasIndex("FirstName", "SecondName", "ThirdName", "FourthName");
 
@@ -1882,6 +1892,11 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("UniversityHousingSystem.Data.Entities.City", "City")
+                        .WithMany("Students")
+                        .HasForeignKey("CityId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("UniversityHousingSystem.Data.Entities.CollegeDepartment", "CollegeDepartment")
                         .WithMany("Students")
                         .HasForeignKey("CollegeDepartmentId")
@@ -1900,6 +1915,11 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("UniversityHousingSystem.Data.Entities.Governorate", "Governorate")
+                        .WithMany("Students")
+                        .HasForeignKey("GovernorateId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("UniversityHousingSystem.Data.Entities.Guardian", "Guardian")
                         .WithMany("Students")
                         .HasForeignKey("GuardianId")
@@ -1912,12 +1932,6 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("UniversityHousingSystem.Data.Entities.Village", "Village")
-                        .WithMany("Students")
-                        .HasForeignKey("ResidencePlace")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("UniversityHousingSystem.Data.Entities.Room", "Room")
                         .WithMany("Students")
                         .HasForeignKey("RoomId")
@@ -1928,13 +1942,22 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                         .HasForeignKey("UniversityHousingSystem.Data.Entities.Student", "UserId")
                         .OnDelete(DeleteBehavior.SetNull);
 
+                    b.HasOne("UniversityHousingSystem.Data.Entities.Village", "Village")
+                        .WithMany("Students")
+                        .HasForeignKey("VillageId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.Navigation("Application");
+
+                    b.Navigation("City");
 
                     b.Navigation("College");
 
                     b.Navigation("CollegeDepartment");
 
                     b.Navigation("Country");
+
+                    b.Navigation("Governorate");
 
                     b.Navigation("Guardian");
 
@@ -2031,6 +2054,8 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
 
             modelBuilder.Entity("UniversityHousingSystem.Data.Entities.City", b =>
                 {
+                    b.Navigation("Students");
+
                     b.Navigation("Villages");
                 });
 
@@ -2065,6 +2090,8 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
             modelBuilder.Entity("UniversityHousingSystem.Data.Entities.Governorate", b =>
                 {
                     b.Navigation("Cities");
+
+                    b.Navigation("Students");
                 });
 
             modelBuilder.Entity("UniversityHousingSystem.Data.Entities.Guardian", b =>

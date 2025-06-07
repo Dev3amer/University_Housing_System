@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UniversityHousingSystem.API.APIBases;
 using UniversityHousingSystem.Core.Features.Authentication.Commands.Models;
@@ -18,7 +17,7 @@ namespace MovieReservationSystem.API.Controllers
         }
         #endregion
         #region Queries Actions
-        [Authorize]
+        //[Authorize]
         [HttpPost(Router.AuthenticationRouting.ValidateToken)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

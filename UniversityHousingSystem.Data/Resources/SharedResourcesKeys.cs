@@ -95,5 +95,8 @@
         public const string RefundIssued = "Refund of {0} issued for booking {1}. Processing time: {2} days";
         public const string InsufficientFunds = "Insufficient funds for payment of {0}. Available balance: {1}";
         #endregion
+        public const string RegistrationClosed = "Registration is not available now, try again later";
+        public const string rejectClosed = "Cannot close registration yet.";
+
     }
 }

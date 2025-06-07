@@ -69,6 +69,12 @@ namespace UniversityHousingSystem.Infrastructure.GenericBases
         {
             _context.Database.RollbackTransaction();
         }
+
+        public Task<int> UpdateRangeAsync(IEnumerable<T> entities)
+        {
+            _context.Set<T>().UpdateRange(entities);
+            return _context.SaveChangesAsync();
+        }
         #endregion
     }
 }

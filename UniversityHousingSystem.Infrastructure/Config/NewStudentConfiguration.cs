@@ -15,9 +15,6 @@ namespace UniversityHousingSystem.Infrastructure.Config
                 .HasPrecision(5, 2)
                 .IsRequired();
 
-            builder.Property(ns => ns.IsOutsideSchool)
-                .IsRequired();
-
             // Relationships
             builder.HasOne(ns => ns.HighSchool)
                 .WithMany(hs => hs.NewStudents)

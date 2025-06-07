@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using UniversityHousingSystem.Core.Features.NewStudent.Queries.Results;
 using UniversityHousingSystem.Core.Features.OldStudent.Commands.Models;
 using UniversityHousingSystem.Core.Features.OldStudent.Queries.Results;
 using UniversityHousingSystem.Core.ResponseBases;
@@ -22,10 +23,12 @@ namespace UniversityHousingSystem.Core.Features.OldStudent.Commands.Handler
         private readonly IFileService _fileService;
         private readonly IRankingService _rankingService;
         private readonly ICollegeDepartmentService _collegeDepartmentService;
+        private readonly IStudentRegistrationService _studentRegistrationService;
+        private readonly IRegistrationPeriodService _registrationPeriodService;
 
         #endregion
         #region Constructor
-        public OldStudentCommandHandler(IOldStudentService oldStudentService, ICollegeService collegeService, ICountryService countryService, IVillageService villageService, IQRService qRService, IFileService fileService, IRankingService rankingService)
+        public OldStudentCommandHandler(IOldStudentService oldStudentService, ICollegeService collegeService, ICountryService countryService, IVillageService villageService, IQRService qRService, IFileService fileService, IRankingService rankingService, IStudentRegistrationService studentRegistrationService, IRegistrationPeriodService registrationPeriodService)
         {
             _oldStudentService = oldStudentService;
             _collegeService = collegeService;
@@ -34,6 +37,8 @@ namespace UniversityHousingSystem.Core.Features.OldStudent.Commands.Handler
             _qRService = qRService;
             _fileService = fileService;
             _rankingService = rankingService;
+            _studentRegistrationService = studentRegistrationService;
+            _registrationPeriodService = registrationPeriodService;
         }
         #endregion
         #region Handlers
@@ -54,6 +59,14 @@ namespace UniversityHousingSystem.Core.Features.OldStudent.Commands.Handler
             var collegeDept = await _collegeDepartmentService.GetAsync(request.CollageDepartmentId);
             if (collegeDept is null)
                 return BadRequest<GetOldStudentByIdResponse>(string.Format(SharedResourcesKeys.NotFound, nameof(Data.Entities.CollegeDepartment)));
+
+            var registrationCode = await _studentRegistrationService.GetByCodeAsync(request.RegistrationCode);
+            if (registrationCode is null || registrationCode.IsUsed || !registrationCode.IsPaid)
+                return BadRequest<GetOldStudentByIdResponse>(string.Format(SharedResourcesKeys.Invalid, nameof(Data.Entities.StudentRegistrationCode)));
+
+            var currentPeriod = await _registrationPeriodService.GetCurrentRegistrationPeriodAsync();
+            if (currentPeriod == null || DateTime.Now < currentPeriod.From || DateTime.Now > currentPeriod.To || currentPeriod.IsClosed)
+                BadRequest<GetNewStudentByIdResponse>(string.Format(SharedResourcesKeys.RegistrationClosed));
 
             var qrText = Guid.NewGuid().ToString();
 
@@ -95,6 +108,7 @@ namespace UniversityHousingSystem.Core.Features.OldStudent.Commands.Handler
                     CollegeDepartment = collegeDept,
                     Country = country,
                     Village = village,
+                    StudentRegistrationCode = registrationCode,
                     Application = new Application()
                     {
                         SubmitDate = DateTime.UtcNow,
@@ -122,6 +136,7 @@ namespace UniversityHousingSystem.Core.Features.OldStudent.Commands.Handler
 
             mappedOldStudent.Student.CurrentScore = await _rankingService.CalculateOldStudentScore(mappedOldStudent);
             var addedOldStudent = await _oldStudentService.CreateAsync(mappedOldStudent);
+            await _studentRegistrationService.ChangeCodeState(registrationCode);
             var mappedResponse = new GetOldStudentByIdResponse()
             {
                 OldStudentId = addedOldStudent.OldStudentId,

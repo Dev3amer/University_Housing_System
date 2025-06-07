@@ -15,5 +15,7 @@ namespace UniversityHousingSystem.Service.Abstractions
             return new string(Enumerable.Repeat(chars, length)
                 .Select(s => s[random.Next(s.Length)]).ToArray());
         }
+
+        Task ChangeCodeState(StudentRegistrationCode registrationCode);
     }
 }

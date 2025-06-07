@@ -12,17 +12,14 @@ namespace UniversityHousingSystem.Data.Entities
         public string FourthName { get; set; } = default!;
         public string NationalId { get; set; } = default!;
         public string Phone { get; set; } = default!;
-        //public string? Telephone { get; set; }
         public DateOnly BirthDate { get; set; }
         public EnGender Gender { get; set; }
         public EnReligion Religion { get; set; }
-        //public string PlaceOfBirth { get; set; } = default!;
         public bool HasSpecialNeeds { get; set; }
         public string AcademicStudentCode { get; set; } = default!;
         public string AcademicYear { get; set; } = default!;
         public string Email { get; set; } = default!;
         public bool IsMarried { get; set; }
-        //public string AddressLine { get; set; } = default!;
         public string QRText { get; set; } = default!;
         public string? QRImagePath { get; set; }
         public double CurrentScore { get; set; }
@@ -33,17 +30,21 @@ namespace UniversityHousingSystem.Data.Entities
         public int CollegeId { get; set; }
         public int CollegeDepartmentId { get; set; }
         public int GuardianId { get; set; }
-        public int CountryId { get; set; }
         public string? UserId { get; set; }
         public int? RoomId { get; set; }
-        public int ResidencePlace { get; set; } //Foreign Key For Village
+        public int CountryId { get; set; }
+        public int? GovernorateId { get; set; }
+        public int? CityId { get; set; }
+        public int? VillageId { get; set; }
 
         // Navigation Properties
         public StudentRegistrationCode StudentRegistrationCode { get; set; } = default!;
         public Guardian Guardian { get; set; } = default!;
         public ICollection<Document> Documents { get; set; } = new HashSet<Document>();
-        public Village Village { get; set; } = default!;
         public Country Country { get; set; } = default!;
+        public Governorate? Governorate { get; set; }
+        public City? City { get; set; }
+        public Village? Village { get; set; }
         public ICollection<Issue> Issues { get; set; } = new HashSet<Issue>();
         public College College { get; set; } = default!;
         public CollegeDepartment CollegeDepartment { get; set; } = default!;

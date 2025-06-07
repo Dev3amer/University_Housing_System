@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UniversityHousingSystem.API.APIBases;
 using UniversityHousingSystem.Core.Features.RegistrationPeriod.Commands.Models;
+using UniversityHousingSystem.Core.Features.RegistrationPeriods.Commands.Models;
 using UniversityHousingSystem.Core.Features.RegistrationPeriods.Queries.Models;
 using UniversityHousingSystem.Data.AppMetaData;
 
@@ -43,6 +44,17 @@ namespace UniversityHousingSystem.API.Controllers
             var result = await _mediator.Send(model);
             return NewResult(result);
         }
+
+        [Authorize(Roles = "Admin,Employee")]
+        [HttpPost(Router.PeriodsRouting.Close)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> ClosePeriodByIdAsync(int id)
+        {
+            var result = await _mediator.Send(new CloseRegistrationPeriodCommand() { PeriodId = id });
+            return NewResult(result);
+        }
+
         [Authorize(Roles = "Admin,Employee")]
         [HttpPut(Router.PeriodsRouting.Update)]
         [ProducesResponseType(StatusCodes.Status200OK)]

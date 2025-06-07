@@ -1,24 +1,39 @@
 ﻿using MediatR;
 using UniversityHousingSystem.Core.Features.RegistrationPeriod.Commands.Models;
 using UniversityHousingSystem.Core.Features.RegistrationPeriod.Queries.Results;
+using UniversityHousingSystem.Core.Features.RegistrationPeriods.Commands.Models;
 using UniversityHousingSystem.Core.ResponseBases;
+using UniversityHousingSystem.Data.Entities.Identity;
+using UniversityHousingSystem.Data.Helpers.Enums;
 using UniversityHousingSystem.Data.Resources;
 using UniversityHousingSystem.Service.Abstractions;
+using UniversityHousingSystem.Service.Abstractions.Helpers;
 
 namespace UniversityHousingSystem.Core.Features.RegistrationPeriods.Commands.Handler
 {
     public class RegistrationPeriodCommandHandler : ResponseHandler,
         IRequestHandler<CreateRegistrationPeriodCommand, Response<GetRegistrationPeriodByIdResponse>>,
         IRequestHandler<UpdateRegistrationPeriodCommand, Response<GetRegistrationPeriodByIdResponse>>,
-        IRequestHandler<DeleteRegistrationPeriodCommand, Response<bool>>
+        IRequestHandler<DeleteRegistrationPeriodCommand, Response<bool>>,
+        IRequestHandler<CloseRegistrationPeriodCommand, Response<bool>>
+
+
     {
         #region Fields
         private readonly IRegistrationPeriodService _registrationPeriodService;
+        private readonly IStudentService _studentService;
+        private readonly IEmailService _emailService;
+        private readonly IUserService _userService;
+        private readonly IPasswordGeneratorService _passwordGeneratorService;
         #endregion
         #region Constructor
-        public RegistrationPeriodCommandHandler(IRegistrationPeriodService registrationPeriodService)
+        public RegistrationPeriodCommandHandler(IRegistrationPeriodService registrationPeriodService, IStudentService studentService, IEmailService emailService, IUserService userService, IPasswordGeneratorService passwordGeneratorService)
         {
             _registrationPeriodService = registrationPeriodService;
+            _studentService = studentService;
+            _emailService = emailService;
+            _userService = userService;
+            _passwordGeneratorService = passwordGeneratorService;
         }
         #endregion
         public async Task<Response<GetRegistrationPeriodByIdResponse>> Handle(CreateRegistrationPeriodCommand request, CancellationToken cancellationToken)
@@ -79,6 +94,42 @@ namespace UniversityHousingSystem.Core.Features.RegistrationPeriods.Commands.Han
 
             var isDeleted = await _registrationPeriodService.DeleteAsync(searchedPeriod);
             return isDeleted ? Deleted<bool>(string.Format(SharedResourcesKeys.Deleted, nameof(Data.Entities.RegistrationPeriod))) : InternalServerError<bool>();
+        }
+
+        public async Task<Response<bool>> Handle(CloseRegistrationPeriodCommand request, CancellationToken cancellationToken)
+        {
+            var period = await _registrationPeriodService.GetAsync(request.PeriodId);
+
+            if (period == null || DateTime.Now < period.To || period.IsClosed)
+                return BadRequest<bool>(SharedResourcesKeys.rejectClosed);
+
+            period.IsClosed = true;
+            var UpdatedPeriod = await _registrationPeriodService.UpdateAsync(period);
+
+            if (UpdatedPeriod.IsClosed is false)
+                return UnprocessableEntity<bool>(SharedResourcesKeys.TryAgain);
+
+            var topStudents = await _studentService.GetTopStudents(period.AvailableSpaces);
+            foreach (var student in topStudents)
+            {
+                student.Application.FinalStatus = EnStatus.Accepted;
+                var appUser = new ApplicationUser()
+                {
+                    Email = student.Email,
+                    EmailConfirmed = true,
+                    PhoneNumber = student.Phone,
+                    UserName = student.Email,
+                };
+                var password = _passwordGeneratorService.Generate();
+                var result = await _userService.CreateUser(appUser, password, "Student");
+                await _emailService.SendEmail(result.User.Email, student.FirstName,
+                    "You are Accepted in Benha Housing." +
+                    $"<br> Use these data to login:<br><strong>Username: </strong>{result.User.UserName}<br>" +
+                    $"<strong>Password: </strong>{password}", "Housing System Accepting");
+            }
+            // Single call to update all students
+            await _studentService.UpdateStudents(topStudents);
+            return Success<bool>(true);
         }
     }
 }

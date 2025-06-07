@@ -14,5 +14,6 @@ namespace UniversityHousingSystem.Infrastructure.GenericBases
         IDbContextTransaction BeginTransaction();
         void Commit();
         void RollBack();
+        Task<int> UpdateRangeAsync(IEnumerable<T> entities);
     }
 }

@@ -32,6 +32,12 @@ namespace UniversityHousingSystem.Core.Features.StudentRegistration.Commands.Han
         public async Task<Response<StudentRegistrationCodeResult>> Handle(SendRegistrationCodeToEmail request, CancellationToken cancellationToken)
         {
             var currentPeriod = await _registrationPeriodService.GetCurrentRegistrationPeriodAsync();
+
+            if (currentPeriod is null || currentPeriod.To < DateTime.Now)
+            {
+                return NotFound<StudentRegistrationCodeResult>(SharedResourcesKeys.RegistrationClosed);
+            }
+
             StudentRegistrationCode code = new StudentRegistrationCode
             {
                 Amount = currentPeriod.RegistrationFees,

@@ -23,9 +23,11 @@ namespace UniversityHousingSystem.Core.Features.NewStudent.Commands.Handler
         private readonly IFileService _fileService;
         private readonly IRankingService _rankingService;
         private readonly ICollegeDepartmentService _collegeDepartmentService;
+        private readonly IStudentRegistrationService _studentRegistrationService;
+        private readonly IRegistrationPeriodService _registrationPeriodService;
         #endregion
         #region Constructor
-        public NewStudentCommandHandler(INewStudentService newStudentService, ICollegeService collegeService, ICountryService countryService, IVillageService villageService, IHighSchoolService highSchoolService, IQRService qRService, IFileService fileService, IRankingService rankingService, ICollegeDepartmentService collegeDepartmentService)
+        public NewStudentCommandHandler(INewStudentService newStudentService, ICollegeService collegeService, ICountryService countryService, IVillageService villageService, IHighSchoolService highSchoolService, IQRService qRService, IFileService fileService, IRankingService rankingService, ICollegeDepartmentService collegeDepartmentService, IStudentRegistrationService studentRegistrationService, IRegistrationPeriodService registrationPeriodService)
         {
             _newStudentService = newStudentService;
             _collegeService = collegeService;
@@ -36,6 +38,8 @@ namespace UniversityHousingSystem.Core.Features.NewStudent.Commands.Handler
             _fileService = fileService;
             _rankingService = rankingService;
             _collegeDepartmentService = collegeDepartmentService;
+            _studentRegistrationService = studentRegistrationService;
+            _registrationPeriodService = registrationPeriodService;
         }
         #endregion
 
@@ -61,6 +65,16 @@ namespace UniversityHousingSystem.Core.Features.NewStudent.Commands.Handler
             var collegeDept = await _collegeDepartmentService.GetAsync(request.CollageDepartmentId);
             if (collegeDept is null)
                 return BadRequest<GetNewStudentByIdResponse>(string.Format(SharedResourcesKeys.NotFound, nameof(Data.Entities.CollegeDepartment)));
+
+            var registrationCode = await _studentRegistrationService.GetByCodeAsync(request.RegistrationCode);
+            if (registrationCode is null || registrationCode.IsUsed || !registrationCode.IsPaid)
+                return BadRequest<GetNewStudentByIdResponse>(string.Format(SharedResourcesKeys.Invalid, nameof(Data.Entities.StudentRegistrationCode)));
+
+            var currentPeriod = await _registrationPeriodService.GetCurrentRegistrationPeriodAsync();
+            if (currentPeriod == null || DateTime.Now < currentPeriod.From || DateTime.Now > currentPeriod.To || currentPeriod.IsClosed)
+            {
+                BadRequest<GetNewStudentByIdResponse>(string.Format(SharedResourcesKeys.RegistrationClosed));
+            }
 
             var qrText = Guid.NewGuid().ToString();
 
@@ -102,6 +116,7 @@ namespace UniversityHousingSystem.Core.Features.NewStudent.Commands.Handler
                     CollegeDepartment = collegeDept,
                     Country = country,
                     Village = village,
+                    StudentRegistrationCode = registrationCode,
                     Application = new Application()
                     {
                         SubmitDate = DateTime.UtcNow,
@@ -124,12 +139,13 @@ namespace UniversityHousingSystem.Core.Features.NewStudent.Commands.Handler
                     Documents = studentDocuments
                 },
                 HighSchoolPercentage = request.HighSchoolPercentage,
-                IsOutsideSchool = request.IsOutsideSchool,
+                //IsOutsideSchool = request.IsOutsideSchool,
                 HighSchoolId = request.HighSchoolId
             };
 
             mappedNewStudent.Student.CurrentScore = await _rankingService.CalculateNewStudentScore(mappedNewStudent);
             var addedNewStudent = await _newStudentService.CreateAsync(mappedNewStudent);
+            await _studentRegistrationService.ChangeCodeState(registrationCode);
             var mappedResponse = new GetNewStudentByIdResponse()
 
             {
@@ -149,7 +165,6 @@ namespace UniversityHousingSystem.Core.Features.NewStudent.Commands.Handler
                 Email = addedNewStudent.Student.Email,
                 IsMarried = addedNewStudent.Student.IsMarried,
                 HighSchoolPercentage = addedNewStudent.HighSchoolPercentage,
-                IsOutsideSchool = addedNewStudent.IsOutsideSchool,
                 HighSchoolId = highSchool.HighSchoolId,
                 HighSchoolName = highSchool.Name,
                 CurrentScore = addedNewStudent.Student.CurrentScore,
@@ -185,7 +200,6 @@ namespace UniversityHousingSystem.Core.Features.NewStudent.Commands.Handler
             newStudentOldObj.Student.AcademicYear = request.AcademicYear;
             newStudentOldObj.Student.Email = request.Email;
             newStudentOldObj.Student.IsMarried = request.IsMarried;
-            newStudentOldObj.IsOutsideSchool = request.IsOutsideSchool;
             newStudentOldObj.HighSchoolPercentage = request.HighSchoolPercentage;
             #endregion
 
@@ -208,7 +222,6 @@ namespace UniversityHousingSystem.Core.Features.NewStudent.Commands.Handler
                 Email = updatedNewStudent.Student.Email,
                 IsMarried = updatedNewStudent.Student.IsMarried,
                 HighSchoolPercentage = updatedNewStudent.HighSchoolPercentage,
-                IsOutsideSchool = updatedNewStudent.IsOutsideSchool,
                 HighSchoolId = updatedNewStudent.HighSchool.HighSchoolId,
                 HighSchoolName = updatedNewStudent.HighSchool.Name,
                 GuardianId = updatedNewStudent.Student.Guardian.GuardianId,
