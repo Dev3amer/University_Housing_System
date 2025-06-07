@@ -89,6 +89,7 @@ namespace UniversityHousingSystem.Core.Features.OldStudent.Commands.Handler
             {
                 Student = new Data.Entities.Student()
                 {
+                    FavRoom = request.FavRoomId,
                     FirstName = request.FirstName,
                     SecondName = request.SecondName,
                     ThirdName = request.ThirdName,
@@ -177,6 +178,7 @@ namespace UniversityHousingSystem.Core.Features.OldStudent.Commands.Handler
                 return BadRequest<GetOldStudentByIdResponse>(string.Format(SharedResourcesKeys.NotFound, nameof(Data.Entities.OldStudent)));
 
             #region Mapping
+            oldStudentOldObj.Student.FavRoom = request.FavRoomId;
             oldStudentOldObj.Student.FirstName = request.FirstName;
             oldStudentOldObj.Student.SecondName = request.SecondName;
             oldStudentOldObj.Student.ThirdName = request.ThirdName;

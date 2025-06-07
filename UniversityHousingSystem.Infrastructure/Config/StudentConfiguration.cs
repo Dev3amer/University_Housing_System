@@ -37,10 +37,6 @@ namespace UniversityHousingSystem.Infrastructure.Config
                   .HasMaxLength(13)
                   .IsUnicode(false);
 
-            //builder.Property(s => s.Telephone)
-            //      .HasMaxLength(15)
-            //      .IsUnicode(false);
-
             builder.Property(s => s.BirthDate)
                 .IsRequired()
                 .HasColumnType("date");
@@ -61,10 +57,6 @@ namespace UniversityHousingSystem.Infrastructure.Config
                 v => (EnReligion)Enum.Parse(typeof(EnReligion), v)
                 );
 
-            //builder.Property(s => s.PlaceOfBirth)
-            //      .IsRequired()
-            //      .HasMaxLength(100);
-
             #endregion
 
 
@@ -81,16 +73,16 @@ namespace UniversityHousingSystem.Infrastructure.Config
                   .IsRequired()
                   .HasMaxLength(100);
 
-            //builder.Property(s => s.AddressLine)
-            //      .IsRequired()
-            //      .HasMaxLength(200);
-
             builder.Property(s => s.QRText)
                   .HasMaxLength(255);
 
             builder.Property(s => s.QRImagePath)
                   .HasMaxLength(2500)
                   .IsRequired(false);
+
+            builder.Property(s => s.FavRoom)
+                .IsRequired(false);
+
             #endregion
 
             #region One-to-One

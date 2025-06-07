@@ -96,6 +96,7 @@ namespace UniversityHousingSystem.Core.Features.NewStudent.Commands.Handler
             {
                 Student = new Student()
                 {
+                    FavRoom = request.FavRoomId,
                     FirstName = request.FirstName,
                     SecondName = request.SecondName,
                     ThirdName = request.ThirdName,
@@ -139,7 +140,6 @@ namespace UniversityHousingSystem.Core.Features.NewStudent.Commands.Handler
                     Documents = studentDocuments
                 },
                 HighSchoolPercentage = request.HighSchoolPercentage,
-                //IsOutsideSchool = request.IsOutsideSchool,
                 HighSchoolId = request.HighSchoolId
             };
 
@@ -186,6 +186,7 @@ namespace UniversityHousingSystem.Core.Features.NewStudent.Commands.Handler
                 return BadRequest<GetNewStudentByIdResponse>(string.Format(SharedResourcesKeys.NotFound, nameof(Data.Entities.NewStudent)));
 
             #region Mapping
+            newStudentOldObj.Student.FavRoom = request.FavRoomId;
             newStudentOldObj.Student.FirstName = request.FirstName;
             newStudentOldObj.Student.SecondName = request.SecondName;
             newStudentOldObj.Student.ThirdName = request.ThirdName;

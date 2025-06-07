@@ -23,6 +23,7 @@ namespace UniversityHousingSystem.Data.Entities
         public string QRText { get; set; } = default!;
         public string? QRImagePath { get; set; }
         public double CurrentScore { get; set; }
+        public int? FavRoom { get; set; } //Not foreign key, just a reference to the student's preferred room
         public int RegistrationCodeId { get; set; }
 
         //Foreign Keys

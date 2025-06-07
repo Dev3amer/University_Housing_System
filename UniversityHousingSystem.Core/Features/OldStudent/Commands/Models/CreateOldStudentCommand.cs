@@ -8,6 +8,7 @@ namespace UniversityHousingSystem.Core.Features.OldStudent.Commands.Models
 {
     public class CreateOldStudentCommand : IRequest<Response<GetOldStudentByIdResponse>>
     {
+        public int FavRoomId { get; set; }
         public string RegistrationCode { get; set; } = default!;
 
         public string FirstName { get; set; } = default!;

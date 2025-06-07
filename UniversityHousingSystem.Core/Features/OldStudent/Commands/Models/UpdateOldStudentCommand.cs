@@ -8,6 +8,7 @@ namespace UniversityHousingSystem.Core.Features.OldStudent.Commands.Models
     public class UpdateOldStudentCommand : SharedDTOs.StudentResponse,
         IRequest<Response<GetOldStudentByIdResponse>>
     {
+        public int FavRoomId { get; set; }
         public int OldStudentId { get; set; }
         public EnPreviousYearGrade PreviousYearGrade { get; set; }
         public decimal GradePercentage { get; set; }

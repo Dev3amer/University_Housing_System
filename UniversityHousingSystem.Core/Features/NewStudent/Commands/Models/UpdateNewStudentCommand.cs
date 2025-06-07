@@ -7,6 +7,7 @@ namespace UniversityHousingSystem.Core.Features.NewStudent.Commands.Models
     public class UpdateNewStudentCommand : SharedDTOs.StudentResponse,
         IRequest<Response<GetNewStudentByIdResponse>>
     {
+        public int FavRoomId { get; set; }
         public int NewStudentId { get; set; }
         public decimal HighSchoolPercentage { get; set; }
         public int CollageId { get; set; }

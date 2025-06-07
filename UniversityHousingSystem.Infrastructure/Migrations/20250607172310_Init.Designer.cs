@@ -12,7 +12,7 @@ using UniversityHousingSystem.Infrastructure.Context;
 namespace UniversityHousingSystem.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250605145021_Init")]
+    [Migration("20250607172310_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -1210,6 +1210,9 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("FavRoom")
+                        .HasColumnType("int");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
