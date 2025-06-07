@@ -1,7 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using UniversityHousingSystem.Data.Entities;
-using UniversityHousingSystem.Data.Helpers.Enums;
-using UniversityHousingSystem.Infrastructure.implementation;
 using UniversityHousingSystem.Infrastructure.Repositories;
 using UniversityHousingSystem.Service.Abstractions;
 
@@ -34,11 +32,11 @@ namespace UniversityHousingSystem.Service.implementation
         }
         public async Task<CollegeDepartment> CreateAsync(CollegeDepartment collegeDepartment)
         {
-            var college= await _collegeRepository.GetByIdAsync(collegeDepartment.CollegeId);
+            var college = await _collegeRepository.GetByIdAsync(collegeDepartment.CollegeId);
             if (college == null)
                 throw new ArgumentException("Invalid CollegeId. College does not exist.");
 
-            collegeDepartment.College=college;
+            collegeDepartment.College = college;
             return await _collegeDepartmentRepository.AddAsync(collegeDepartment);
         }
         public async Task<CollegeDepartment?> GetLastCollegeDepartmentAsync()
@@ -60,8 +58,15 @@ namespace UniversityHousingSystem.Service.implementation
             await _collegeDepartmentRepository.DeleteAsync(collegeDepartmentToDelete);
             return true;
         }
+
+        public async Task<IEnumerable<CollegeDepartment>> GetAllDepartmentsByCollegeId(int collegeId)
+        {
+            return await _collegeDepartmentRepository.GetTableNoTracking()
+                .Where(cd => cd.CollegeId == collegeId)
+                .ToListAsync();
+        }
         ////
-       
+
 
 
         #endregion

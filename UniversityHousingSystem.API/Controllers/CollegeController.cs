@@ -2,8 +2,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UniversityHousingSystem.API.APIBases;
+using UniversityHousingSystem.Core.Features.College.Queries.Models;
 using UniversityHousingSystem.Core.Features.Events.Commands.Models;
 using UniversityHousingSystem.Core.Features.Events.Queries.Models;
+using UniversityHousingSystem.Core.Features.Events.Queries.Results;
 using UniversityHousingSystem.Data.AppMetaData;
 
 namespace UniversityHousingSystem.API.Controllers
@@ -21,6 +23,14 @@ namespace UniversityHousingSystem.API.Controllers
         public async Task<IActionResult> GetAllCollegesAsync()
         {
             var result = await _mediator.Send(new GetAllCollegesQuery());
+            return NewResult(result);
+        }
+        [HttpGet("departments/{collegeId}")]
+        [ProducesResponseType(typeof(GetAllCollegeDepartmentResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetCollegeDepartmentsByCollegeIdAsync(int collegeId)
+        {
+            var result = await _mediator.Send(new GetCollegeDepartmentsByCollegeIdQuery() { CollegeId = collegeId });
             return NewResult(result);
         }
         [HttpGet("{id}")]

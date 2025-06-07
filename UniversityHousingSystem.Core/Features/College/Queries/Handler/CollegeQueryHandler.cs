@@ -1,7 +1,7 @@
 ﻿using MediatR;
+using UniversityHousingSystem.Core.Features.College.Queries.Models;
 using UniversityHousingSystem.Core.Features.Events.Queries.Models;
 using UniversityHousingSystem.Core.Features.Events.Queries.Results;
-using UniversityHousingSystem.Core.Pagination;
 using UniversityHousingSystem.Core.ResponseBases;
 using UniversityHousingSystem.Data.Entities;
 using UniversityHousingSystem.Data.Resources;
@@ -11,18 +11,19 @@ namespace UniversityHousingSystem.Core.Features.Buildings.Queries.Handler
 {
     public class CollegeQueryHandler : ResponseHandler,
         IRequestHandler<GetAllCollegesQuery, Response<List<GetAllCollegeResponse>>>,
+        IRequestHandler<GetCollegeDepartmentsByCollegeIdQuery, Response<List<GetAllCollegeDepartmentResponse>>>,
         IRequestHandler<GetCollegeByIdQuery, Response<GetCollegeByIdResponse>>
-
-
 
     {
         #region Fields
         private readonly ICollegeService _collegeService;
+        private readonly ICollegeDepartmentService _collegeDepartmentService;
         #endregion
         #region Constructor
-        public CollegeQueryHandler(ICollegeService collegeService)
+        public CollegeQueryHandler(ICollegeService collegeService, ICollegeDepartmentService collegeDepartmentService)
         {
             _collegeService = collegeService;
+            _collegeDepartmentService = collegeDepartmentService;
         }
         #endregion
         #region handlers
@@ -59,10 +60,19 @@ namespace UniversityHousingSystem.Core.Features.Buildings.Queries.Handler
             return Success(mappedCollege);
         }
 
-
-
-
-
+        public async Task<Response<List<GetAllCollegeDepartmentResponse>>> Handle(GetCollegeDepartmentsByCollegeIdQuery request, CancellationToken cancellationToken)
+        {
+            var collegeDepartments = await _collegeDepartmentService.GetAllDepartmentsByCollegeId(request.CollegeId);
+            if (collegeDepartments is null)
+                return NotFound<List<GetAllCollegeDepartmentResponse>>(string.Format(SharedResourcesKeys.NotFound, nameof(College)));
+            var mappedCollegeDepartments = collegeDepartments.Select(cd => new GetAllCollegeDepartmentResponse
+            {
+                CollegeDepartmentId = cd.CollegeDepartmentId,
+                Name = cd.Name,
+                CollegeId = cd.CollegeId
+            }).ToList();
+            return Success(mappedCollegeDepartments);
+        }
         #endregion
     }
 }

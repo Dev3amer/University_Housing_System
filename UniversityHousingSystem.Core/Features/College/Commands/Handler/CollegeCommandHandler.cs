@@ -1,10 +1,7 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Identity;
 using UniversityHousingSystem.Core.Features.Events.Commands.Models;
 using UniversityHousingSystem.Core.Features.Events.Queries.Results;
 using UniversityHousingSystem.Core.ResponseBases;
-using UniversityHousingSystem.Data.Entities;
-using UniversityHousingSystem.Data.Entities.Identity;
 using UniversityHousingSystem.Data.Resources;
 using UniversityHousingSystem.Service.Abstractions;
 
@@ -24,7 +21,7 @@ namespace UniversityHousingSystem.Core.Features.Buildings.Commands.Handler
             ICollegeService collegeService)
         {
             _collegeService = collegeService;
-        
+
         }
         #endregion
 
@@ -32,10 +29,10 @@ namespace UniversityHousingSystem.Core.Features.Buildings.Commands.Handler
 
         public async Task<Response<GetCollegeByIdResponse>> Handle(CreateCollegeCommand request, CancellationToken cancellationToken)
         {
-            var college = new College
+            var college = new Data.Entities.College
             {
                 Name = request.Name,
-             //   Departments = request.Departments?.Select(d => new CollegeDepartment { Name = d }).ToList()
+                //   Departments = request.Departments?.Select(d => new CollegeDepartment { Name = d }).ToList()
             };
 
             var createdCollege = await _collegeService.CreateAsync(college);
@@ -44,7 +41,7 @@ namespace UniversityHousingSystem.Core.Features.Buildings.Commands.Handler
             {
                 CollegeId = createdCollege.CollegeId,
                 Name = createdCollege.Name,
-              //  Departments = createdCollege.Departments?.Select(d => d.Name).ToList()
+                //  Departments = createdCollege.Departments?.Select(d => d.Name).ToList()
             };
 
             return Created(response, string.Format(SharedResourcesKeys.Created, nameof(College)));
@@ -61,15 +58,15 @@ namespace UniversityHousingSystem.Core.Features.Buildings.Commands.Handler
                 return NotFound<GetCollegeByIdResponse>(string.Format(SharedResourcesKeys.NotFound, nameof(Guardian)));
 
             college.Name = request.Name;
-          //  college.Departments = request.Departments.Select(d => new CollegeDepartment { Name = d }).ToList();
-          
+            //  college.Departments = request.Departments.Select(d => new CollegeDepartment { Name = d }).ToList();
+
 
             var updatedCollege = await _collegeService.UpdateAsync(college);
 
             var response = new GetCollegeByIdResponse
             {
                 Name = updatedCollege.Name,
-              //  Departments = updatedCollege.Departments?.Select(d => d.Name).ToList()
+                //  Departments = updatedCollege.Departments?.Select(d => d.Name).ToList()
 
             };
 
