@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MovieReservationSystem.Infrastructure.Seeding;
+using Serilog;
 using System.Text;
 using UniversityHousingSystem.Core;
 using UniversityHousingSystem.Core.Middleware;
@@ -177,6 +178,13 @@ namespace UniversityHousingSystem.API
             });
             #endregion
 
+            #region Serilog
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(builder.Configuration)
+                .CreateLogger();
+            builder.Services.AddSerilog();
+            #endregion
+
             var app = builder.Build();
 
             #region Seeders
@@ -236,12 +244,10 @@ namespace UniversityHousingSystem.API
             }
             #endregion
 
-            // Configure the HTTP request pipeline.
-            //if (app.Environment.IsDevelopment())
-            //{
+
             app.UseSwagger();
             app.UseSwaggerUI();
-            //}
+
             app.UseMiddleware<ErrorHandlerMiddleware>();
             app.UseHttpsRedirection();
 

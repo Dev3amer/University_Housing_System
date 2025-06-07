@@ -28,7 +28,7 @@ namespace UniversityHousingSystem.Core.Features.OldStudent.Commands.Handler
 
         #endregion
         #region Constructor
-        public OldStudentCommandHandler(IOldStudentService oldStudentService, ICollegeService collegeService, ICountryService countryService, IVillageService villageService, IQRService qRService, IFileService fileService, IRankingService rankingService, IStudentRegistrationService studentRegistrationService, IRegistrationPeriodService registrationPeriodService)
+        public OldStudentCommandHandler(IOldStudentService oldStudentService, ICollegeService collegeService, ICountryService countryService, IVillageService villageService, IQRService qRService, IFileService fileService, IRankingService rankingService, IStudentRegistrationService studentRegistrationService, IRegistrationPeriodService registrationPeriodService, ICollegeDepartmentService collegeDepartmentService)
         {
             _oldStudentService = oldStudentService;
             _collegeService = collegeService;
@@ -39,6 +39,7 @@ namespace UniversityHousingSystem.Core.Features.OldStudent.Commands.Handler
             _rankingService = rankingService;
             _studentRegistrationService = studentRegistrationService;
             _registrationPeriodService = registrationPeriodService;
+            _collegeDepartmentService = collegeDepartmentService;
         }
         #endregion
         #region Handlers
