@@ -25,7 +25,7 @@ namespace UniversityHousingSystem.API.Controllers
             var result = await _mediator.Send(new GetAllEventsQuery());
             return NewResult(result);
         }
-        [Authorize]
+        //[Authorize]
         [HttpGet(Router.EventRouting.coming)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetComingEventsAsync()
@@ -41,7 +41,7 @@ namespace UniversityHousingSystem.API.Controllers
             var result = await _mediator.Send(model);
             return Ok(result);
         }
-        [Authorize]
+        //[Authorize]
         [HttpGet(Router.EventRouting.GetById)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

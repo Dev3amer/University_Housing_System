@@ -31,11 +31,7 @@ namespace UniversityHousingSystem.Core.Features.Users.Commands.Validators
         }
         private void ApplyCustomValidationRules()
         {
-            //Check if user is Exist by Id
-            RuleFor(u => u.Id).MustAsync(async (key, CancellationToken) =>
-            {
-                return await _userManager.FindByIdAsync(key) is not null;
-            }).WithMessage(SharedResourcesKeys.Invalid);
+
         }
     }
 }

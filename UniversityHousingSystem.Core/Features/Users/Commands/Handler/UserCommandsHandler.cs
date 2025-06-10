@@ -21,14 +21,17 @@ namespace MovieReservationSystem.Core.Features.Users.Commands.Handler
         private readonly IMapper _mapper;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IUserService _userService;
+        private readonly ICurrentUserService _currentUserService;
+
         #endregion
 
         #region Constructors
-        public UserCommandsHandler(UserManager<ApplicationUser> userManager, IMapper mapper, IUserService userService)
+        public UserCommandsHandler(UserManager<ApplicationUser> userManager, IMapper mapper, IUserService userService, ICurrentUserService currentUserService)
         {
             _userManager = userManager;
             _mapper = mapper;
             _userService = userService;
+            _currentUserService = currentUserService;
         }
         #endregion
 
@@ -67,9 +70,14 @@ namespace MovieReservationSystem.Core.Features.Users.Commands.Handler
 
         public async Task<Response<bool>> Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
         {
-            var user = await _userManager.FindByIdAsync(request.Id);
+            var currentUser = _userManager.Users
+                .Where(u => u.Id == _currentUserService.GetUserId())
+                .FirstOrDefault();
 
-            var isPasswordChanged = await _userManager.ChangePasswordAsync(user, request.OldPassword, request.ConfirmPassword);
+            if (currentUser is null)
+                return Unauthorized<bool>(SharedResourcesKeys.UnAuthorized);
+
+            var isPasswordChanged = await _userManager.ChangePasswordAsync(currentUser, request.OldPassword, request.ConfirmPassword);
 
             if (!isPasswordChanged.Succeeded)
                 return BadRequest<bool>(isPasswordChanged.Errors.FirstOrDefault().Description);

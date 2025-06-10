@@ -15,7 +15,7 @@ namespace UniversityHousingSystem.API.Controllers
         public IssueTypeController(IMediator mediator) : base(mediator) { }
 
         #region Queries
-        [Authorize]
+        //[Authorize]
         [HttpGet("list")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllIssuesTypesAsync()
