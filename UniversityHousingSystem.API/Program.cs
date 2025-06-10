@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MovieReservationSystem.Infrastructure.Seeding;
 using Serilog;
+using System.Security.Claims;
 using System.Text;
 using UniversityHousingSystem.Core;
 using UniversityHousingSystem.Core.Middleware;
@@ -158,6 +159,7 @@ namespace UniversityHousingSystem.API
                    ValidAudience = jwtSettings.Audience,
                    ValidateAudience = jwtSettings.ValidateAudience,
                    ValidateLifetime = jwtSettings.ValidateLifeTime,
+                   RoleClaimType = ClaimTypes.Role
                };
            });
             #endregion

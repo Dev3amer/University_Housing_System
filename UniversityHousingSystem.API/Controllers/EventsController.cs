@@ -52,7 +52,7 @@ namespace UniversityHousingSystem.API.Controllers
         }
         #endregion
         #region Commands
-        [Authorize(Roles = "Admin,Employee")]
+        [Authorize(Roles = "Admin")]
         [HttpPost(Router.EventRouting.Create)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

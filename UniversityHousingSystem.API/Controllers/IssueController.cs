@@ -35,7 +35,7 @@ namespace UniversityHousingSystem.API.Controllers
         #endregion
 
         #region Commands
-        [Authorize(Roles = "Student")]
+        [Authorize(Roles = "User")]
         [HttpPost("create")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

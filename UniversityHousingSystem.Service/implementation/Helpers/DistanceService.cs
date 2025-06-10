@@ -16,18 +16,16 @@ namespace UniversityHousingSystem.Service.implementation.Helpers
         {
             var fromCoords = await GeocodeAsync(fromAddress);
             var toCoords = await GeocodeAsync(toAddress);
-
             if (fromCoords is null)
             {
                 fromAddress = fromAddress.Substring(fromAddress.IndexOf(",") + 1).Trim();
                 fromCoords = await GeocodeAsync(fromAddress);
             }
-
-
             if (fromCoords == null || toCoords == null)
                 return null;
 
-            string url = $"https://router.project-osrm.org/route/v1/driving/{fromCoords.Value.lng},{fromCoords.Value.lat};{toCoords.Value.lng},{toCoords.Value.lat}?overview=false";
+            // GraphHopper API URL - note the coordinate order is lat,lng (opposite of OSRM)
+            string url = $"https://graphhopper.com/api/1/route?point={fromCoords.Value.lat},{fromCoords.Value.lng}&point={toCoords.Value.lat},{toCoords.Value.lng}&profile=car&calc_points=false&key=99381777-669d-40c4-8dd3-1c7528d431b8";
 
             var response = await _httpClient.GetAsync(url);
             if (!response.IsSuccessStatusCode)
@@ -36,12 +34,22 @@ namespace UniversityHousingSystem.Service.implementation.Helpers
             var content = await response.Content.ReadAsStringAsync();
             using var doc = JsonDocument.Parse(content);
 
-            if (doc.RootElement.GetProperty("code").GetString() != "Ok")
+            // Check if the request was successful
+            if (doc.RootElement.TryGetProperty("message", out var messageElement))
+            {
+                // Error occurred
+                return null;
+            }
+
+            // Check if paths array exists and has elements
+            if (!doc.RootElement.TryGetProperty("paths", out var pathsElement) ||
+                pathsElement.GetArrayLength() == 0)
                 return null;
 
+            // Get distance from the first path
             var distanceInMeters = doc
                 .RootElement
-                .GetProperty("routes")[0]
+                .GetProperty("paths")[0]
                 .GetProperty("distance")
                 .GetDouble();
 
@@ -57,7 +65,9 @@ namespace UniversityHousingSystem.Service.implementation.Helpers
 
             var response = await _httpClient.SendAsync(request);
             if (!response.IsSuccessStatusCode)
-                return null;
+            {
+                request = new HttpRequestMessage(HttpMethod.Get, $"https://nominatim.openstreetmap.org/search?format=json&q={Uri.EscapeDataString(address.Substring(0, (address.IndexOf(",") + 1)))}");
+            }
 
             var content = await response.Content.ReadAsStringAsync();
             var json = JsonDocument.Parse(content);
