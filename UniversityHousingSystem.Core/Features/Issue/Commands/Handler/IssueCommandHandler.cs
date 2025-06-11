@@ -13,17 +13,19 @@ namespace UniversityHousingSystem.Core.Features.Events.Commands.Handler
     public class IssueCommandHandler : ResponseHandler,
         IRequestHandler<CreateIssueCommand, Response<GetIssueByIdResponse>>,
         IRequestHandler<UpdateIssueCommand, Response<GetIssueByIdResponse>>,
-        IRequestHandler<DeleteIssueCommand, Response<bool>> // ✅ Fixed Typo
+        IRequestHandler<DeleteIssueCommand, Response<bool>>
     {
         private readonly IIssueService _issueService;
         private readonly ICurrentUserService _currentUserService;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly INotificationService _notificationService;
 
-        public IssueCommandHandler(IIssueService issueService, ICurrentUserService currentUserService, UserManager<ApplicationUser> userManager)
+        public IssueCommandHandler(IIssueService issueService, ICurrentUserService currentUserService, UserManager<ApplicationUser> userManager, INotificationService notificationService)
         {
             _issueService = issueService;
             _currentUserService = currentUserService;
             _userManager = userManager;
+            _notificationService = notificationService;
         }
 
         public async Task<Response<GetIssueByIdResponse>> Handle(CreateIssueCommand request, CancellationToken cancellationToken)
@@ -66,7 +68,6 @@ namespace UniversityHousingSystem.Core.Features.Events.Commands.Handler
             if (issue == null)
                 return NotFound<GetIssueByIdResponse>(string.Format(SharedResourcesKeys.NotFound, nameof(Issue)));
 
-            //   issue.Description = request.Description;
             issue.ResponseDate = request.ResponseDate;
             issue.Response = request.Response;
             issue.IssueTypeId = request.IssueTypeId;
@@ -86,12 +87,13 @@ namespace UniversityHousingSystem.Core.Features.Events.Commands.Handler
                 StudentId = updatedIssue.StudentId,
                 EmployeeId = updatedIssue.EmployeeId
             };
-
+            await _notificationService.CreateNotificationToOneStudentAsync(updatedIssue.StudentId
+                , "Issue Reviewed"
+                , $"Your Issue About{updatedIssue.Description} had been Reviewed");
             return Success(response);
         }
         public async Task<Response<bool>> Handle(DeleteIssueCommand request, CancellationToken cancellationToken)
         {
-            // Explicitly cast CollegeDepartmentId to byte
             var issue = await _issueService.GetAsync(request.IssueId);
 
             if (issue == null)

@@ -51,7 +51,8 @@ namespace UniversityHousingSystem.Core.Features.Buildings.Commands.Handler
                 AddressInDetails = request.AddressInDetails,
                 MapIFrame = request.MapSearchText,
                 Type = request.Type,
-                VillageId = village.VillageId
+                VillageId = village.VillageId,
+                Sex = request.Gender
             };
 
             var createdBuilding = await _buildingService.CreateAsync(newBuilding);
@@ -64,7 +65,8 @@ namespace UniversityHousingSystem.Core.Features.Buildings.Commands.Handler
                 Address = createdBuilding.AddressInDetails,
                 MapSearchText = createdBuilding.MapIFrame,
                 Type = createdBuilding.Type.ToString(),
-                VillageName = village.NameEn
+                VillageName = village.NameEn,
+                Gender = createdBuilding.Sex.ToString()
             };
 
             return Created(response, string.Format(SharedResourcesKeys.Created, nameof(Building)));
@@ -86,6 +88,7 @@ namespace UniversityHousingSystem.Core.Features.Buildings.Commands.Handler
             existingBuilding.MapIFrame = request.MapSearchText;
             existingBuilding.Type = request.Type;
             existingBuilding.VillageId = request.VillageId;
+            existingBuilding.Sex = request.Gender;
 
             var updatedBuilding = await _buildingService.UpdateAsync(existingBuilding);
 
@@ -97,7 +100,8 @@ namespace UniversityHousingSystem.Core.Features.Buildings.Commands.Handler
                 Address = updatedBuilding.AddressInDetails,
                 MapSearchText = updatedBuilding.MapIFrame,
                 Type = updatedBuilding.Type.ToString(),
-                VillageName = village.NameEn
+                VillageName = village.NameEn,
+                Gender = updatedBuilding.Sex.ToString()
             };
 
             return Success(response, string.Format(SharedResourcesKeys.Updated, nameof(Building)));

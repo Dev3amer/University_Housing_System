@@ -37,9 +37,9 @@ namespace UniversityHousingSystem.Core.Features.Authentication.Commands.Handler
         public async Task<Response<JwtAuthTokenResponse>> Handle(SignInCommand request, CancellationToken cancellationToken)
         {
             //Check if user Exist by Username
-            var user = await _userManager.FindByNameAsync(request.UserName);
+            var user = await _userManager.FindByEmailAsync(request.UserName);
             if (user == null)
-                return BadRequest<JwtAuthTokenResponse>(SharedResourcesKeys.InvalidUserName);
+                return BadRequest<JwtAuthTokenResponse>(string.Format(SharedResourcesKeys.NotFound, "Email"));
 
             //Check if Password is true for User
             var signInResult = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);

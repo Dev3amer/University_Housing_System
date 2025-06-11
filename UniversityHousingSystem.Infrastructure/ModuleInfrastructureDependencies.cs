@@ -36,6 +36,7 @@ namespace UniversityHousingSystem.Infrastructure
             services.AddTransient<IStudentHistoryRepository, StudentHistoryRepository>();
             services.AddTransient<IStudentRegistrationRepository, StudentRegistrationRepository>();
             services.AddTransient<IRegistrationPeriodRepository, RegistrationPeriodRepository>();
+            services.AddScoped<INotificationRepository, NotificationRepository>();
         }
     }
 }

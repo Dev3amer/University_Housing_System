@@ -12,5 +12,6 @@ namespace UniversityHousingSystem.Service.Abstractions
         Task<Building> CreateAsync(Building newBuilding);
         Task<Building> UpdateAsync(Building buildingToUpdate);
         Task<bool> DeleteAsync(Building buildingToDelete);
+        Task<int> GetBuildingsAvailableSpaces(EnGender gender);
     }
 }

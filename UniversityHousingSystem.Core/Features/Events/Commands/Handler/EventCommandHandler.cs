@@ -19,13 +19,16 @@ namespace UniversityHousingSystem.Core.Features.Events.Commands.Handler
         private readonly IEventService _eventService;
         private readonly ICurrentUserService _currentUserService;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly INotificationService _notificationService;
+
         #endregion
         #region Constructor
-        public EventCommandHandler(IEventService eventService, ICurrentUserService currentUserService, UserManager<ApplicationUser> userManager)
+        public EventCommandHandler(IEventService eventService, ICurrentUserService currentUserService, UserManager<ApplicationUser> userManager, INotificationService notificationService)
         {
             _eventService = eventService;
             _currentUserService = currentUserService;
             _userManager = userManager;
+            _notificationService = notificationService;
         }
         #endregion
         public async Task<Response<GetEventByIdResponse>> Handle(CreateEventCommand request, CancellationToken cancellationToken)
@@ -56,6 +59,7 @@ namespace UniversityHousingSystem.Core.Features.Events.Commands.Handler
                 Description = addedEvent.Description
             };
 
+            await _notificationService.SendToAllStudentsAsync(mappedResponse.Title, mappedResponse.Description);
             return Created(mappedResponse, string.Format(SharedResourcesKeys.Created, nameof(Event)));
         }
 

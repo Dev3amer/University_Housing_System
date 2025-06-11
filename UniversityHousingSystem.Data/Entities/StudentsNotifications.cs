@@ -8,7 +8,7 @@
         public bool IsRead { get; set; }
 
         //Navigation Properties
-        public virtual Student Student { get; set; } = new();
-        public virtual Notification Notification { get; set; } = new();
+        public virtual Student Student { get; set; }
+        public virtual Notification Notification { get; set; }
     }
 }

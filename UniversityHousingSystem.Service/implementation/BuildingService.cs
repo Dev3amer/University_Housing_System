@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using UniversityHousingSystem.Data.Entities;
 using UniversityHousingSystem.Data.Helpers.Enums;
-using UniversityHousingSystem.Infrastructure.implementation;
 using UniversityHousingSystem.Infrastructure.Repositories;
 using UniversityHousingSystem.Service.Abstractions;
 
@@ -15,11 +14,11 @@ namespace UniversityHousingSystem.Service.Implementation
         #endregion
 
         #region Constructors
-        public BuildingService(IBuildingRepository buildingRepository, IRoomRepository roomRepository )
+        public BuildingService(IBuildingRepository buildingRepository, IRoomRepository roomRepository)
         {
             _buildingRepository = buildingRepository;
             _roomRepository = roomRepository;
-             
+
         }
         #endregion
 
@@ -164,6 +163,22 @@ namespace UniversityHousingSystem.Service.Implementation
                 _buildingRepository.RollBack(); // ❌ Rollback if something fails
                 return false;
             }
+        }
+
+        public async Task<int> GetBuildingsAvailableSpaces(EnGender gender)
+        {
+            var genderRooms = await _buildingRepository.GetTableAsTracking()
+                .Where(b => b.Sex == gender)
+                .SelectMany(b => b.Rooms)
+                .Select(r => new
+                {
+                    r.Capacity,
+                    StudentCount = r.Students.Count()
+                })
+                .ToListAsync();
+
+            int totalAvailableSpaces = genderRooms.Sum(r => r.Capacity - r.StudentCount);
+            return totalAvailableSpaces;
         }
 
 

@@ -13,5 +13,6 @@ namespace UniversityHousingSystem.Core.Features.Events.Commands.Models
         public string? MapSearchText { get; set; }
         public EnBuildingType Type { get; set; }
         public int VillageId { get; set; }
+        public EnGender Gender { get; set; }
     }
 }

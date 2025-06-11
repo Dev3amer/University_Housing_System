@@ -12,8 +12,8 @@ using UniversityHousingSystem.Infrastructure.Context;
 namespace UniversityHousingSystem.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250607172310_Init")]
-    partial class Init
+    [Migration("20250611130553_DeleteIsAccepted")]
+    partial class DeleteIsAccepted
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -1211,7 +1211,7 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("FavRoom")
+                    b.Property<int?>("FavRoom")
                         .HasColumnType("int");
 
                     b.Property<string>("FirstName")

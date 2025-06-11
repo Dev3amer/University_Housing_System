@@ -7,6 +7,7 @@
         public DateTime To { get; set; }
         public bool IsClosed { get; set; }
         public decimal RegistrationFees { get; set; }
-        public int AvailableSpaces { get; set; }
+        public int AvailableMaleSpaces { get; set; }
+        public int AvailableFemaleSpaces { get; set; }
     }
 }

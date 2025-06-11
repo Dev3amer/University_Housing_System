@@ -10,6 +10,7 @@ namespace UniversityHousingSystem.Data.Entities
 
         public string AddressInDetails { get; set; } = default!;
         public string? MapIFrame { get; set; }
+        public EnGender Sex { get; set; }
         public EnBuildingType Type { get; set; }
 
         // Foreign Keys

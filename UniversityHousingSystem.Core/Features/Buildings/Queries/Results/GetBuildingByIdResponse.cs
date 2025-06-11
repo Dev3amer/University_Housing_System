@@ -9,7 +9,6 @@
         public string? MapSearchText { get; set; }
         public string Type { get; set; } = default!;
         public string VillageName { get; set; } = default!;
-
-
+        public string Gender { get; set; } = default!;
     }
 }
