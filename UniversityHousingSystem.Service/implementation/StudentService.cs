@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using UniversityHousingSystem.Data.Entities;
+using UniversityHousingSystem.Data.Helpers.Enums;
 using UniversityHousingSystem.Infrastructure.Repositories;
 using UniversityHousingSystem.Service.Abstractions;
 
@@ -49,13 +50,26 @@ namespace UniversityHousingSystem.Service.implementation
                 .FirstOrDefaultAsync(a => a.QRText == qrText);
         }
 
-        public async Task<IEnumerable<Student>> GetTopStudents(int studentsNumber)
+        public async Task<IEnumerable<Student>> GetTopStudents(int MaleStudentsNumber, int FemaleStudentsNumber)
         {
-            return await _studentRepository.GetTableAsTracking()
+            var students = _studentRepository.GetTableAsTracking()
+                            .Include(s => s.Application);
+
+            var topMalesTask = students
+                .Where(s => s.Gender == EnGender.Male)
                 .OrderByDescending(s => s.CurrentScore)
-                .Include(s => s.Application)
-                .Take(studentsNumber)
+                .Take(MaleStudentsNumber)
                 .ToListAsync();
+
+            var topFemalesTask = students
+                .Where(s => s.Gender == EnGender.Female)
+                .OrderByDescending(s => s.CurrentScore)
+                .Take(FemaleStudentsNumber)
+                .ToListAsync();
+
+            await Task.WhenAll(topMalesTask, topFemalesTask);
+
+            return topMalesTask.Result.Concat(topFemalesTask.Result);
         }
 
         public async Task UpdateStudents(IEnumerable<Student> topStudents)

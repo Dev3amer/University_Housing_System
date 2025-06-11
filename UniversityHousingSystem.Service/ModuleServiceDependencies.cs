@@ -45,6 +45,8 @@ namespace UniversityHousingSystem.Service
             services.AddTransient<IStudentRegistrationService, StudentRegistrationService>();
             services.AddScoped<IPaymentService, PaymentService>();
             services.AddScoped<IRegistrationPeriodService, RegistrationPeriodService>();
+            services.AddScoped<INotificationService, NotificationService>();
+            services.AddScoped<IStudentHousingService, StudentHousingService>();
         }
     }
 }
