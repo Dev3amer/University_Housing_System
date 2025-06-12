@@ -50,26 +50,25 @@ namespace UniversityHousingSystem.Service.implementation
                 .FirstOrDefaultAsync(a => a.QRText == qrText);
         }
 
-        public async Task<IEnumerable<Student>> GetTopStudents(int MaleStudentsNumber, int FemaleStudentsNumber)
+        public async Task<IEnumerable<Student>> GetTopStudents(int MaleStudentsNumber, int FemaleStudentsNumber, int RegistrationPeriodId)
         {
-            var students = _studentRepository.GetTableAsTracking()
-                            .Include(s => s.Application);
+            var baseQuery = _studentRepository.GetTableAsTracking()
+                        .Include(s => s.Application)
+                        .Where(s => s.RegistrationPeriodId == RegistrationPeriodId);
 
-            var topMalesTask = students
+            var topMales = await baseQuery
                 .Where(s => s.Gender == EnGender.Male)
                 .OrderByDescending(s => s.CurrentScore)
                 .Take(MaleStudentsNumber)
                 .ToListAsync();
 
-            var topFemalesTask = students
+            var topFemales = await baseQuery
                 .Where(s => s.Gender == EnGender.Female)
                 .OrderByDescending(s => s.CurrentScore)
                 .Take(FemaleStudentsNumber)
                 .ToListAsync();
 
-            await Task.WhenAll(topMalesTask, topFemalesTask);
-
-            return topMalesTask.Result.Concat(topFemalesTask.Result);
+            return topMales.Concat(topFemales);
         }
 
         public async Task UpdateStudents(IEnumerable<Student> topStudents)

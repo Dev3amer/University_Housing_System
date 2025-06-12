@@ -1267,6 +1267,9 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                     b.Property<int>("RegistrationCodeId")
                         .HasColumnType("int");
 
+                    b.Property<int>("RegistrationPeriodId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Religion")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -1319,6 +1322,8 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
 
                     b.HasIndex("RegistrationCodeId")
                         .IsUnique();
+
+                    b.HasIndex("RegistrationPeriodId");
 
                     b.HasIndex("RoomId");
 
@@ -1941,6 +1946,12 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("UniversityHousingSystem.Data.Entities.RegistrationPeriod", "RegistrationPeriod")
+                        .WithMany("Students")
+                        .HasForeignKey("RegistrationPeriodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("UniversityHousingSystem.Data.Entities.Room", "Room")
                         .WithMany("Students")
                         .HasForeignKey("RoomId")
@@ -1969,6 +1980,8 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                     b.Navigation("Governorate");
 
                     b.Navigation("Guardian");
+
+                    b.Navigation("RegistrationPeriod");
 
                     b.Navigation("Room");
 
@@ -2154,6 +2167,11 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                     b.Navigation("Questions");
 
                     b.Navigation("Responses");
+                });
+
+            modelBuilder.Entity("UniversityHousingSystem.Data.Entities.RegistrationPeriod", b =>
+                {
+                    b.Navigation("Students");
                 });
 
             modelBuilder.Entity("UniversityHousingSystem.Data.Entities.Response", b =>

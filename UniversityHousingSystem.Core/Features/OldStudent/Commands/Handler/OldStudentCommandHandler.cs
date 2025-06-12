@@ -105,6 +105,7 @@ namespace UniversityHousingSystem.Core.Features.OldStudent.Commands.Handler
                     Email = request.Email,
                     IsMarried = request.IsMarried,
                     QRText = qrText,
+                    RegistrationPeriodId = currentPeriod.Id,
                     QRImagePath = _qRService.GenerateAndSaveQRCodeForStudent(qrText),
                     College = collage,
                     CollegeDepartment = collegeDept,

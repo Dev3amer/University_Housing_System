@@ -27,6 +27,7 @@ namespace UniversityHousingSystem.Data.Entities
         public int RegistrationCodeId { get; set; }
 
         //Foreign Keys
+        public int RegistrationPeriodId { get; set; }
         public int ApplicationId { get; set; }
         public int CollegeId { get; set; }
         public int CollegeDepartmentId { get; set; }
@@ -56,6 +57,7 @@ namespace UniversityHousingSystem.Data.Entities
 
         public OldStudent? OldStudent { get; set; }
         public NewStudent? NewStudent { get; set; }
+        public RegistrationPeriod RegistrationPeriod { get; set; } = default!;
         public virtual ICollection<StudentsNotifications>? StudentsNotifications { get; set; }
         public ICollection<Visit>? Visits { get; set; }
         public ICollection<Attendance>? Attendances { get; set; }

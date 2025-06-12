@@ -9,5 +9,6 @@
         public decimal RegistrationFees { get; set; }
         public int AvailableMaleSpaces { get; set; }
         public int AvailableFemaleSpaces { get; set; }
+        public ICollection<Student>? Students { get; set; }
     }
 }

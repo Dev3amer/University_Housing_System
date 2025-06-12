@@ -186,7 +186,8 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                     To = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsClosed = table.Column<bool>(type: "bit", nullable: false),
                     RegistrationFees = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    AvailableSpaces = table.Column<int>(type: "int", nullable: false)
+                    AvailableMaleSpaces = table.Column<int>(type: "int", nullable: false),
+                    AvailableFemaleSpaces = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -543,6 +544,7 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                     Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     AddressInDetails = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     MapIFrame = table.Column<string>(type: "nvarchar(2500)", maxLength: 2500, nullable: true),
+                    Sex = table.Column<byte>(type: "tinyint", nullable: false),
                     Type = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     VillageId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -624,7 +626,7 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                     CurrentScore = table.Column<double>(type: "float", nullable: false),
                     FavRoom = table.Column<int>(type: "int", nullable: true),
                     RegistrationCodeId = table.Column<int>(type: "int", nullable: false),
-                    IsAccepted = table.Column<bool>(type: "bit", nullable: false),
+                    RegistrationPeriodId = table.Column<int>(type: "int", nullable: false),
                     ApplicationId = table.Column<int>(type: "int", nullable: false),
                     CollegeId = table.Column<int>(type: "int", nullable: false),
                     CollegeDepartmentId = table.Column<int>(type: "int", nullable: false),
@@ -691,6 +693,12 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                         name: "FK_Students_RegistrationCodes_RegistrationCodeId",
                         column: x => x.RegistrationCodeId,
                         principalTable: "RegistrationCodes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Students_RegistrationPeriods_RegistrationPeriodId",
+                        column: x => x.RegistrationPeriodId,
+                        principalTable: "RegistrationPeriods",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -1389,6 +1397,11 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Students_RegistrationPeriodId",
+                table: "Students",
+                column: "RegistrationPeriodId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Students_RoomId",
                 table: "Students",
                 column: "RoomId");
@@ -1491,9 +1504,6 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                 name: "Payments");
 
             migrationBuilder.DropTable(
-                name: "RegistrationPeriods");
-
-            migrationBuilder.DropTable(
                 name: "RoomPhotos");
 
             migrationBuilder.DropTable(
@@ -1555,6 +1565,9 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "RegistrationCodes");
+
+            migrationBuilder.DropTable(
+                name: "RegistrationPeriods");
 
             migrationBuilder.DropTable(
                 name: "Rooms");

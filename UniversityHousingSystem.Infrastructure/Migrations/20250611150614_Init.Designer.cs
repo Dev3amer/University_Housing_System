@@ -12,8 +12,8 @@ using UniversityHousingSystem.Infrastructure.Context;
 namespace UniversityHousingSystem.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250611130553_DeleteIsAccepted")]
-    partial class DeleteIsAccepted
+    [Migration("20250611150614_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -286,6 +286,9 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar");
+
+                    b.Property<byte>("Sex")
+                        .HasColumnType("tinyint");
 
                     b.Property<string>("Type")
                         .IsRequired()
@@ -1064,7 +1067,10 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AvailableSpaces")
+                    b.Property<int>("AvailableFemaleSpaces")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AvailableMaleSpaces")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("From")
@@ -1264,6 +1270,9 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                     b.Property<int>("RegistrationCodeId")
                         .HasColumnType("int");
 
+                    b.Property<int>("RegistrationPeriodId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Religion")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -1316,6 +1325,8 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
 
                     b.HasIndex("RegistrationCodeId")
                         .IsUnique();
+
+                    b.HasIndex("RegistrationPeriodId");
 
                     b.HasIndex("RoomId");
 
@@ -1938,6 +1949,12 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("UniversityHousingSystem.Data.Entities.RegistrationPeriod", "RegistrationPeriod")
+                        .WithMany("Students")
+                        .HasForeignKey("RegistrationPeriodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("UniversityHousingSystem.Data.Entities.Room", "Room")
                         .WithMany("Students")
                         .HasForeignKey("RoomId")
@@ -1966,6 +1983,8 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                     b.Navigation("Governorate");
 
                     b.Navigation("Guardian");
+
+                    b.Navigation("RegistrationPeriod");
 
                     b.Navigation("Room");
 
@@ -2151,6 +2170,11 @@ namespace UniversityHousingSystem.Infrastructure.Migrations
                     b.Navigation("Questions");
 
                     b.Navigation("Responses");
+                });
+
+            modelBuilder.Entity("UniversityHousingSystem.Data.Entities.RegistrationPeriod", b =>
+                {
+                    b.Navigation("Students");
                 });
 
             modelBuilder.Entity("UniversityHousingSystem.Data.Entities.Response", b =>

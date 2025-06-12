@@ -118,7 +118,7 @@ namespace UniversityHousingSystem.Core.Features.RegistrationPeriods.Commands.Han
             if (UpdatedPeriod.IsClosed is false)
                 return UnprocessableEntity<bool>(SharedResourcesKeys.TryAgain);
 
-            var topStudents = await _studentService.GetTopStudents(period.AvailableMaleSpaces, period.AvailableFemaleSpaces);
+            var topStudents = await _studentService.GetTopStudents(period.AvailableMaleSpaces, period.AvailableFemaleSpaces, period.Id);
             foreach (var student in topStudents)
             {
                 student.Application.FinalStatus = EnStatus.Accepted;
@@ -130,7 +130,7 @@ namespace UniversityHousingSystem.Core.Features.RegistrationPeriods.Commands.Han
                     UserName = student.Email,
                 };
                 var password = _passwordGeneratorService.Generate();
-                var result = await _userService.CreateUser(appUser, password, "Student");
+                var result = await _userService.CreateUser(appUser, password, "User");
                 await _emailService.SendEmail(result.User.Email, student.FirstName,
                     "You are Accepted in Benha Housing." +
                     $"<br> Use these data to login:<br><strong>Username: </strong>{result.User.UserName}<br>" +

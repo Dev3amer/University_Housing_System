@@ -10,6 +10,11 @@ namespace UniversityHousingSystem.Infrastructure.Config
         {
             builder.HasKey(p => p.Id);
 
+            builder.HasMany(r => r.Students)
+                .WithOne(s => s.RegistrationPeriod)
+                .HasForeignKey(s => s.RegistrationPeriodId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             // Table name
             builder.ToTable("RegistrationPeriods");
         }

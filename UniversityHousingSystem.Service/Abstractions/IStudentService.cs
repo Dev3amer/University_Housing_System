@@ -7,7 +7,7 @@ namespace UniversityHousingSystem.Service.Abstractions
         Task<Student?> GetAsync(int id);
         Task<Student?> GetByQrTextAsync(string qrText);
         Task<bool> DeleteAsync(Student student);
-        Task<IEnumerable<Student>> GetTopStudents(int MaleStudentsNumber, int FemaleStudentsNumber);
+        Task<IEnumerable<Student>> GetTopStudents(int MaleStudentsNumber, int FemaleStudentsNumber, int RegistrationPeriodId);
         Task UpdateStudents(IEnumerable<Student> topStudents);
     }
 }
