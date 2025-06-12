@@ -1,8 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Stripe;
 using UniversityHousingSystem.Data.Entities;
-using UniversityHousingSystem.Data.Helpers.Enums;
-using UniversityHousingSystem.Infrastructure.implementation;
 using UniversityHousingSystem.Infrastructure.Repositories;
 using UniversityHousingSystem.Service.Abstractions;
 
@@ -35,7 +32,8 @@ namespace UniversityHousingSystem.Service.Implementation
         public async Task<ICollection<Room>> GetAllAsync()
         {
             return await _roomRepository.GetTableNoTracking()
-                .Include(r => r.RoomPhotos) // Include the RoomPhotos navigation property
+                .Include(r => r.RoomPhotos)// Include the RoomPhotos navigation property
+                .Include(r => r.Building)
                 .ToListAsync();
         }
 
